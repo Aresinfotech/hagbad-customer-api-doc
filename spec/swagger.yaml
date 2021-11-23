@@ -1,0 +1,1408 @@
+swagger: '2.0'
+schemes:
+  - https # Remove if your API doesn't support HTTPS
+info:
+  version: "1.0.0"
+  title: Hagbad Online REST API
+  contact:   
+    email: developers@greysystems.eu # [Optional] Replace with your contact email
+    url: "http://www.greysystems.eu/#contact" # [Optional] Replace with link to your contact form
+  license:
+    name: All Rights reserved GreySystems 2021
+    url: "http://www.greysystems.eu"
+  termsOfService: "https://www.greysystems.eu" # [Optional] Replace with an URL to your ToS
+  x-logo: 
+    url: http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png
+    background: "#FFFFFF"
+  description: |
+    # Introduction
+    Test
+    
+    # Who we are? 
+    
+    Grey Systems is a well establish European IT Consulting company that specialises in working with financial institutions. 
+    
+    Grey Systems is the best professional IT answer to real time remittance companies.
+    
+    # Goal 
+    
+    Test
+    
+    # Authentication
+    
+    
+    ## The identity endpoint
+    Several resources exposed by this gateway are secured, and you will need a [json web token](https://jwt.io/) to reach the secured methods.
+
+    The main way to get this jwt should be the Oauth2 flow method called `Authorization Code`. The Oauth2 flow has become the web security standard in the internet services.
+    You can get more information about Oauth2 framework here:
+    https://datatracker.ietf.org/doc/html/rfc6749
+
+    You can use our Hagbad identity manager that follows the oauth2 standard. All the requests made against `/auth` endpoint will be automatically redirected to the Hagbad identity manager. This identity manager knows every configured partner in the Hagbad system and is capable of authenticating and registering users using the partner system's own configuration.
+
+    The related project that builds and configures the Hagbad identity manager is: https://gitlab.com/grey-systems/hagbad/hagbad-identity. (Please, note that you will need an authorized user to see this repository)
+
+    Now, let's see the allowed methods exposed under the `/auth` path:
+
+    ### Well known endpoint
+    The well known endpoint provides you all the Oauth2 configuration that you ought to know to build the oauth flow in your application.
+    This endpoint returns, among other information, where the authorization or token endpoint is published. Also describe the allowed scopes and the public key made by the identity manager.
+
+    Let's see an example request using the develop environment gateway.
+
+    `GET http://localhost:8080/auth/realms/aqil/.well-known/openid-configuration`
+
+    ### Obtaining the Authorization Code
+    Once you know how to configure the oauth flow, you can get the authorization code to start the user authentication.
+
+    As we can see in the official documentation described above: 
+
+    >The authorization code is obtained by using an authorization server
+    as an intermediary between the client and resource owner.  Instead of
+    requesting authorization directly from the resource owner, the client
+    directs the resource owner to an authorization server (via its
+    user-agent as defined in [RFC2616]), which in turn directs the
+    resource owner back to the client with the authorization code.
+
+    You will need an internet browser to start the get Authorization Code flow. The browser is required because the identity manager
+    will redirect the authorization request to the proper partner (currently, one test partner built using oauth0 application). The 
+    partner will request you the user and password and validate them. If the authorization is success, the identity
+    manager will return to you (where the redirect_uri indicates) the authorization code that you will use
+    to request the `access_token` via the token endpoint.
+
+    Let's see an example (remember, this request will be launched inside the browser):
+
+    ```json
+    http://localhost:8080/auth/realms/aqil/protocol/openid-connect/auth?redirect_uri=http://localhost:8081&client_id=aqil-api-client&response_type=code&scope=openid
+    ```
+    Now, you should see the oauth2 auth form:
+
+    ![oauth form](.images/authorizations/oauth2-auth-form.png)
+
+    Login with an existent user and you will be redirected to the registration page if the user does not already exist in the system:
+    ![partner registration page](.images/authorizations/aqil-registration-page.png)
+
+    Type the required fields and click in the register button. Please, keep in mind that the authorization code will be returned to `http://localhost:8081` so, you will need to capture the response using the browser developer tools:
+
+    ![authorization code intercepted](.images/authorizations/authorization-code-intercepted.png)
+
+    Now, you can use the provided authorization code to get the `access_token`. You will send a POST request to the token endpoint:
+
+    ```bash
+    curl --request POST \
+      --url http://localhost:8080/auth/realms/aqil/protocol/openid-connect/token \
+      --header 'Content-Type: application/x-www-form-urlencoded' \
+      --data grant_type=authorization_code \
+      --data code=f3e31822-73d0-484c-91d4-7839ab72c75f.379adde7-0448-4764-ae99-cf0852755e5e.5fdbcc2d-44a0-45d0-9ac7-1c423f622f0f \
+      --data client_id=aqil-api-client \
+      --data client_secret=e33009fc-17a6-4549-8bd6-b1a82792444b \
+      --data redirect_uri=http://localhost:8081
+    ```
+
+    Obtaining this response:
+
+    ![access token](.images/authorizations/access_token.png)
+
+    **Getting service access_token via HTTP graphical client**
+
+    If you are using HTTP clients like Insomnia, you can integrate this authorization code as part as the request authentication. Getting the `access_token` in a pretty easy way. Just add the `Authorization Code` option in the authorization tab and rock and roll:
+
+    ![Insomnia authorization](.images/authorizations/insomnia-authorization.png)
+
+    ## Refreshing the access token
+    The access tokens given by the identity manager have expiration time. If you `access token` is expired, you will refresh it using the token endpoint provides by the identity manager.
+
+    In a similar way that you get the `access token` in the last step described in the previous point, you can refresh the token making a POST request to the token endpoint:
+
+    ```bash
+    curl --request POST \
+      --url http://localhost:8080/auth/realms/aqil/protocol/openid-connect/token \
+      --header 'Content-Type: application/x-www-form-urlencoded' \
+      --data grant_type=refresh_token \
+      --data refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkZTNjYWU2NC0wMGQ3LTQ4NTEtYWQ2ZS1lMmQ3ZTZjN2ZhMmUifQ.eyJleHAiOjE2MzM5NjgyNjcsImlhdCI6MTYzMzk2NjQ2NywianRpIjoiY2U4OGQzNzAtNDkzYS00ZDJjLWE2MmItNjE3YjM5MDgwZTkyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2FxaWwiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvYXFpbCIsInN1YiI6IjRmMGU1M2FkLTY0ZjMtNGQ0ZS04MWQ2LWE0Yzk4NmZmNmMzZCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJhcWlsLWFwaS1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiMzc5YWRkZTctMDQ0OC00NzY0LWFlOTktY2YwODUyNzU1ZTVlIiwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6IjM3OWFkZGU3LTA0NDgtNDc2NC1hZTk5LWNmMDg1Mjc1NWU1ZSJ9._EnQzlqqHSZNQYx5Va_ifcsN1LCL_DKMkmVluIgAxao \
+      --data client_id=aqil-api-client \
+      --data client_secret=e33009fc-17a6-4549-8bd6-b1a82792444b
+    ```
+
+    Please, note that in this POST request, the `grant_type` is `refresh_token` instead of `authorization_code`. 
+
+    The refresh response is the same that you receive when get the `access_token` in the previous step. Using this mechanism, you can refresh the `access_token as time as you need.
+
+    ## Getting the user info
+    The identity manager provides the oauth2 endpoint `/userinfo`. You can use this endpoint to get the very basic user information saved in the identity manager. This method is not recommended getting the user info due to it contains only the public information about the user, ignoring more specific fields that maybe you need.
+
+    To get the user info, simply use `GET http://localhost:8080/auth/realms/aqil/protocol/openid-connect/userinfo` giving the bearer token in the `Authorization` header. 
+
+    Here is the response for the user registered above:
+
+    ![user info](.images/authorizations/user-info.png)
+
+    ## Logout the current user session
+    Each time you get an `access_token`, you are creating a new session in the identity manager. If you want to logout the current session of the user, you just use the `/logout` endpoint provides by the identity manager.
+
+    Use: `GET http://localhost:8080/auth/realms/aqil/protocol/openid-connect/logout` with the bearer token in the `Authorization` header to logout the related
+    
+    
+    # Common HTTP Error Responses
+    
+    The HAGBAD Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: 
+    
+    * HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). 
+    * HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). 
+    * HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). 
+    * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
+
+tags: 
+
+  - name: "catalogs"
+    description: Manage catalog.
+    
+  - name: "configurations"
+    description: Manage configuration operation.
+    
+  - name: "moneypools"
+    description: Manage moneypool operation.
+    
+paths:
+
+  /catalog/country:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get list of countries.
+      
+      description: | 
+                    Get the entire list of countries.
+   
+      responses:
+        200: 
+          description: Returns a list with the countries.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/Country'
+        400: 
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/country/{iso3}:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get country by iso code 3.
+      
+      description: | 
+                    Returns the country by iso code 3.
+                    
+      parameters: 
+        - name: iso3
+          in: path
+          required: true
+          type: String
+          description: Iso code 3
+          
+      responses:
+        200: 
+          description: Returns the details of a country.
+          schema: 
+            $ref: "#/definitions/Country"
+        400:
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Country not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/country/{iso3}/city:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get city by iso code 3 (search cities).
+      
+      description: | 
+                    Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.
+      
+      parameters: 
+        - name: iso3
+          in: path
+          required: true
+          type: String
+          description: Iso code 3.
+        - name: name
+          in: query
+          required: true
+          type: String
+          description: City name, minimum length three characters.
+          
+      responses:
+        200: 
+          description: Returns a list with the cities.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/City'
+        400: 
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Country or cities not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/country/{iso3}/city/{cityId}:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get city by id.
+      
+      description: | 
+                    Returns a city by its id.
+                    
+      parameters: 
+        - name: iso3
+          in: path
+          required: true
+          type: String
+          description: Iso code 3
+        - name: cityId
+          in: path
+          required: true
+          type: BigInteger
+          description: Id city
+          
+      responses:
+        200: 
+          description: Returns a city by its id.
+          schema: 
+            $ref: "#/definitions/City"
+        400:
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Country or city not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/country/{iso3}/state:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get states by iso code 3 (search states).
+      
+      description: | 
+                    Returns a list of states, filtering the states by iso code 3 and name (optional) passed by parameters.
+      
+      parameters: 
+        - name: iso3
+          in: path
+          required: true
+          type: String
+          description: Iso code 3.
+        - name: name
+          in: query
+          required: false
+          type: String
+          description: State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country.
+          
+      responses:
+        200: 
+          description: Returns a list with the states.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/State'
+        400: 
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Country or states not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/country/{iso3}/state/{stateId}:
+    get:
+      tags: 
+        - catalogs
+      summary: Get state by id.
+      
+      description: | 
+                    Returns a state by its id.
+                    
+      parameters: 
+        - name: iso3
+          in: path
+          required: true
+          type: String
+          description: Iso code 3
+        - name: stateId
+          in: path
+          required: true
+          type: BigInteger
+          description: Id state
+          
+      responses:
+        200: 
+          description: Returns a state by its id.
+          schema: 
+            $ref: "#/definitions/State"
+        400:
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Country or state not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/currency:
+    get:
+      tags: 
+        - catalogs
+        
+      summary: Get Currencies.
+      
+      description: | 
+                    Get the entire list of currencies.
+      responses:
+        200: 
+          description: Returns a list with the currencies.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/Currency'
+        400: 
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /catalog/currency/{iso}:
+    get:
+      tags: 
+        - catalogs
+      summary: Get currency by iso code.
+      
+      description: | 
+                    Returns the currency by iso code.
+                    
+      parameters: 
+        - name: iso
+          in: path
+          required: true
+          type: String
+          description: Iso code
+          
+      responses:
+        200: 
+          description: Returns the details of a currency.
+          schema: 
+            $ref: "#/definitions/Currency"
+        400:
+          description: Invalid parameters, response contains detailed error.
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Currency not found.
+          schema: 
+            $ref: '#/definitions/Error'
+              
+  /configuration:
+    get:
+      tags: 
+        - configurations
+        
+      summary: Get Partner Configuration.
+      
+      description: | 
+                    Get Partner configuration.
+      responses:
+        200: 
+          description: Partner successfully selected, return current configuration.
+          schema: 
+            $ref: "#/definitions/PartnerConfiguration"
+        404: 
+          description: Partner not found.
+          schema: 
+            $ref: '#/definitions/Error'
+
+  /moneypool: 
+    post: 
+      summary: Create or update a moneypool.
+      
+      description: | 
+        The HostID field which is necessary to inform when creating a pool will be provided by the architecture.
+         </br> </br> 
+        This save service will cover the update functionality too. If the moneypool id field in the request body is informed it will be an update behaviour, if it isn’t a create one.
+           
+      operationId: saveMoneypool
+      
+      parameters: 
+        - name: saveMoneypoolRequest
+          in: body
+          required: true
+          schema: 
+            $ref: '#/definitions/SaveMoneypoolRequest'
+            
+      tags: 
+        - moneypools
+        
+      responses: 
+        200:
+          description: Moneypool successfully updated.
+          schema: 
+            $ref: '#/definitions/Moneypool'
+        201:
+          description: Moneypool successfully created.
+          schema: 
+            $ref: '#/definitions/Moneypool'
+        400: 
+          description: Invalid Request. message attribute of response contains detailed information about the issue. 
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
+          schema: 
+            $ref: '#/definitions/Error'
+        409: 
+          description: Conflict :Update a  locked / started / finished pool  
+          schema: 
+            $ref: '#/definitions/Error'
+            
+  /moneypool/{id}: 
+    get: 
+      summary: Get a moneypool by its id.
+      
+      description: | 
+        Get all the information about a single moneypool.
+      
+      operationId: getMoneypool
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+          
+      responses:
+        200: 
+          description: Returns a Moneypool and its details.
+          schema: 
+            $ref: '#/definitions/MoneypoolWithBalance'
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/community/{communityId}: 
+    get: 
+      summary: Get Moneypool by community.
+      
+      description: | 
+        Recover a moneypool for your community.
+      
+      operationId: getMoneypoolByCommunityId
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: communityId 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the community
+          
+      responses:
+        200: 
+          description: Returns a Moneypool and its details.
+          schema: 
+            $ref: '#/definitions/Moneypool'
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+                      
+  /moneypool/search: 
+    post: 
+      summary: Search Moneypools.
+      
+      description: Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa. 
+          
+      operationId: searchMoneypools
+      
+      tags:
+        - moneypools
+        
+      parameters: 
+        - name: search request parameters.
+          in: body
+          required: true
+          schema: 
+            $ref: '#/definitions/SearchMoneypoolRequest'
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: Page number.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: Number of elements per page.
+            
+      responses:
+        200: 
+          description: Find one or more Moneypools matching with the search parameters. Not find any Moneypools matching with the search parameters (empty array).
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/Moneypool'
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+                      
+  /moneypool/{id}/status/{status}: 
+    put: 
+      summary: Update MoneyPool status. 
+      
+      description: Update the status of a given moneypool. 
+          
+      operationId: updateMoneypoolStatus
+      
+      tags:
+        - moneypools
+        
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: Moneypool id.
+        - name: status
+          in: path
+          required: true
+          type: String
+          description: Moneypool status.
+            
+      responses:
+        200: 
+          description: Moneypool successfully updated.
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/movement: 
+    get: 
+      summary: Get Moneypool movements.
+      
+      description: | 
+        Get the movements of a Moneypool.
+      
+      operationId: getMovementByMoneypoolId
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: communityId 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: Page number.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: Number of elements per page.
+          
+      responses:
+        200: 
+          description: Returns the balance movements of the given Moneypool. Returns an empty list if the money pool doesn’t have movements yet.
+          schema: 
+            $ref: '#/definitions/GetMovementResponse'
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/member: 
+    get: 
+      summary: Get Moneypool Members.
+      
+      description: | 
+        Get all members of the Moneypool community.
+      
+      operationId: getMemberByMoneypoolId
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+          
+      responses:
+        200: 
+          description: Returns the members of the given Moneypool. Returns an empty list if the money pool doesn’t have members yet.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/Member'
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/member/: 
+    post: 
+      summary: Add Member to Moneypool.
+      
+      description: | 
+        Add a member to the Moneypool. It will be used to Join the moneypool as a member (when the Moneypool is public).
+      
+      operationId: addMember
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: add member parameters
+          in: body
+          required: true
+          schema: 
+            $ref: '#/definitions/AddMemberRequest'
+          
+      responses:
+        200: 
+          description: Member successfully added.
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/member/{memberId}: 
+    delete: 
+      summary: Expel Member from Moneypool.
+      
+      description: | 
+        Expel a member from a moneypool.
+      
+      operationId: expelMember
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: memberId 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the member we want to delete from the moneypool.
+          
+      responses:
+        200: 
+          description: Member successfully removed from the moneypool.
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/member/{memberId/position-from/{positionFrom}/position-to/{positionTo}: 
+    put: 
+      summary: Update Member Position.
+      
+      description: | 
+        Update the position of  a member in a moneypool.
+      
+      operationId: updateMemberPosition
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: memberId 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the member we want to delete from the moneypool.
+        - name: positionFrom 
+          in: path
+          required: true
+          type: Integer
+          description: The position currently occupied by the member.
+        - name: positionTo
+          in: path
+          required: true
+          type: Integer
+          description: The position that the member should occupy.
+          
+      responses:
+        200: 
+          description: Member successfully update from the moneypool.
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+        409: 
+          description: The moneypool cannot be edited in the current state..
+          schema: 
+            $ref: '#/definitions/Error'
+  
+  /moneypool/{id}/member/{memberId/position/{position}: 
+    put: 
+      summary: Delete Member Position.
+      
+      description: | 
+        Delete the position of  a member in a moneypool.
+      
+      operationId: deleteMemberPosition
+      
+      tags: 
+        - moneypools
+        
+      parameters: 
+        - name: id 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: memberId 
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the member we want to delete from the moneypool.
+        - name: position 
+          in: path
+          required: true
+          type: Integer
+          description: The position occupied by the member.
+          
+      responses:
+        200: 
+          description: Member successfully delete from the pool.
+        400: 
+          description: Invalid parameters, response contains detailed error
+          schema: 
+            $ref: '#/definitions/Error'
+        404: 
+          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          schema: 
+            $ref: '#/definitions/Error'
+        409: 
+          description: The moneypool cannot be edited in the current state..
+          schema: 
+            $ref: '#/definitions/Error'
+            
+definitions:   
+    
+  Error:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: String
+      message:
+        type: String
+        
+  Country: 
+    type: object
+    required: 
+      - "idCountry"
+      - "name"
+      - "iso2"
+      - "iso3"
+    properties: 
+      idCountry: 
+        description: Numeric iso of the country.
+        type: "BigInteger"
+        example: 840
+      name: 
+        description: Name of the country
+        type: "String"
+        example: "United States Of America"
+      iso2: 
+        description: Alphanumeric iso code (2-letters) of the country.
+        type: "String"
+        example: "US"
+      iso3: 
+        description: Alphanumeric iso code (3-letters) of the country.
+        type: "String"
+        example: "USA"
+        
+  City: 
+    type: object
+    required: 
+      - "id"
+      - "name"
+      - "nameAscii"
+    properties: 
+      id: 
+        description: Id of the city.
+        type: "BigInteger"
+        example: 12341234
+      name: 
+        description: Name of the city (locale based). Will return non-ascii characters for those cities that are originally written using non-latin alphabet.
+        type: "String"
+        example: "London"
+      nameAscii: 
+        description: Name of the city (using ascii characters, for english readers).
+        type: "String"
+        example: "London"
+        
+  State: 
+    type: object
+    required: 
+      - "id"
+      - "name"
+      - "nameAscii"
+      - "code"
+    properties: 
+      id: 
+        description: Id of the state.
+        type: "BigInteger"
+        example: 6269131
+      name: 
+        description: Name of the state (locale based). Will return non-ascii characters for those states that are originally written using non-latin alphabet.
+        type: "String"
+        example: "England"
+      nameAscii: 
+        description: Name of the state (using ascii characters, for english readers).
+        type: "String"
+        example: "England"
+      code: 
+        description: Code of the state.
+        type: "String"
+        example: "ENG"
+        
+  Currency: 
+    type: object
+    required: 
+      - "id"
+      - "iso"
+      - "name"
+    properties: 
+      id: 
+        description: Numeric iso of the currency.
+        type: "BigInteger"
+        example: 840
+      iso: 
+        description: Alphanumeric iso code (3-letters) of the currency.
+        type: "String"
+        example: "USD"
+      name: 
+        description: Currency name
+        type: "String"
+        example: "Us Dollar"
+                
+  PaymentMethod: 
+    type: object
+    required: 
+      - "type"
+      - "description"
+    properties: 
+      type: 
+        description: The payment method type.
+        type: "String"
+        example: "TYPE"
+      description: 
+        description: The payment method description.
+        type: "String"
+        example: "DESC"
+        
+  PartnerConfiguration: 
+    type: object
+    required: 
+      - "name"
+      - "currency"
+      - "lowerLimit"
+      - "upperLimit"
+      - "minMembers"
+      - "maxMembers"
+      - "paymentMethods"
+    properties: 
+      name: 
+        description: The partner name.
+        type: "String"
+        example: "Tester partner"
+      currency: 
+        description: The partner currency.
+        type: "String"
+        example: "USD"
+      lowerLimit: 
+        description: The configured lower limit amount.
+        type: "BigInteger"
+        example: 300
+      upperLimit: 
+        description: The configured upper limit amount.
+        type: "BigInteger"
+        example: 3000
+      minMembers: 
+        description: The minimum number of members a community can have for this partner.
+        type: "String"
+        example: 5
+      maxMembers: 
+        description: The maximum number of members a community can have for this partner.
+        type: "String"
+        example: 15
+      paymentMethods: 
+        description: The different payment methods configured for this partner.
+        type: array
+        items: 
+          $ref: '#/definitions/PaymentMethod'
+        
+  SaveMoneypoolRequest: 
+    type: object
+    required: 
+      - "name"
+      - "poolCode"
+      - "startDate"
+      - "nextPaymentDate"
+      - "type"
+      - "amountToSave"
+      - "currency"
+      - "membersRequired"
+      - "paymentsFrequency"
+      - "purpose"
+    properties: 
+      id: 
+        description: Moneypool id. It is only required to update a moneypool.
+        type: "BigInteger"
+        example: 1123
+      name: 
+        description: Moneypool name.
+        type: "String"
+        example: "Test moneypool"
+      poolCode: 
+        description: Moneypool code.
+        type: "String"
+        example: "MP1"
+      startDate: 
+        description: Moneypool start date.
+        type: "LocalDate"
+        example: "2021-04-23"
+      nextPaymentDate: 
+        description: Moneypool next payment date.
+        type: "LocalDate"
+        example: "2021-05-23"
+      type: 
+        description: Moneypool type (PUBLIC / PRIVATE).
+        type: "String"
+        example: "PUBLIC"
+      amountToSave: 
+        description: Amount which every Moneypool component will receive in his collect turn.
+        type: "BigDecimal"
+        example: 1000
+      currency: 
+        description: Moneypool currency.
+        type: "String"
+        example: "USD"
+      membersRequired: 
+        description: Number of Members required.
+        type: "Integer"
+        example: 8
+      paymentsFrequency: 
+        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
+        type: "String"
+        example: "MONTHLY"
+      purpose: 
+        description: Purpose of the moneypool.
+        type: "String"
+        example: "BUY TV"
+        
+  SearchMoneypoolRequest: 
+    type: object
+    required: 
+      - "startDateFrom"
+      - "startDateTo"
+      - "poolCode"
+    properties: 
+      name: 
+        description: Moneypool name.
+        type: "String"
+        example: "2021-04-23"
+      startDateFrom: 
+        description: Moneypool start date init.
+        type: "LocalDate"
+        example: "2021-04-23"
+      startDateTo: 
+        description: Moneypool start date finish.
+        type: "LocalDate"
+        example: "2021-04-24"
+      type: 
+        description: Moneypool type (PUBLIC / PRIVATE).
+        type: "String"
+        example: "PUBLIC"
+      poolCode: 
+        description: Moneypool code.
+        type: "String"
+        example: "MP1"
+      status: 
+        description: Status of the Moneypool.
+        type: "String"
+        example: "OPENED"
+      amountToSave: 
+        description: Amount which every Moneypool component will receive in his collect turn.
+        type: "BigDecimal"
+        example: 1000
+      currency: 
+        description: Moneypool currency.
+        type: "String"
+        example: "USD"
+      membersRequired: 
+        description: Number of Members required.
+        type: "Integer"
+        example: 8
+      paymentsFrequency: 
+        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
+        type: "String"
+        example: "MONTHLY"
+                        
+  Moneypool:
+    type: object
+    required: 
+      - "id"
+      - "name"
+      - "poolCode"
+      - "amountToSave"
+      - "currency"
+      - "membersRequired"
+      - "paymentCycle"
+      - "paymentCyclesTotal"
+      - "paymentsFrequency"
+      - "startDate"
+      - "nextPaymentDate"
+      - "type"
+      - "status"
+      - "purpose"
+    properties: 
+      id: 
+        description: Moneypool id.
+        type: "BigInteger"
+        example: 571418
+      name: 
+        description: Moneypool name.
+        type: "String"
+        example: "Test moneypool"
+      poolCode: 
+        description: Moneypool code.
+        type: "String"
+        example: "MP1"
+      amountToSave: 
+        description: Amount which every Moneypool component will receive in his collect turn.
+        type: "BigDecimal"
+        example: 1000
+      currency: 
+        description: Moneypool currency.
+        type: "String"
+        example: "USD"
+      membersRequired: 
+        description: Number of Members required.
+        type: "Integer"
+        example: 8
+      paymentCycle: 
+        description: Number of payment cicle.
+        type: "Integer"
+        example: 8
+      paymentCyclesTotal: 
+        description: Number of payment cicle total.
+        type: "Integer"
+        example: 8
+      paymentsFrequency: 
+        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
+        type: "String"
+        example: "MONTHLY"
+      startDate: 
+        description: Moneypool start date.
+        type: "LocalDate"
+        example: "2021-04-23"
+      nextPaymentDate: 
+        description: Moneypool next payment date.
+        type: "LocalDate"
+        example: "2021-05-23"
+      type: 
+        description: Moneypool type (PUBLIC / PRIVATE).
+        type: "String"
+        example: "PUBLIC"
+      status: 
+        description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
+        type: "String"
+        example: "OPENED"
+      purpose: 
+        description: Purpose of the moneypool.
+        type: "String"
+        example: "BUY TV"
+                
+  MoneypoolWithBalance:
+    type: object
+    required: 
+      - "id"
+      - "name"
+      - "poolCode"
+      - "amountToSave"
+      - "currency"
+      - "membersRequired"
+      - "paymentCycle"
+      - "paymentCyclesTotal"
+      - "paymentsFrequency"
+      - "startDate"
+      - "nextPaymentDate"
+      - "type"
+      - "status"
+      - "purpose"
+      - "currentBalance"
+    properties: 
+      id: 
+        description: Moneypool id.
+        type: "BigInteger"
+        example: 571418
+      name: 
+        description: Moneypool name.
+        type: "String"
+        example: "Test moneypool"
+      poolCode: 
+        description: Moneypool code.
+        type: "String"
+        example: "MP1"
+      amountToSave: 
+        description: Amount which every Moneypool component will receive in his collect turn.
+        type: "BigDecimal"
+        example: 1000
+      currency: 
+        description: Moneypool currency.
+        type: "String"
+        example: "USD"
+      membersRequired: 
+        description: Number of Members required.
+        type: "Integer"
+        example: 8
+      paymentCycle: 
+        description: Number of payment cicle.
+        type: "Integer"
+        example: 8
+      paymentCyclesTotal: 
+        description: Number of payment cicle total.
+        type: "Integer"
+        example: 8
+      paymentsFrequency: 
+        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
+        type: "String"
+        example: "MONTHLY"
+      startDate: 
+        description: Moneypool start date.
+        type: "LocalDate"
+        example: "2021-04-23"
+      nextPaymentDate: 
+        description: Moneypool next payment date.
+        type: "LocalDate"
+        example: "2021-05-23"
+      type: 
+        description: Moneypool type (PUBLIC / PRIVATE).
+        type: "String"
+        example: "PUBLIC"
+      status: 
+        description: Status of the Moneypool.
+        type: "String"
+        example: "OPENED"
+      purpose: 
+        description: Purpose of the moneypool.
+        type: "String"
+        example: "BUY TV"
+      currentBalance: 
+        description: Current balance.
+        type: "BigDecimal"
+        example: "500"
+     
+  Amount:
+    type: object
+    required: 
+      - "ccy"
+      - "value"
+    properties: 
+      ccy: 
+        description: Currency.
+        type: "String"
+        example: "EUR"
+      value: 
+        description: Amount.
+        type: "BigIDecimal"
+        example: 300.56
+        
+  Movement:
+    type: object
+    required: 
+      - "id"
+      - "amount"
+      - "type"
+      - "concept"
+      - "createdDate"
+    properties: 
+      id: 
+        description: Movement id.
+        type: "BigInteger"
+        example: 571418
+      amount: 
+        $ref: '#/definitions/Amount'
+      type: 
+        description: Movement type.
+        type: "String"
+        example: "CREDIT"
+      concept: 
+        description: Movement concept.
+        type: "String"
+        example: "Moneypool movement"
+      createdDate: 
+        description: Movement creation daate.
+        type: "LocalDateTime"
+        example: "2021-04-23T00:00:00+02:00"
+        
+  GetMovementResponse:
+    type: object
+    required: 
+      - "movements"
+      - "currentBalance"
+    properties: 
+      movements: 
+        description: List of movement
+        type: array
+        items: 
+          $ref: '#/definitions/Movement'
+      currentBalance: 
+        description: Current balance.
+        type: "BigDecimal"
+        example: "500"
+         
+  Member:
+    type: object
+    required: 
+      - "id"
+      - "customerId"
+      - "name"
+      - "lastName"
+      - "status"
+      - "positions"
+    properties: 
+      id: 
+        description: Member id.
+        type: "BigInteger"
+        example: 571418   
+      customerId: 
+        description: Customer id.
+        type: "BigInteger"
+        example: 571423  
+      name: 
+        description: Customer name.
+        type: "String"
+        example: "Michael" 
+      lastName: 
+        description: Customer last name.
+        type: "String"
+        example: "Anibal"  
+      status: 
+        description: Member status.
+        type: "String"
+        example: "ACTIVE"  
+      positions: 
+        description: List of positions.
+        type: array
+        items: 
+          type: "Integer"
+        example: [2, 5]
+         
+  AddMemberRequest:
+    type: object
+    required: 
+      - "customerId"
+      - "position"
+    properties: 
+      customerId: 
+        description: The id of the customer we want to add to the pool.
+        type: "BigInteger"
+        example: 571418   
+      position: 
+        description: Position the member will take in the moneypool.
+        type: "BigInteger"
+        example: 5
+
+# Security scheme definitions that can be used across the specification.
+securityDefinitions:
+  JWT:
+    description: You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server
+    type: apiKey
+    name: 'Authorization: Bearer access_token'
+    in: header
+
+security: 
+  - JWT: []
