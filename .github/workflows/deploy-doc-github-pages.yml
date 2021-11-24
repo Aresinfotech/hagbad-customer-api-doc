@@ -1,0 +1,10 @@
+name: deploy-doc-to-github-pages
+on:
+  push:
+    branches:
+      - 'add-github-actions'
+jobs:
+  echo-job-launched:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
