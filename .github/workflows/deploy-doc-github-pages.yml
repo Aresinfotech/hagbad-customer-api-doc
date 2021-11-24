@@ -19,7 +19,7 @@ jobs:
           npm ci
       - name: build and deploy gh pages
         env:
-          GITHUB_TOKEN: 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
+          GH_TOKEN: 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
         run: | 
           echo "🐧 Building and deploying the web to github pages"
           npm run deploy
