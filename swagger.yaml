@@ -1,36 +1,36 @@
 swagger: '2.0'
 schemes:
-  - https # Remove if your API doesn't support HTTPS
+  - https
 info:
-  version: "1.0.0"
+  version: 1.0.0
   title: Hagbad Online REST API
-  contact:   
-    email: developers@greysystems.eu # [Optional] Replace with your contact email
-    url: "http://www.greysystems.eu/#contact" # [Optional] Replace with link to your contact form
+  contact:
+    email: developers@greysystems.eu
+    url: 'http://www.greysystems.eu/#contact'
   license:
     name: All Rights reserved GreySystems 2021
-    url: "http://www.greysystems.eu"
-  termsOfService: "https://www.greysystems.eu" # [Optional] Replace with an URL to your ToS
-  x-logo: 
-    url: http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png
-    background: "#FFFFFF"
+    url: 'http://www.greysystems.eu'
+  termsOfService: 'https://www.greysystems.eu'
+  x-logo:
+    url: 'http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png'
+    background: '#FFFFFF'
   description: |
     # Introduction
     Test
-    
+
     # Who we are? 
-    
+
     Grey Systems is a well establish European IT Consulting company that specialises in working with financial institutions. 
-    
+
     Grey Systems is the best professional IT answer to real time remittance companies.
-    
+
     # Goal 
-    
+
     Test
-    
+
     # Authentication
-    
-    
+
+
     ## The identity endpoint
     Several resources exposed by this gateway are secured, and you will need a [json web token](https://jwt.io/) to reach the secured methods.
 
@@ -141,94 +141,76 @@ info:
     Each time you get an `access_token`, you are creating a new session in the identity manager. If you want to logout the current session of the user, you just use the `/logout` endpoint provides by the identity manager.
 
     Use: `GET http://localhost:8080/auth/realms/aqil/protocol/openid-connect/logout` with the bearer token in the `Authorization` header to logout the related
-    
-    
+
+
     # Common HTTP Error Responses
-    
+
     The HAGBAD Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: 
-    
+
     * HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). 
     * HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). 
     * HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). 
     * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
-
-tags: 
-
-  - name: "catalogs"
+tags:
+  - name: catalogs
     description: Manage catalog.
-    
-  - name: "configurations"
+  - name: configurations
     description: Manage configuration operation.
-    
-  - name: "moneypools"
+  - name: moneypools
     description: Manage moneypool operation.
-    
 paths:
-
   /catalog/country:
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get list of countries.
-      
-      description: | 
-                    Get the entire list of countries.
-   
+      description: |
+        Get the entire list of countries.
       responses:
-        200: 
+        '200':
           description: Returns a list with the countries.
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Country'
-        400: 
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/country/{iso3}:
+  '/catalog/country/{iso3}':
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get country by iso code 3.
-      
-      description: | 
-                    Returns the country by iso code 3.
-                    
-      parameters: 
+      description: |
+        Returns the country by iso code 3.
+      parameters:
         - name: iso3
           in: path
           required: true
           type: String
           description: Iso code 3
-          
       responses:
-        200: 
+        '200':
           description: Returns the details of a country.
-          schema: 
-            $ref: "#/definitions/Country"
-        400:
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+          schema:
+            $ref: '#/definitions/Country'
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Country not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/country/{iso3}/city:
+  '/catalog/country/{iso3}/city':
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get city by iso code 3 (search cities).
-      
-      description: | 
-                    Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.
-      
-      parameters: 
+      description: |
+        Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.
+      parameters:
         - name: iso3
           in: path
           required: true
@@ -238,35 +220,30 @@ paths:
           in: query
           required: true
           type: String
-          description: City name, minimum length three characters.
-          
+          description: 'City name, minimum length three characters.'
       responses:
-        200: 
+        '200':
           description: Returns a list with the cities.
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/City'
-        400: 
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Country or cities not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/country/{iso3}/city/{cityId}:
+  '/catalog/country/{iso3}/city/{cityId}':
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get city by id.
-      
-      description: | 
-                    Returns a city by its id.
-                    
-      parameters: 
+      description: |
+        Returns a city by its id.
+      parameters:
         - name: iso3
           in: path
           required: true
@@ -277,32 +254,27 @@ paths:
           required: true
           type: BigInteger
           description: Id city
-          
       responses:
-        200: 
+        '200':
           description: Returns a city by its id.
-          schema: 
-            $ref: "#/definitions/City"
-        400:
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+          schema:
+            $ref: '#/definitions/City'
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Country or city not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/country/{iso3}/state:
+  '/catalog/country/{iso3}/state':
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get states by iso code 3 (search states).
-      
-      description: | 
-                    Returns a list of states, filtering the states by iso code 3 and name (optional) passed by parameters.
-      
-      parameters: 
+      description: |
+        Returns a list of states, filtering the states by iso code 3 and name (optional) passed by parameters.
+      parameters:
         - name: iso3
           in: path
           required: true
@@ -312,34 +284,30 @@ paths:
           in: query
           required: false
           type: String
-          description: State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country.
-          
+          description: 'State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country.'
       responses:
-        200: 
+        '200':
           description: Returns a list with the states.
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/State'
-        400: 
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Country or states not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/country/{iso3}/state/{stateId}:
+  '/catalog/country/{iso3}/state/{stateId}':
     get:
-      tags: 
+      tags:
         - catalogs
       summary: Get state by id.
-      
-      description: | 
-                    Returns a state by its id.
-                    
-      parameters: 
+      description: |
+        Returns a state by its id.
+      parameters:
         - name: iso3
           in: path
           required: true
@@ -350,216 +318,183 @@ paths:
           required: true
           type: BigInteger
           description: Id state
-          
       responses:
-        200: 
+        '200':
           description: Returns a state by its id.
-          schema: 
-            $ref: "#/definitions/State"
-        400:
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+          schema:
+            $ref: '#/definitions/State'
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Country or state not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
   /catalog/currency:
     get:
-      tags: 
+      tags:
         - catalogs
-        
       summary: Get Currencies.
-      
-      description: | 
-                    Get the entire list of currencies.
+      description: |
+        Get the entire list of currencies.
       responses:
-        200: 
+        '200':
           description: Returns a list with the currencies.
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Currency'
-        400: 
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-
-  /catalog/currency/{iso}:
+  '/catalog/currency/{iso}':
     get:
-      tags: 
+      tags:
         - catalogs
       summary: Get currency by iso code.
-      
-      description: | 
-                    Returns the currency by iso code.
-                    
-      parameters: 
+      description: |
+        Returns the currency by iso code.
+      parameters:
         - name: iso
           in: path
           required: true
           type: String
           description: Iso code
-          
       responses:
-        200: 
+        '200':
           description: Returns the details of a currency.
-          schema: 
-            $ref: "#/definitions/Currency"
-        400:
-          description: Invalid parameters, response contains detailed error.
-          schema: 
+          schema:
+            $ref: '#/definitions/Currency'
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Currency not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-              
   /configuration:
     get:
-      tags: 
+      tags:
         - configurations
-        
       summary: Get Partner Configuration.
-      
-      description: | 
-                    Get Partner configuration.
+      description: |
+        Get Partner configuration.
       responses:
-        200: 
-          description: Partner successfully selected, return current configuration.
-          schema: 
-            $ref: "#/definitions/PartnerConfiguration"
-        404: 
+        '200':
+          description: 'Partner successfully selected, return current configuration.'
+          schema:
+            $ref: '#/definitions/PartnerConfiguration'
+        '404':
           description: Partner not found.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-
-  /moneypool: 
-    post: 
+  /moneypool:
+    post:
       summary: Create or update a moneypool.
-      
-      description: | 
+      description: |
         The HostID field which is necessary to inform when creating a pool will be provided by the architecture.
          </br> </br> 
         This save service will cover the update functionality too. If the moneypool id field in the request body is informed it will be an update behaviour, if it isn’t a create one.
            
       operationId: saveMoneypool
-      
-      parameters: 
+      parameters:
         - name: saveMoneypoolRequest
           in: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/SaveMoneypoolRequest'
-            
-      tags: 
+      tags:
         - moneypools
-        
-      responses: 
-        200:
+      responses:
+        '200':
           description: Moneypool successfully updated.
-          schema: 
+          schema:
             $ref: '#/definitions/Moneypool'
-        201:
+        '201':
           description: Moneypool successfully created.
-          schema: 
+          schema:
             $ref: '#/definitions/Moneypool'
-        400: 
-          description: Invalid Request. message attribute of response contains detailed information about the issue. 
-          schema: 
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-        409: 
-          description: Conflict :Update a  locked / started / finished pool  
-          schema: 
+        '409':
+          description: 'Conflict :Update a  locked / started / finished pool'
+          schema:
             $ref: '#/definitions/Error'
-            
-  /moneypool/{id}: 
-    get: 
+  '/moneypool/{id}':
+    get:
       summary: Get a moneypool by its id.
-      
-      description: | 
+      description: |
         Get all the information about a single moneypool.
-      
       operationId: getMoneypool
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
+      parameters:
         - name: id
           in: path
           required: true
           type: BigInteger
           description: The id of the moneypool
-          
       responses:
-        200: 
+        '200':
           description: Returns a Moneypool and its details.
-          schema: 
+          schema:
             $ref: '#/definitions/MoneypoolWithBalance'
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/community/{communityId}: 
-    get: 
+  '/moneypool/community/{communityId}':
+    get:
       summary: Get Moneypool by community.
-      
-      description: | 
+      description: |
         Recover a moneypool for your community.
-      
       operationId: getMoneypoolByCommunityId
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: communityId 
+      parameters:
+        - name: communityId
           in: path
           required: true
           type: BigInteger
           description: The id of the community
-          
       responses:
-        200: 
+        '200':
           description: Returns a Moneypool and its details.
-          schema: 
+          schema:
             $ref: '#/definitions/Moneypool'
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-                      
-  /moneypool/search: 
-    post: 
+  /moneypool/search:
+    post:
       summary: Search Moneypools.
-      
-      description: Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa. 
-          
+      description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa.'
       operationId: searchMoneypools
-      
       tags:
         - moneypools
-        
-      parameters: 
+      parameters:
         - name: search request parameters.
           in: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/SearchMoneypoolRequest'
         - name: page
           in: query
@@ -571,31 +506,25 @@ paths:
           required: false
           type: Integer
           description: Number of elements per page.
-            
       responses:
-        200: 
+        '200':
           description: Find one or more Moneypools matching with the search parameters. Not find any Moneypools matching with the search parameters (empty array).
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Moneypool'
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-                      
-  /moneypool/{id}/status/{status}: 
-    put: 
-      summary: Update MoneyPool status. 
-      
-      description: Update the status of a given moneypool. 
-          
+  '/moneypool/{id}/status/{status}':
+    put:
+      summary: Update MoneyPool status.
+      description: Update the status of a given moneypool.
       operationId: updateMoneypoolStatus
-      
       tags:
         - moneypools
-        
-      parameters: 
+      parameters:
         - name: id
           in: path
           required: true
@@ -606,33 +535,27 @@ paths:
           required: true
           type: String
           description: Moneypool status.
-            
       responses:
-        200: 
+        '200':
           description: Moneypool successfully updated.
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/movement: 
-    get: 
+  '/moneypool/{id}/movement':
+    get:
       summary: Get Moneypool movements.
-      
-      description: | 
+      description: |
         Get the movements of a Moneypool.
-      
       operationId: getMovementByMoneypoolId
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: communityId 
+      parameters:
+        - name: communityId
           in: path
           required: true
           type: BigInteger
@@ -647,70 +570,58 @@ paths:
           required: false
           type: Integer
           description: Number of elements per page.
-          
       responses:
-        200: 
+        '200':
           description: Returns the balance movements of the given Moneypool. Returns an empty list if the money pool doesn’t have movements yet.
-          schema: 
+          schema:
             $ref: '#/definitions/GetMovementResponse'
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/member: 
-    get: 
+  '/moneypool/{id}/member':
+    get:
       summary: Get Moneypool Members.
-      
-      description: | 
+      description: |
         Get all members of the Moneypool community.
-      
       operationId: getMemberByMoneypoolId
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: id 
+      parameters:
+        - name: id
           in: path
           required: true
           type: BigInteger
           description: The id of the moneypool
-          
       responses:
-        200: 
+        '200':
           description: Returns the members of the given Moneypool. Returns an empty list if the money pool doesn’t have members yet.
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Member'
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/member/: 
-    post: 
+  '/moneypool/{id}/member/':
+    post:
       summary: Add Member to Moneypool.
-      
-      description: | 
+      description: |
         Add a member to the Moneypool. It will be used to Join the moneypool as a member (when the Moneypool is public).
-      
       operationId: addMember
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: id 
+      parameters:
+        - name: id
           in: path
           required: true
           type: BigInteger
@@ -718,81 +629,69 @@ paths:
         - name: add member parameters
           in: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/AddMemberRequest'
-          
       responses:
-        200: 
+        '200':
           description: Member successfully added.
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/member/{memberId}: 
-    delete: 
+  '/moneypool/{id}/member/{memberId}':
+    delete:
       summary: Expel Member from Moneypool.
-      
-      description: | 
+      description: |
         Expel a member from a moneypool.
-      
       operationId: expelMember
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: id 
+      parameters:
+        - name: id
           in: path
           required: true
           type: BigInteger
           description: The id of the moneypool
-        - name: memberId 
+        - name: memberId
           in: path
           required: true
           type: BigInteger
           description: The id of the member we want to delete from the moneypool.
-          
       responses:
-        200: 
+        '200':
           description: Member successfully removed from the moneypool.
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/member/{memberId/position-from/{positionFrom}/position-to/{positionTo}: 
-    put: 
+  '/moneypool/{id}/member/{memberId/position-from/{positionFrom}/position-to/{positionTo}':
+    put:
       summary: Update Member Position.
-      
-      description: | 
+      description: |
         Update the position of  a member in a moneypool.
-      
       operationId: updateMemberPosition
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: id 
+      parameters:
+        - name: id
           in: path
           required: true
           type: BigInteger
           description: The id of the moneypool
-        - name: memberId 
+        - name: memberId
           in: path
           required: true
           type: BigInteger
           description: The id of the member we want to delete from the moneypool.
-        - name: positionFrom 
+        - name: positionFrom
           in: path
           required: true
           type: Integer
@@ -802,70 +701,61 @@ paths:
           required: true
           type: Integer
           description: The position that the member should occupy.
-          
       responses:
-        200: 
+        '200':
           description: Member successfully update from the moneypool.
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-        409: 
+        '409':
           description: The moneypool cannot be edited in the current state..
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-  
-  /moneypool/{id}/member/{memberId/position/{position}: 
-    put: 
+  '/moneypool/{id}/member/{memberId/position/{position}':
+    put:
       summary: Delete Member Position.
-      
-      description: | 
+      description: |
         Delete the position of  a member in a moneypool.
-      
       operationId: deleteMemberPosition
-      
-      tags: 
+      tags:
         - moneypools
-        
-      parameters: 
-        - name: id 
+      parameters:
+        - name: id
           in: path
           required: true
           type: BigInteger
           description: The id of the moneypool
-        - name: memberId 
+        - name: memberId
           in: path
           required: true
           type: BigInteger
           description: The id of the member we want to delete from the moneypool.
-        - name: position 
+        - name: position
           in: path
           required: true
           type: Integer
           description: The position occupied by the member.
-          
       responses:
-        200: 
+        '200':
           description: Member successfully delete from the pool.
-        400: 
-          description: Invalid parameters, response contains detailed error
-          schema: 
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
             $ref: '#/definitions/Error'
-        404: 
+        '404':
           description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-        409: 
+        '409':
           description: The moneypool cannot be edited in the current state..
-          schema: 
+          schema:
             $ref: '#/definitions/Error'
-            
-definitions:   
-    
+definitions:
   Error:
     type: object
     required:
@@ -876,533 +766,517 @@ definitions:
         type: String
       message:
         type: String
-        
-  Country: 
+  Country:
     type: object
-    required: 
-      - "idCountry"
-      - "name"
-      - "iso2"
-      - "iso3"
-    properties: 
-      idCountry: 
+    required:
+      - idCountry
+      - name
+      - iso2
+      - iso3
+    properties:
+      idCountry:
         description: Numeric iso of the country.
-        type: "BigInteger"
+        type: BigInteger
         example: 840
-      name: 
+      name:
         description: Name of the country
-        type: "String"
-        example: "United States Of America"
-      iso2: 
+        type: String
+        example: United States Of America
+      iso2:
         description: Alphanumeric iso code (2-letters) of the country.
-        type: "String"
-        example: "US"
-      iso3: 
+        type: String
+        example: US
+      iso3:
         description: Alphanumeric iso code (3-letters) of the country.
-        type: "String"
-        example: "USA"
-        
-  City: 
+        type: String
+        example: USA
+  City:
     type: object
-    required: 
-      - "id"
-      - "name"
-      - "nameAscii"
-    properties: 
-      id: 
+    required:
+      - id
+      - name
+      - nameAscii
+    properties:
+      id:
         description: Id of the city.
-        type: "BigInteger"
+        type: BigInteger
         example: 12341234
-      name: 
+      name:
         description: Name of the city (locale based). Will return non-ascii characters for those cities that are originally written using non-latin alphabet.
-        type: "String"
-        example: "London"
-      nameAscii: 
-        description: Name of the city (using ascii characters, for english readers).
-        type: "String"
-        example: "London"
-        
-  State: 
+        type: String
+        example: London
+      nameAscii:
+        description: 'Name of the city (using ascii characters, for english readers).'
+        type: String
+        example: London
+  State:
     type: object
-    required: 
-      - "id"
-      - "name"
-      - "nameAscii"
-      - "code"
-    properties: 
-      id: 
+    required:
+      - id
+      - name
+      - nameAscii
+      - code
+    properties:
+      id:
         description: Id of the state.
-        type: "BigInteger"
+        type: BigInteger
         example: 6269131
-      name: 
+      name:
         description: Name of the state (locale based). Will return non-ascii characters for those states that are originally written using non-latin alphabet.
-        type: "String"
-        example: "England"
-      nameAscii: 
-        description: Name of the state (using ascii characters, for english readers).
-        type: "String"
-        example: "England"
-      code: 
+        type: String
+        example: England
+      nameAscii:
+        description: 'Name of the state (using ascii characters, for english readers).'
+        type: String
+        example: England
+      code:
         description: Code of the state.
-        type: "String"
-        example: "ENG"
-        
-  Currency: 
+        type: String
+        example: ENG
+  Currency:
     type: object
-    required: 
-      - "id"
-      - "iso"
-      - "name"
-    properties: 
-      id: 
+    required:
+      - id
+      - iso
+      - name
+    properties:
+      id:
         description: Numeric iso of the currency.
-        type: "BigInteger"
+        type: BigInteger
         example: 840
-      iso: 
+      iso:
         description: Alphanumeric iso code (3-letters) of the currency.
-        type: "String"
-        example: "USD"
-      name: 
+        type: String
+        example: USD
+      name:
         description: Currency name
-        type: "String"
-        example: "Us Dollar"
-                
-  PaymentMethod: 
+        type: String
+        example: Us Dollar
+  PaymentMethod:
     type: object
-    required: 
-      - "type"
-      - "description"
-    properties: 
-      type: 
+    required:
+      - type
+      - description
+    properties:
+      type:
         description: The payment method type.
-        type: "String"
-        example: "TYPE"
-      description: 
+        type: String
+        example: TYPE
+      description:
         description: The payment method description.
-        type: "String"
-        example: "DESC"
-        
-  PartnerConfiguration: 
+        type: String
+        example: DESC
+  PartnerConfiguration:
     type: object
-    required: 
-      - "name"
-      - "currency"
-      - "lowerLimit"
-      - "upperLimit"
-      - "minMembers"
-      - "maxMembers"
-      - "paymentMethods"
-    properties: 
-      name: 
+    required:
+      - name
+      - currency
+      - lowerLimit
+      - upperLimit
+      - minMembers
+      - maxMembers
+      - paymentMethods
+    properties:
+      name:
         description: The partner name.
-        type: "String"
-        example: "Tester partner"
-      currency: 
+        type: String
+        example: Tester partner
+      currency:
         description: The partner currency.
-        type: "String"
-        example: "USD"
-      lowerLimit: 
+        type: String
+        example: USD
+      lowerLimit:
         description: The configured lower limit amount.
-        type: "BigInteger"
+        type: BigInteger
         example: 300
-      upperLimit: 
+      upperLimit:
         description: The configured upper limit amount.
-        type: "BigInteger"
+        type: BigInteger
         example: 3000
-      minMembers: 
+      minMembers:
         description: The minimum number of members a community can have for this partner.
-        type: "String"
+        type: String
         example: 5
-      maxMembers: 
+      maxMembers:
         description: The maximum number of members a community can have for this partner.
-        type: "String"
+        type: String
         example: 15
-      paymentMethods: 
+      paymentMethods:
         description: The different payment methods configured for this partner.
         type: array
-        items: 
+        items:
           $ref: '#/definitions/PaymentMethod'
-        
-  SaveMoneypoolRequest: 
+  SaveMoneypoolRequest:
     type: object
-    required: 
-      - "name"
-      - "poolCode"
-      - "startDate"
-      - "nextPaymentDate"
-      - "type"
-      - "amountToSave"
-      - "currency"
-      - "membersRequired"
-      - "paymentsFrequency"
-      - "purpose"
-    properties: 
-      id: 
+    required:
+      - name
+      - poolCode
+      - startDate
+      - nextPaymentDate
+      - type
+      - amountToSave
+      - currency
+      - membersRequired
+      - paymentsFrequency
+      - purpose
+    properties:
+      id:
         description: Moneypool id. It is only required to update a moneypool.
-        type: "BigInteger"
+        type: BigInteger
         example: 1123
-      name: 
+      name:
         description: Moneypool name.
-        type: "String"
-        example: "Test moneypool"
-      poolCode: 
+        type: String
+        example: Test moneypool
+      poolCode:
         description: Moneypool code.
-        type: "String"
-        example: "MP1"
-      startDate: 
+        type: String
+        example: MP1
+      startDate:
         description: Moneypool start date.
-        type: "LocalDate"
-        example: "2021-04-23"
-      nextPaymentDate: 
+        type: LocalDate
+        example: '2021-04-23'
+      nextPaymentDate:
         description: Moneypool next payment date.
-        type: "LocalDate"
-        example: "2021-05-23"
-      type: 
+        type: LocalDate
+        example: '2021-05-23'
+      type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: "String"
-        example: "PUBLIC"
-      amountToSave: 
+        type: String
+        example: PUBLIC
+      amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: "BigDecimal"
+        type: BigDecimal
         example: 1000
-      currency: 
+      currency:
         description: Moneypool currency.
-        type: "String"
-        example: "USD"
-      membersRequired: 
+        type: String
+        example: USD
+      membersRequired:
         description: Number of Members required.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentsFrequency: 
+      paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: "String"
-        example: "MONTHLY"
-      purpose: 
+        type: String
+        example: MONTHLY
+      purpose:
         description: Purpose of the moneypool.
-        type: "String"
-        example: "BUY TV"
-        
-  SearchMoneypoolRequest: 
+        type: String
+        example: BUY TV
+  SearchMoneypoolRequest:
     type: object
-    required: 
-      - "startDateFrom"
-      - "startDateTo"
-      - "poolCode"
-    properties: 
-      name: 
+    required:
+      - startDateFrom
+      - startDateTo
+      - poolCode
+    properties:
+      name:
         description: Moneypool name.
-        type: "String"
-        example: "2021-04-23"
-      startDateFrom: 
+        type: String
+        example: '2021-04-23'
+      startDateFrom:
         description: Moneypool start date init.
-        type: "LocalDate"
-        example: "2021-04-23"
-      startDateTo: 
+        type: LocalDate
+        example: '2021-04-23'
+      startDateTo:
         description: Moneypool start date finish.
-        type: "LocalDate"
-        example: "2021-04-24"
-      type: 
+        type: LocalDate
+        example: '2021-04-24'
+      type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: "String"
-        example: "PUBLIC"
-      poolCode: 
+        type: String
+        example: PUBLIC
+      poolCode:
         description: Moneypool code.
-        type: "String"
-        example: "MP1"
-      status: 
+        type: String
+        example: MP1
+      status:
         description: Status of the Moneypool.
-        type: "String"
-        example: "OPENED"
-      amountToSave: 
+        type: String
+        example: OPENED
+      amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: "BigDecimal"
+        type: BigDecimal
         example: 1000
-      currency: 
+      currency:
         description: Moneypool currency.
-        type: "String"
-        example: "USD"
-      membersRequired: 
+        type: String
+        example: USD
+      membersRequired:
         description: Number of Members required.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentsFrequency: 
+      paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: "String"
-        example: "MONTHLY"
-                        
+        type: String
+        example: MONTHLY
   Moneypool:
     type: object
-    required: 
-      - "id"
-      - "name"
-      - "poolCode"
-      - "amountToSave"
-      - "currency"
-      - "membersRequired"
-      - "paymentCycle"
-      - "paymentCyclesTotal"
-      - "paymentsFrequency"
-      - "startDate"
-      - "nextPaymentDate"
-      - "type"
-      - "status"
-      - "purpose"
-    properties: 
-      id: 
+    required:
+      - id
+      - name
+      - poolCode
+      - amountToSave
+      - currency
+      - membersRequired
+      - paymentCycle
+      - paymentCyclesTotal
+      - paymentsFrequency
+      - startDate
+      - nextPaymentDate
+      - type
+      - status
+      - purpose
+    properties:
+      id:
         description: Moneypool id.
-        type: "BigInteger"
+        type: BigInteger
         example: 571418
-      name: 
+      name:
         description: Moneypool name.
-        type: "String"
-        example: "Test moneypool"
-      poolCode: 
+        type: String
+        example: Test moneypool
+      poolCode:
         description: Moneypool code.
-        type: "String"
-        example: "MP1"
-      amountToSave: 
+        type: String
+        example: MP1
+      amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: "BigDecimal"
+        type: BigDecimal
         example: 1000
-      currency: 
+      currency:
         description: Moneypool currency.
-        type: "String"
-        example: "USD"
-      membersRequired: 
+        type: String
+        example: USD
+      membersRequired:
         description: Number of Members required.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentCycle: 
+      paymentCycle:
         description: Number of payment cicle.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentCyclesTotal: 
+      paymentCyclesTotal:
         description: Number of payment cicle total.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentsFrequency: 
+      paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: "String"
-        example: "MONTHLY"
-      startDate: 
+        type: String
+        example: MONTHLY
+      startDate:
         description: Moneypool start date.
-        type: "LocalDate"
-        example: "2021-04-23"
-      nextPaymentDate: 
+        type: LocalDate
+        example: '2021-04-23'
+      nextPaymentDate:
         description: Moneypool next payment date.
-        type: "LocalDate"
-        example: "2021-05-23"
-      type: 
+        type: LocalDate
+        example: '2021-05-23'
+      type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: "String"
-        example: "PUBLIC"
-      status: 
+        type: String
+        example: PUBLIC
+      status:
         description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
-        type: "String"
-        example: "OPENED"
-      purpose: 
+        type: String
+        example: OPENED
+      purpose:
         description: Purpose of the moneypool.
-        type: "String"
-        example: "BUY TV"
-                
+        type: String
+        example: BUY TV
   MoneypoolWithBalance:
     type: object
-    required: 
-      - "id"
-      - "name"
-      - "poolCode"
-      - "amountToSave"
-      - "currency"
-      - "membersRequired"
-      - "paymentCycle"
-      - "paymentCyclesTotal"
-      - "paymentsFrequency"
-      - "startDate"
-      - "nextPaymentDate"
-      - "type"
-      - "status"
-      - "purpose"
-      - "currentBalance"
-    properties: 
-      id: 
+    required:
+      - id
+      - name
+      - poolCode
+      - amountToSave
+      - currency
+      - membersRequired
+      - paymentCycle
+      - paymentCyclesTotal
+      - paymentsFrequency
+      - startDate
+      - nextPaymentDate
+      - type
+      - status
+      - purpose
+      - currentBalance
+    properties:
+      id:
         description: Moneypool id.
-        type: "BigInteger"
+        type: BigInteger
         example: 571418
-      name: 
+      name:
         description: Moneypool name.
-        type: "String"
-        example: "Test moneypool"
-      poolCode: 
+        type: String
+        example: Test moneypool
+      poolCode:
         description: Moneypool code.
-        type: "String"
-        example: "MP1"
-      amountToSave: 
+        type: String
+        example: MP1
+      amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: "BigDecimal"
+        type: BigDecimal
         example: 1000
-      currency: 
+      currency:
         description: Moneypool currency.
-        type: "String"
-        example: "USD"
-      membersRequired: 
+        type: String
+        example: USD
+      membersRequired:
         description: Number of Members required.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentCycle: 
+      paymentCycle:
         description: Number of payment cicle.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentCyclesTotal: 
+      paymentCyclesTotal:
         description: Number of payment cicle total.
-        type: "Integer"
+        type: Integer
         example: 8
-      paymentsFrequency: 
+      paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: "String"
-        example: "MONTHLY"
-      startDate: 
+        type: String
+        example: MONTHLY
+      startDate:
         description: Moneypool start date.
-        type: "LocalDate"
-        example: "2021-04-23"
-      nextPaymentDate: 
+        type: LocalDate
+        example: '2021-04-23'
+      nextPaymentDate:
         description: Moneypool next payment date.
-        type: "LocalDate"
-        example: "2021-05-23"
-      type: 
+        type: LocalDate
+        example: '2021-05-23'
+      type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: "String"
-        example: "PUBLIC"
-      status: 
+        type: String
+        example: PUBLIC
+      status:
         description: Status of the Moneypool.
-        type: "String"
-        example: "OPENED"
-      purpose: 
+        type: String
+        example: OPENED
+      purpose:
         description: Purpose of the moneypool.
-        type: "String"
-        example: "BUY TV"
-      currentBalance: 
+        type: String
+        example: BUY TV
+      currentBalance:
         description: Current balance.
-        type: "BigDecimal"
-        example: "500"
-     
+        type: BigDecimal
+        example: '500'
   Amount:
     type: object
-    required: 
-      - "ccy"
-      - "value"
-    properties: 
-      ccy: 
+    required:
+      - ccy
+      - value
+    properties:
+      ccy:
         description: Currency.
-        type: "String"
-        example: "EUR"
-      value: 
+        type: String
+        example: EUR
+      value:
         description: Amount.
-        type: "BigIDecimal"
+        type: BigIDecimal
         example: 300.56
-        
   Movement:
     type: object
-    required: 
-      - "id"
-      - "amount"
-      - "type"
-      - "concept"
-      - "createdDate"
-    properties: 
-      id: 
+    required:
+      - id
+      - amount
+      - type
+      - concept
+      - createdDate
+    properties:
+      id:
         description: Movement id.
-        type: "BigInteger"
+        type: BigInteger
         example: 571418
-      amount: 
+      amount:
         $ref: '#/definitions/Amount'
-      type: 
+      type:
         description: Movement type.
-        type: "String"
-        example: "CREDIT"
-      concept: 
+        type: String
+        example: CREDIT
+      concept:
         description: Movement concept.
-        type: "String"
-        example: "Moneypool movement"
-      createdDate: 
+        type: String
+        example: Moneypool movement
+      createdDate:
         description: Movement creation daate.
-        type: "LocalDateTime"
-        example: "2021-04-23T00:00:00+02:00"
-        
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
   GetMovementResponse:
     type: object
-    required: 
-      - "movements"
-      - "currentBalance"
-    properties: 
-      movements: 
+    required:
+      - movements
+      - currentBalance
+    properties:
+      movements:
         description: List of movement
         type: array
-        items: 
+        items:
           $ref: '#/definitions/Movement'
-      currentBalance: 
+      currentBalance:
         description: Current balance.
-        type: "BigDecimal"
-        example: "500"
-         
+        type: BigDecimal
+        example: '500'
   Member:
     type: object
-    required: 
-      - "id"
-      - "customerId"
-      - "name"
-      - "lastName"
-      - "status"
-      - "positions"
-    properties: 
-      id: 
+    required:
+      - id
+      - customerId
+      - name
+      - lastName
+      - status
+      - positions
+    properties:
+      id:
         description: Member id.
-        type: "BigInteger"
-        example: 571418   
-      customerId: 
+        type: BigInteger
+        example: 571418
+      customerId:
         description: Customer id.
-        type: "BigInteger"
-        example: 571423  
-      name: 
+        type: BigInteger
+        example: 571423
+      name:
         description: Customer name.
-        type: "String"
-        example: "Michael" 
-      lastName: 
+        type: String
+        example: Michael
+      lastName:
         description: Customer last name.
-        type: "String"
-        example: "Anibal"  
-      status: 
+        type: String
+        example: Anibal
+      status:
         description: Member status.
-        type: "String"
-        example: "ACTIVE"  
-      positions: 
+        type: String
+        example: ACTIVE
+      positions:
         description: List of positions.
         type: array
-        items: 
-          type: "Integer"
-        example: [2, 5]
-         
+        items:
+          type: Integer
+        example:
+          - 2
+          - 5
   AddMemberRequest:
     type: object
-    required: 
-      - "customerId"
-      - "position"
-    properties: 
-      customerId: 
+    required:
+      - customerId
+      - position
+    properties:
+      customerId:
         description: The id of the customer we want to add to the pool.
-        type: "BigInteger"
-        example: 571418   
-      position: 
+        type: BigInteger
+        example: 571418
+      position:
         description: Position the member will take in the moneypool.
-        type: "BigInteger"
+        type: BigInteger
         example: 5
-
-# Security scheme definitions that can be used across the specification.
 securityDefinitions:
   JWT:
-    description: You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server
+    description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
     type: apiKey
     name: 'Authorization: Bearer access_token'
     in: header
-
-security: 
+security:
   - JWT: []
