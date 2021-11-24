@@ -17,9 +17,12 @@ jobs:
         run: | 
           echo "🐧 Getting the project dependencies"
           npm ci
-      - name: build and deploy gh pages
-        env:
-          GH_TOKEN: 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
+      - name: build documentation web
         run: | 
           echo "🐧 Building and deploying the web to github pages"
-          npm run deploy
+          npm run build
+      - name: deploy to github pages
+        uses: JamesIves/github-pages-deploy-action@4.1.6
+        with:
+          branch: gh-pages
+          folder: web_deploy
