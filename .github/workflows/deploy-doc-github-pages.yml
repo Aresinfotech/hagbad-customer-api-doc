@@ -7,11 +7,19 @@ jobs:
   deploy-swagger-doc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node 10.15
+        uses: actions/setup-node@v2
         with:
           node-version: '10.15'
-      - run: echo "🐧 Getting the project dependencies"
-      - run: npm ci
-      - run: echo "🐧 Building and deploying the web to github pages"
-      - run: npm run deploy
+      - name: clean and install dependencies
+        run: | 
+          echo "🐧 Getting the project dependencies"
+          npm ci
+      - name: build and deploy gh pages
+        env:
+          GITHUB_TOKEN: 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
+        run: | 
+          echo "🐧 Building and deploying the web to github pages"
+          npm run deploy
