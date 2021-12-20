@@ -795,7 +795,7 @@ paths:
   '/invitation/customer/{customerId}':
     get:
       summary: Get customer invitations.
-      description: Get all the invitations of a customer given his identifier.
+      description: Return a list with all the invitations of a customer given his identifier.
       operationId: getCustomerInvitations
       tags:
         - invitations
@@ -809,7 +809,9 @@ paths:
         '200':
           description: Returns the invitation list. Returns empty list if there is none.
           schema:
-            $ref: '#/definitions/Invitation'
+            type: array
+            items:
+              $ref: '#/definitions/Invitation'
         '400':
           description: 'Invalid customer identifier format, response contains detailed error.'
           schema:
@@ -817,7 +819,7 @@ paths:
   '/invitation/moneypool/{moneypoolId}':
     get:
       summary: Get moneypool invitations.
-      description: Get all the invitations of a moneypool given his identifier.
+      description: Return a list with all the invitations of a moneypool given his identifier.
       operationId: getMoneypoolInvitations
       tags:
         - invitations
@@ -831,7 +833,9 @@ paths:
         '200':
           description: 'Returns the invitation list. Returns empty list if there is none.'
           schema:
-            $ref: '#/definitions/Invitation'
+            type: array
+            items:
+              $ref: '#/definitions/Invitation'
         '400':
           description: 'Invalid moneypool identifier format, response contains detailed error.'
           schema:
@@ -913,7 +917,7 @@ paths:
   '/requestToJoin/customer/{customerId}':
     get:
       summary: Get customer joining requests.
-      description: Get all the joining requests of a customer given his identifier.
+      description: Return a list with all the joining requests of a customer given his identifier.
       operationId: getCustomerJoiningRequest
       tags:
         - joining request
@@ -927,7 +931,9 @@ paths:
         '200':
           description: 'Returns the joining requests list. Returns empty list if there is none.'
           schema:
-            $ref: '#/definitions/JoiningRequest'
+            type: array
+            items:
+              $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid customer identifier format, response contains detailed error'
           schema:
@@ -935,7 +941,7 @@ paths:
   '/requestToJoin/moneypool/{moneypoolId}':
     get:
       summary: Get moneypool joining requests.
-      description: Get all the joining requests of a moneypool given his identifier.
+      description: Return a list with all the joining requests of a moneypool given his identifier.
       operationId: getMoneypoolJoiningRequest
       tags:
         - joining request
@@ -949,7 +955,9 @@ paths:
         '200':
           description: 'Returns the joining requests list. Returns empty list if there is none.'
           schema:
-            $ref: '#/definitions/JoiningRequest'
+            type: array
+            items:
+              $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid moneypool identifier format, response contains detailed error'
           schema:
