@@ -851,7 +851,7 @@ paths:
           description: The id of the invitation
       responses:
         '200':
-          description: 'Invitation successfully accepted.''
+          description: 'Invitation successfully accepted.'
           schema:
             $ref: '#/definitions/Invitation'
         '400':
@@ -873,7 +873,9 @@ paths:
           description: The id of the invitation
       responses:
         '200':
-          description: 'Returns the invitation list. Returns empty list if there is none.
+          description: 'Returns the invitation list. Returns empty list if there is none.'
+          schema:
+            $ref: '#/definitions/Invitation'
         '400':
           description: 'Invalid invitation identifier format, response contains detailed error'
           schema:
@@ -893,7 +895,7 @@ paths:
             $ref: '#/definitions/RequestToJoin'
       responses:
         '201':
-          description: Joining Request succesfully created.
+          description: 'Joining Request succesfully created.'
           schema:
             $ref: '#/definitions/JoiningRequest'
         '400':
@@ -901,7 +903,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.
+          description: 'Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.'
           schema:
             $ref: '#/definitions/Error'
         '409':
@@ -923,7 +925,9 @@ paths:
           description: The id of the customer
       responses:
         '200':
-          description: Returns the joining requests list. Returns empty list if there is none.
+          description: 'Returns the joining requests list. Returns empty list if there is none.'
+          schema:
+            $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid customer identifier format, response contains detailed error'
           schema:
@@ -943,7 +947,9 @@ paths:
           description: The id of the moneypool
       responses:
         '200':
-          description: Returns the joining requests list. Returns empty list if there is none.
+          description: 'Returns the joining requests list. Returns empty list if there is none.'
+          schema:
+            $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid moneypool identifier format, response contains detailed error'
           schema:
@@ -963,7 +969,9 @@ paths:
           description: The id of the joining request
       responses:
         '200':
-          description: Joining request successfully accepted.
+          description: 'Joining request successfully accepted.'
+          schema:
+            $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid invitation identifier format, response contains detailed error'
           schema:
@@ -983,7 +991,9 @@ paths:
           description: The id of the joining request
       responses:
         '200':
-          description: Joining request successfully declined.
+          description: 'Joining request successfully declined.'
+          schema:
+            $ref: '#/definitions/JoiningRequest'
         '400':
           description: 'Invalid joining request identifier format, response contains detailed error'
           schema:
