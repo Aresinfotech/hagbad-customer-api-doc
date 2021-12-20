@@ -788,6 +788,26 @@ paths:
           description: The position is already filled.
           schema:
             $ref: '#/definitions/Error'            
+  '/invitation/customer/{customerId}':
+    get:
+      summary: Get all the invitations of a customer given his identifier.
+      description: Get all the invitations of a customer given his identifier.
+      operationId: invitation
+      tags:
+        - invitations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the customer
+      responses:
+        '200':
+          description: Returns the invitation list. Retruns empty list if there is none
+        '400':
+          description: 'Invalid customer identifier format, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
