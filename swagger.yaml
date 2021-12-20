@@ -16,17 +16,23 @@ info:
     background: '#FFFFFF'
   description: |
     # Introduction
-    To Be Completed.
+
+    The Hagbad REST API is a RESTFul API built on HTTP. It provides the following features:
+    - Predictable resource URLs. 
+    - Accepts and returns JSON in the HTTP body. 
+    - Returns HTTP response codes to indicate errors. 
+    - You can use your favorite HTTP/REST library for your programming language to use Hagbad’s APIs.
 
     # Who we are? 
 
-    Grey Systems is a well establish European IT Consulting company that specialises in working with financial institutions. 
-
-    Grey Systems is the best professional IT answer to real time remittance companies.
+    Grey Systems is a well establish European IT Consulting company that specialises in working with financial institutions.
+    During the last years, we have developed "Hagbad Platform", a next level technology platform to provide online multichannel MoneyPool services to Payment Institutions, MSB, Banks, etc.
 
     # Goal 
 
-    To Be Completed.
+    The goal of this technical documentation is providing to Front-End developers (Mobile, Web, …) the specifications to connect to Hagbad System Platform though the APIs exposed in its gateway.
+    This means that the API is intended to by used directly by the Front End, so all the operations assume that a customer is logged in the system, and will provide information based on that assumption.
+
 
     # Authentication
 
@@ -158,14 +164,17 @@ tags:
     description: Manage configuration operation.
   - name: moneypools
     description: Manage moneypool operation.
+  - name: invitations
+    description: Manage moneypool invitations.
+  - name: joining request
+    description: Manage moneypool joining requests.
 paths:
   /catalog/country:
     get:
       tags:
         - catalogs
-      summary: Get list of countries.
-      description: |
-        Get the entire list of countries.
+      summary: Get a list of countries.
+      description: Get the entire list of countries.
       responses:
         '200':
           description: Returns a list with the countries.
@@ -208,8 +217,7 @@ paths:
       tags:
         - catalogs
       summary: Get city by iso code 3 (search cities).
-      description: |
-        Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.
+      description: 'Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.'
       parameters:
         - name: iso3
           in: path
@@ -410,7 +418,7 @@ paths:
         - moneypools
       responses:
         '200':
-          description: Moneypool successfully updated.
+          decription: Moneypool successfully updated.
           schema:
             $ref: '#/definitions/Moneypool'
         '201':
@@ -546,7 +554,7 @@ paths:
           description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
           schema:
             $ref: '#/definitions/Error'
-  '/moneypool/{id}/movement':
+  '/moneypool/{id}/movement/':
     get:
       summary: Get Moneypool movements.
       description: |
@@ -719,8 +727,7 @@ paths:
   '/moneypool/{id}/member/{memberId/position/{position}':
     put:
       summary: Delete Member Position.
-      description: |
-        Delete the position of  a member in a moneypool.
+      description: Delete the position of  a member in a moneypool.
       operationId: deleteMemberPosition
       tags:
         - moneypools
@@ -753,6 +760,242 @@ paths:
             $ref: '#/definitions/Error'
         '409':
           description: The moneypool cannot be edited in the current state..
+          schema:
+            $ref: '#/definitions/Error'
+  /invitation:
+    post:
+      summary: Creates an invitation.
+      description: Invites a customer to join the moneypool.
+      operationId: createInvitation
+      tags:
+        - invitations
+      parameters:
+        - name: Invite request parameters.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/InviteRequest'
+      responses:
+        '201':
+          description: Invitation succesfully created.
+          schema:
+            $ref: '#/definitions/Invitation'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
+          description: The position is already filled.
+          schema:
+            $ref: '#/definitions/Error'
+  '/invitation/customer/{customerId}':
+    get:
+      summary: Get all the invitations of a customer given his identifier.
+      description: Get all the invitations of a customer given his identifier.
+      operationId: getCustomerInvitations
+      tags:
+        - invitations
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the customer
+      responses:
+        '200':
+          description: Returns the invitation list. Returns empty list if there is none.
+          schema:
+            $ref: '#/definitions/Invitation'
+        '400':
+          description: 'Invalid customer identifier format, response contains detailed error.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/invitation/moneypool/{moneypoolId}':
+    get:
+      summary: Get all the invitations of a moneypool given his identifier.
+      description: Get all the invitations of a moneypool given his identifier.
+      operationId: getMoneypoolInvitations
+      tags:
+        - invitations
+      parameters:
+        - name: moneypoolId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+      responses:
+        '200':
+          description: Returns the invitation list. Returns empty list if there is none.
+          schema:
+            $ref: '#/definitions/Invitation'
+        '400':
+          description: 'Invalid moneypool identifier format, response contains detailed error.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/invitation/{invitationId}/accept':
+    put:
+      summary: Accept the invitation given its identifier.
+      description: Accept the invitation given its identifier.
+      operationId: acceptInvitation
+      tags:
+        - invitations
+      parameters:
+        - name: invitationId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the invitation
+      responses:
+        '200':
+          description: Invitation successfully accepted.
+          schema:
+            $ref: '#/definitions/Invitation'
+        '400':
+          description: 'Invalid invitation identifier format, response contains detailed error.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/invitation/{invitationId}/decline':
+    put:
+      summary: Decline the invitation given its identifier.
+      description: Decline the invitation given its identifier.
+      operationId: declineInvitation
+      tags:
+        - invitations
+      parameters:
+        - name: invitationId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the invitation
+      responses:
+        '200':
+          description: Returns the invitation list. Returns empty list if there is none.
+          schema:
+            $ref: '#/definitions/Invitation'
+        '400':
+          description: 'Invalid invitation identifier format, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+  /requestToJoin/:
+    post:
+      summary: Creates a joining request.
+      description: The customer request to join a moneypool.
+      operationId: joiningRequest
+      tags:
+        - joining request
+      parameters:
+        - name: Joining request parameters.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RequestToJoin'
+      responses:
+        '201':
+          description: Joining Request succesfully created.
+          schema:
+            $ref: '#/definitions/JoiningRequest'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
+          description: The position is already filled.
+          schema:
+            $ref: '#/definitions/Error'
+  '/requestToJoin/customer/{customerId}':
+    get:
+      summary: Get all the invitations of a customer given his identifier.
+      description: Get all the invitations of a customer given his identifier.
+      operationId: getCustomerJoiningRequest
+      tags:
+        - joining request
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the customer
+      responses:
+        '200':
+          description: Returns the joining requests list. Returns empty list if there is none.
+          schema:
+            $ref: '#/definitions/JoiningRequest'
+        '400':
+          description: 'Invalid customer identifier format, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+  '/requestToJoin/moneypool/{moneypoolId}':
+    get:
+      summary: Get all the joining requests of a moneypool given his identifier.
+      description: Get all the joining requests of a moneypool given his identifier.
+      operationId: getMoneypoolJoiningRequest
+      tags:
+        - joining request
+      parameters:
+        - name: moneypoolId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+      responses:
+        '200':
+          description: Returns the joining requests list. Returns empty list if there is none.
+          schema:
+            $ref: '#/definitions/JoiningRequest'
+        '400':
+          description: 'Invalid moneypool identifier format, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+  '/requestToJoin/{requestId}/accept':
+    put:
+      summary: Accept the joining request given its identifier.
+      description: Accept the joining request given its identifier.
+      operationId: acceptJoiningRequest
+      tags:
+        - joining request
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the joining request
+      responses:
+        '200':
+          description: Joining request successfully accepted.
+          schema:
+            $ref: '#/definitions/JoiningRequest'
+        '400':
+          description: 'Invalid invitation identifier format, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+  '/requestToJoin/{requestId}/decline':
+    put:
+      summary: Decline the joining request given its identifier.
+      description: Decline the joining request given its identifier.
+      operationId: declineJoiningRequest
+      tags:
+        - joining request
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the joining request
+      responses:
+        '200':
+          description: Joining request successfully declined.
+          schema:
+            $ref: '#/definitions/JoiningRequest'
+        '400':
+          description: 'Invalid joining request identifier format, response contains detailed error'
           schema:
             $ref: '#/definitions/Error'
 definitions:
@@ -1272,6 +1515,110 @@ definitions:
         description: Position the member will take in the moneypool.
         type: BigInteger
         example: 5
+  InviteRequest:
+    type: object
+    required:
+      - moneypoolId
+      - customerId
+      - position
+    properties:
+      moneypoolId:
+        description: The id of the moneypool the customer will be invited.
+        type: BigInteger
+        example: 123
+      customerId:
+        description: The id of the customer we want to invite.
+        type: BigInteger
+        example: 222
+      position:
+        description: Position the customer will take in the moneypool.
+        type: Integer
+        example: 5
+  RequestToJoin:
+    type: object
+    required:
+      - moneypoolId
+      - customerId
+      - position
+    properties:
+      moneypoolId:
+        description: The id of the moneypool the customer is requesting to join.
+        type: BigInteger
+        example: 123
+      customerId:
+        description: The id of the customer who is doing the request.
+        type: BigInteger
+        example: 222
+      position:
+        description: Position the customer will take in the moneypool.
+        type: Integer
+        example: 5
+  Invitation:
+    type: object
+    required:
+      - invitationId
+      - moneypoolId
+      - customerId
+      - position
+      - status
+      - expirationDate
+    properties:
+      invitationId:
+        description: The invitation identifier.
+        type: BigInteger
+      moneypoolId:
+        description: The id of the moneypool the customer is invited to.
+        type: BigInteger
+        example: 123
+      customerId:
+        description: The id of the invited customer.
+        type: BigInteger
+        example: 222
+      position:
+        description: The position of the customer.
+        type: Integer
+        example: 5
+      status:
+        description: The invitation status.
+        type: String
+        example: PENDING
+      expirationDate:
+        description: The invitation expiration date.
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
+  JoiningRequest:
+    type: object
+    required:
+      - invitationId
+      - moneypoolId
+      - customerId
+      - position
+      - status
+      - expirationDate
+    properties:
+      invitationId:
+        description: The invitation identifier.
+        type: BigInteger
+      moneypoolId:
+        description: The id of the moneypool the customer is requesting to join.
+        type: BigInteger
+        example: 123
+      customerId:
+        description: The id of the customer.
+        type: BigInteger
+        example: 222
+      position:
+        description: The position of the customer.
+        type: Integer
+        example: 5
+      status:
+        description: The joining request status.
+        type: String
+        example: PENDING
+      expirationDate:
+        description: The joining request expiration date.
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
 securityDefinitions:
   JWT:
     description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
