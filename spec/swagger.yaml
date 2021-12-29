@@ -159,9 +159,9 @@ info:
     * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
 tags:
   - name: catalogs
-    description: This section will teach you how to access different the catalogs availables in the system.
-  - name: configurations
-    description: Manage configuration operation.
+    description: This section explains how to access different the catalogs availables in the system.
+  - name: configuration
+    description: This section details the available operations related to the partner configuration.
   - name: moneypools
     description: Manage moneypool operation.
   - name: invitations
@@ -381,7 +381,7 @@ paths:
   '/configuration':
     get:
       tags:
-        - configurations
+        - partner
       summary: Get Partner configuration.
       description: Return the partner configuration details.
       responses:
@@ -789,7 +789,7 @@ paths:
           description: The moneypool cannot be edited in the current state..
           schema:
             $ref: '#/definitions/Error'
-            
+
   '/moneypool/{id}/customer/{customerId}/position/{position}/active':
     put:
       summary: Active Member Position.
