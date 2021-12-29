@@ -5,7 +5,7 @@ info:
   version: 1.0.0
   title: Hagbad Online REST API
   contact:
-    email: developers@greysystems.eu
+    email: 'developers@greysystems.eu'         
     url: 'http://www.greysystems.eu/#contact'
   license:
     name: All Rights reserved GreySystems 2021
@@ -25,7 +25,7 @@ info:
 
     # Who we are? 
 
-    Grey Systems is a well establish European IT Consulting company that specialises in working with financial institutions.
+    Grey Systems is a well established European IT Consulting company that specialises in working with financial institutions.
     During the last years, we have developed "Hagbad Platform", a next level technology platform to provide online multichannel MoneyPool services to Payment Institutions, MSB, Banks, etc.
 
     # Goal 
@@ -159,7 +159,7 @@ info:
     * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
 tags:
   - name: catalogs
-    description: Manage catalog.
+    description: This section will teach you how to access different the catalogs availables in the system.
   - name: configurations
     description: Manage configuration operation.
   - name: moneypools
@@ -173,11 +173,11 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get a list of countries.
-      description: Get the entire list of countries.
+      summary: Get countries.
+      description: Returns the entire list of countries.
       responses:
         '200':
-          description: Returns a list with the countries.
+          description: Returns the entire list of countries.
           schema:
             type: array
             items:
@@ -190,18 +190,17 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get country by iso code 3.
-      description: |
-        Returns the country by iso code 3.
+      summary: Get country by ISO-Alpha3 Code.
+      description: Returns the country given its ISO-Alpha3 code.
       parameters:
         - name: iso3
           in: path
           required: true
           type: String
-          description: Iso code 3
+          description: ISO-Alpha3 Code.
       responses:
         '200':
-          description: Returns the details of a country.
+          description: Returns the country details.
           schema:
             $ref: '#/definitions/Country'
         '400':
@@ -216,14 +215,14 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get city by iso code 3 (search cities).
-      description: 'Returns a list of cities, filtering the cities by the name passed by parameters. The name must be at least three characters.'
+      summary: Search cities by country and name.
+      description: 'Returns a list of cities, filtering them by country and by the name passed by parameters. The name must contain at least three characters.'
       parameters:
         - name: iso3
           in: path
           required: true
           type: String
-          description: Iso code 3.
+          description: ISO-Alpha3 Code.
         - name: name
           in: query
           required: true
@@ -231,7 +230,7 @@ paths:
           description: 'City name, minimum length three characters.'
       responses:
         '200':
-          description: Returns a list with the cities.
+          description: Returns a list with the cities which match the filter.
           schema:
             type: array
             items:
@@ -248,23 +247,22 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get city by id.
-      description: |
-        Returns a city by its id.
+      summary: Get city by ID.
+      description: Returns a city given its identifier.
       parameters:
         - name: iso3
           in: path
           required: true
           type: String
-          description: Iso code 3
+          description:  ISO-Alpha3 Code.
         - name: cityId
           in: path
           required: true
           type: BigInteger
-          description: Id city
+          description: City identifier.
       responses:
         '200':
-          description: Returns a city by its id.
+          description: Returns the city given its identifier.
           schema:
             $ref: '#/definitions/City'
         '400':
@@ -275,19 +273,19 @@ paths:
           description: Country or city not found.
           schema:
             $ref: '#/definitions/Error'
+            
   '/catalog/country/{iso3}/state':
     get:
       tags:
         - catalogs
-      summary: Get states by iso code 3 (search states).
-      description: |
-        Returns a list of states, filtering the states by iso code 3 and name (optional) passed by parameters.
+      summary: Search states by country and name.
+      description: 'Returns a list of states, filtering them by country and by the name passed by parameters. The name is not mandatory, but if is informed it must contain at least three characters.'
       parameters:
         - name: iso3
           in: path
           required: true
           type: String
-          description: Iso code 3.
+          description: ISO-Alpha3 Code.
         - name: name
           in: query
           required: false
@@ -312,23 +310,22 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get state by id.
-      description: |
-        Returns a state by its id.
+      summary: Get state by ID.
+      description: Returns a state given its identifier.
       parameters:
         - name: iso3
           in: path
           required: true
           type: String
-          description: Iso code 3
+          description: ISO-Alpha3 Code.
         - name: stateId
           in: path
           required: true
           type: BigInteger
-          description: Id state
+          description: State identifier
       responses:
         '200':
-          description: Returns a state by its id.
+          description: Returns the state given its identifier.
           schema:
             $ref: '#/definitions/State'
         '400':
@@ -343,12 +340,11 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get Currencies.
-      description: |
-        Get the entire list of currencies.
+      summary: Get currencies.
+      description: Returns the entire list of currencies.
       responses:
         '200':
-          description: Returns a list with the currencies.
+          description: Returns the entire list of currencies.
           schema:
             type: array
             items:
@@ -361,18 +357,17 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get currency by iso code.
-      description: |
-        Returns the currency by iso code.
+      summary: Get currency by ISO code.
+      description: Returns the currency by ISO code.
       parameters:
         - name: iso
           in: path
           required: true
           type: String
-          description: Iso code
+          description: ISO Code.
       responses:
         '200':
-          description: Returns the details of a currency.
+          description: Returns the currency details.
           schema:
             $ref: '#/definitions/Currency'
         '400':
@@ -383,30 +378,28 @@ paths:
           description: Currency not found.
           schema:
             $ref: '#/definitions/Error'
-  /configuration:
+  '/configuration':
     get:
       tags:
         - configurations
-      summary: Get Partner Configuration.
-      description: |
-        Get Partner configuration.
+      summary: Get Partner configuration.
+      description: Return the partner configuration details.
       responses:
         '200':
-          description: 'Partner successfully selected, return current configuration.'
+          description: 'Return current partner configuration.'
           schema:
             $ref: '#/definitions/PartnerConfiguration'
         '404':
           description: Partner not found.
           schema:
             $ref: '#/definitions/Error'
-  /moneypool:
+  '/moneypool':
     post:
       summary: Create or update a moneypool.
       description: |
         The HostID field which is necessary to inform when creating a pool will be provided by the architecture.
-         </br> </br> 
-        This save service will cover the update functionality too. If the moneypool id field in the request body is informed it will be an update behaviour, if it isn’t a create one.
-           
+        </br> </br> 
+        This save service will cover the update functionality too. If the moneypool id field in the request body is informed it will be an update behaviour, if it isn’t a create one.   
       operationId: saveMoneypool
       parameters:
         - name: saveMoneypoolRequest
@@ -491,7 +484,7 @@ paths:
           description: Moneypool has not been found using the id provided as request parameter.
           schema:
             $ref: '#/definitions/Error'
-  /moneypool/search:
+  '/moneypool/search':
     post:
       summary: Search Moneypools.
       description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa.'
@@ -641,7 +634,41 @@ paths:
             $ref: '#/definitions/AddMemberRequest'
       responses:
         '200':
+          description: Member successfully added.          
+          schema:
+            $ref: '#/definitions/Member'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema:
+            $ref: '#/definitions/Error'
+  '/moneypool/{id}/invite/member':
+    post:
+      summary: Invite Member to Moneypool.
+      description: |
+        Invite a member to the Moneypool. It will be used to Join the moneypool as a member (when the Moneypool is public).
+      operationId: inviteMember
+      tags:
+        - moneypools
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: add member parameters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddMemberRequest'
+      responses:
+        '200':
           description: Member successfully added.
+          schema:
+            $ref: '#/definitions/Member'
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
@@ -762,6 +789,85 @@ paths:
           description: The moneypool cannot be edited in the current state..
           schema:
             $ref: '#/definitions/Error'
+            
+  '/moneypool/{id}/customer/{customerId}/position/{position}/active':
+    put:
+      summary: Active Member Position.
+      description: Active the member's position in which you applied to join 
+      operationId: activeMemberPosition
+      tags:
+        - moneypools
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the customer we want to update. 
+        - name: position
+          in: path
+          required: true
+          type: position
+          description: The position occupied by the member. 
+      responses:
+        '200':
+          description: Member position successfully active from the pool.
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
+          description: The moneypool cannot be edited in the current state.
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/moneypool/{id}/customer/{customerId}/position/{position}/decline':
+    put:
+      summary: Decline Member Position.
+      description: Decline the member's position in which you applied to join 
+      operationId: declineMemberPosition
+      tags:
+        - moneypools
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the customer we want to update. 
+        - name: position
+          in: path
+          required: true
+          type: position
+          description: The position occupied by the member. 
+      responses:
+        '200':
+          description: Member position successfully decline from the pool.
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool has not been found using the id provided as request parameter.
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
+          description: The moneypool cannot be edited in the current state.
+          schema:
+            $ref: '#/definitions/Error'
+  
   '/invitation':
     post:
       summary: Create an invitation
@@ -1474,12 +1580,10 @@ definitions:
   Member:
     type: object
     required:
-      - id
+      - memberId
       - customerId
-      - name
-      - lastName
-      - status
       - positions
+      - status
     properties:
       id:
         description: Member id.
@@ -1489,26 +1593,35 @@ definitions:
         description: Customer id.
         type: BigInteger
         example: 571423
-      name:
-        description: Customer name.
-        type: String
-        example: Michael
-      lastName:
-        description: Customer last name.
-        type: String
-        example: Anibal
+      positions:
+        description: List of position
+        type: array
+        items:
+          $ref: '#/definitions/MemberPosition'
       status:
         description: Member status.
         type: String
         example: ACTIVE
-      positions:
-        description: List of positions.
-        type: array
-        items:
-          type: Integer
-        example:
-          - 2
-          - 5
+      joinedDate:
+        description: Joined date.
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
+  MemberPosition:
+    type: object
+    required:
+      - position
+      - status
+      - positions
+      - status
+    properties:
+      position:
+        description: Position.
+        type: Integer
+        example: 1
+      status:
+        description: Member status.
+        type: String
+        example: ACTIVE
   AddMemberRequest:
     type: object
     required:
