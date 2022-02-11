@@ -599,9 +599,10 @@ paths:
           description: The id of the moneypool
       responses:
         '200':
-          description: Returns the a list with the moneypool's available positions.
+          description: Returns the a list with moneypool's available positions.
           schema:
-            $ref: '#/definitions/MoneypoolDetail'
+            type: array
+            example: '[1,2,7]'
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
@@ -1388,8 +1389,9 @@ definitions:
         example: '500'
       members:
         description: The members of the moneypool.
-        type: List 
-        example: '[]'  
+        type: array
+        items:
+          $ref: '#/definitions/Member'
   Amount:
     type: object
     required:
