@@ -395,14 +395,12 @@ paths:
             $ref: '#/definitions/Error'
   '/moneypool':
     post:
-      summary: Create or update a moneypool.
-      description: |
-        The HostID field which is necessary to inform when creating a pool will be provided by the architecture.
-        </br> </br> 
-        This save service will cover the update functionality too. If the moneypool id field in the request body is informed it will be an update behaviour, if it isn’t a create one.   
+      summary: Save a moneypool.
+      description: 
+        This endpoint service will cover create and update moneypool functionalities. It will depend on whether the moneypool identifier field is informed or not. If it isn't the service will create a new moneypool otherwise, it will update the provided one.    
       operationId: saveMoneypool
       parameters:
-        - name: saveMoneypoolRequest
+        - name: SaveMoneypoolRequest
           in: body
           required: true
           schema:
@@ -422,19 +420,22 @@ paths:
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
             $ref: '#/definitions/Error'
+        '403':
+          description: Update a moneypool in which you aren’t the host.
+          schema:
+            $ref: '#/definitions/Error'    
         '404':
-          description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
+          description: Moneypool not found.
           schema:
             $ref: '#/definitions/Error'
         '409':
-          description: 'Conflict :Update a  locked / started / finished pool'
+          description: 'Conflict. Duplicated moneypool code. Moneypool status does not allow changes.'
           schema:
             $ref: '#/definitions/Error'
   '/moneypool/{id}':
     get:
-      summary: Get a moneypool by its id.
-      description: |
-        Get all the information about a single moneypool.
+      summary: Get moneypool by id.
+      description:  Get basic moneypool information.
       operationId: getMoneypool
       tags:
         - moneypools
@@ -446,20 +447,46 @@ paths:
           description: The id of the moneypool
       responses:
         '200':
-          description: Returns a Moneypool and its details.
+          description: Returns the basic information of the Moneypool.
           schema:
-            $ref: '#/definitions/MoneypoolWithBalance'
+            $ref: '#/definitions/Moneypool'
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter.
+          description: Moneypool not found.
           schema:
             $ref: '#/definitions/Error'
+  '/moneypool/{id}/detail':
+    get:
+      summary: Get moneypool details by id.
+      description:  Get the moneypool complete information.
+      operationId: getMoneypoolDetail
+      tags:
+        - moneypools
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+      responses:
+        '200':
+          description: Returns the complete information of the Moneypool.
+          schema:
+            $ref: '#/definitions/MoneypoolDetail'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool not found.
+          schema:
+            $ref: '#/definitions/Error'          
   '/moneypool/search':
     post:
-      summary: Search Moneypools.
+      summary: Search moneypools.
       description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa.'
       operationId: searchMoneypools
       tags:
@@ -493,7 +520,7 @@ paths:
             $ref: '#/definitions/Error'
   '/moneypool/{id}/status/{status}':
     put:
-      summary: Update MoneyPool status.
+      summary: Update moneypool status.
       description: Update the status of a given moneypool.
       operationId: updateMoneypoolStatus
       tags:
@@ -517,14 +544,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: The moneypool to update could not be found. Edit a pool in which you aren’t the Host.
+          description: Moneypool not found.
           schema:
             $ref: '#/definitions/Error'
   '/moneypool/{id}/movement/':
     get:
-      summary: Get Moneypool movements.
+      summary: Get moneypool movements.
       description: |
-        Get the movements of a Moneypool.
+        Get the movements of a moneypool.
       operationId: getMovementByMoneypoolId
       tags:
         - moneypools
@@ -546,7 +573,7 @@ paths:
           description: Number of elements per page.
       responses:
         '200':
-          description: Returns the balance movements of the given Moneypool. Returns an empty list if the money pool doesn’t have movements yet.
+          description: Returns the movements of the given moneypool. Returns an empty list if the moneypool doesn’t have any movement.
           schema:
             $ref: '#/definitions/GetMovementResponse'
         '400':
@@ -554,14 +581,40 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter.
+          description: Moneypool not found.
           schema:
             $ref: '#/definitions/Error'
+  '/moneypool/{id}/available-positions':
+    get:
+      summary: Get moneypool available positions.
+      description:  Get the moneypool available positions.
+      operationId: getMoneypoolAvailablePosition
+      tags:
+        - moneypools
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The id of the moneypool
+      responses:
+        '200':
+          description: Returns the a list with the moneypool's available positions.
+          schema:
+            $ref: '#/definitions/MoneypoolDetail'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Moneypool not found.
+          schema:
+            $ref: '#/definitions/Error'                    
   '/moneypool/{id}/member':
     get:
-      summary: Get Moneypool Members.
+      summary: Get moneypool members.
       description: |
-        Get all members of the Moneypool community.
+        Get all members of the moneypool.
       operationId: getMemberByMoneypoolId
       tags:
         - moneypools
@@ -573,7 +626,7 @@ paths:
           description: The id of the moneypool
       responses:
         '200':
-          description: Returns the members of the given Moneypool. Returns an empty list if the money pool doesn’t have members yet.
+          description: Returns the members of the given moneypool. Returns an empty list if the moneypool doesn’t have any member.
           schema:
             type: array
             items:
@@ -583,12 +636,12 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter.
+          description: Moneypool not found.
           schema:
             $ref: '#/definitions/Error' 
   '/moneypool/{id}/member/{memberId}':
     put:
-      summary: Expel Member from Moneypool.
+      summary: Expel member from moneypool.
       description: |
         Expel a member from a moneypool.
       operationId: expelMember
@@ -613,14 +666,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          description: Moneypool not found. Member not found.
           schema:
             $ref: '#/definitions/Error'
-  '/moneypool/{id}/member/{memberId/position-from/{positionFrom}/position-to/{positionTo}':
+  '/moneypool/{id}/member/{memberId}/position-from/{positionFrom}/position-to/{positionTo}':
     put:
-      summary: Update Member Position.
+      summary: Update member position.
       description: |
-        Update the position of  a member in a moneypool.
+        Update a member's position into the moneypool.
       operationId: updateMemberPosition
       tags:
         - moneypools
@@ -653,17 +706,17 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          description: Moneypool not found. Member not found.
           schema:
             $ref: '#/definitions/Error'
         '409':
-          description: The moneypool cannot be edited in the current state..
+          description: Moneypool can not be edited in the current state..
           schema:
             $ref: '#/definitions/Error'
-  '/moneypool/{id}/member/{memberId/position/{position}':
+  '/moneypool/{id}/member/{memberId}/position/{position}':
     delete:
-      summary: Delete Member Position.
-      description: Delete the position of  a member in a moneypool.
+      summary: Delete member position.
+      description: Delete a member's position in the moneypool.
       operationId: deleteMemberPosition
       tags:
         - moneypools
@@ -685,17 +738,17 @@ paths:
           description: The position which will be deleted.
       responses:
         '200':
-          description: Member position successfully deleted from the pool.
+          description: Member position successfully deleted from the moneypool.
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Moneypool has not been found using the id provided as request parameter. Member has not been found using the id provided as request parameter.
+          description: Moneypool not found. Member not found.
           schema:
             $ref: '#/definitions/Error'
         '409':
-          description: The moneypool cannot be edited in the current state..
+          description: Moneypool can not be edited in the current state.
           schema:
             $ref: '#/definitions/Error'
               
@@ -1208,11 +1261,7 @@ definitions:
       - amountToSave
       - currency
       - membersRequired
-      - paymentCycle
-      - paymentCyclesTotal
-      - paymentsFrequency
       - startDate
-      - nextPaymentDate
       - type
       - status
       - purpose
@@ -1241,26 +1290,10 @@ definitions:
         description: Number of Members required.
         type: Integer
         example: 8
-      paymentCycle:
-        description: Number of payment cicle.
-        type: Integer
-        example: 8
-      paymentCyclesTotal:
-        description: Number of payment cicle total.
-        type: Integer
-        example: 8
-      paymentsFrequency:
-        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: String
-        example: MONTHLY
       startDate:
         description: Moneypool start date.
         type: LocalDate
         example: '2021-04-23'
-      nextPaymentDate:
-        description: Moneypool next payment date.
-        type: LocalDate
-        example: '2021-05-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1273,7 +1306,7 @@ definitions:
         description: Purpose of the moneypool.
         type: String
         example: BUY TV
-  MoneypoolWithBalance:
+  MoneypoolDetail:
     type: object
     required:
       - id
@@ -1291,6 +1324,7 @@ definitions:
       - status
       - purpose
       - currentBalance
+      - members
     properties:
       id:
         description: Moneypool id.
@@ -1352,6 +1386,10 @@ definitions:
         description: Current balance.
         type: BigDecimal
         example: '500'
+      members:
+        description: The members of the moneypool.
+        type: List 
+        example: '[]'  
   Amount:
     type: object
     required:
