@@ -587,7 +587,7 @@ paths:
           schema:
             $ref: '#/definitions/Error' 
   '/moneypool/{id}/member/{memberId}':
-    delete:
+    put:
       summary: Expel Member from Moneypool.
       description: |
         Expel a member from a moneypool.
@@ -604,10 +604,10 @@ paths:
           in: path
           required: true
           type: BigInteger
-          description: The id of the member we want to delete from the moneypool.
+          description: The id of the member we want to be expelled from the moneypool.
       responses:
         '200':
-          description: Member successfully removed from the moneypool.
+          description: Member successfully expelled from the moneypool.
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
@@ -634,7 +634,7 @@ paths:
           in: path
           required: true
           type: BigInteger
-          description: The id of the member we want to delete from the moneypool.
+          description: The id of the member we want to switch the position.
         - name: positionFrom
           in: path
           required: true
@@ -644,10 +644,10 @@ paths:
           in: path
           required: true
           type: Integer
-          description: The position that the member should occupy.
+          description: The position that the member will occupy.
       responses:
         '200':
-          description: Member successfully update from the moneypool.
+          description: Position successfully updated.
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
@@ -661,7 +661,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   '/moneypool/{id}/member/{memberId/position/{position}':
-    put:
+    delete:
       summary: Delete Member Position.
       description: Delete the position of  a member in a moneypool.
       operationId: deleteMemberPosition
@@ -677,15 +677,15 @@ paths:
           in: path
           required: true
           type: BigInteger
-          description: The id of the member we want to delete from the moneypool.
+          description: The id of the member whose position we want to delete.
         - name: position
           in: path
           required: true
           type: Integer
-          description: The position occupied by the member.
+          description: The position which will be deleted.
       responses:
         '200':
-          description: Member successfully delete from the pool.
+          description: Member position successfully deleted from the pool.
         '400':
           description: 'Invalid parameters, response contains detailed error'
           schema:
