@@ -910,7 +910,7 @@
     },
     "/invitation": {
       "post": {
-        "summary": "Create an invitation",
+        "summary": "Create an invitation.",
         "description": "Invites a customer to join the moneypool.",
         "operationId": "createInvitation",
         "tags": [
@@ -940,7 +940,7 @@
             }
           },
           "404": {
-            "description": "Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.",
+            "description": "Moneypool not found. Customer not found.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -954,22 +954,13 @@
         }
       }
     },
-    "/invitation/customer/{customerId}": {
+    "/invitation/customer": {
       "get": {
-        "summary": "Get customer invitations",
-        "description": "Return a list with all the invitations of a customer given his identifier.",
+        "summary": "Get customer invitations.",
+        "description": "Return a list with all the invitations of the customer.",
         "operationId": "getCustomerInvitations",
         "tags": [
           "invitations"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The customer identifier."
-          }
         ],
         "responses": {
           "200": {
@@ -980,20 +971,14 @@
                 "$ref": "#/definitions/Invitation"
               }
             }
-          },
-          "400": {
-            "description": "Invalid customer identifier format, response contains detailed error.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         }
       }
     },
     "/invitation/moneypool/{moneypoolId}": {
       "get": {
-        "summary": "Get moneypool invitations",
-        "description": "Return a list with all the invitations of a moneypool given his identifier.",
+        "summary": "Get moneypool invitations.",
+        "description": "Return a list with all the invitations of a moneypool.",
         "operationId": "getMoneypoolInvitations",
         "tags": [
           "invitations"
@@ -1028,8 +1013,8 @@
     },
     "/invitation/{id}/accept": {
       "put": {
-        "summary": "Accept invitation",
-        "description": "Accept the invitation given its identifier.",
+        "summary": "Accept invitation.",
+        "description": "Accept an invitation.",
         "operationId": "acceptInvitation",
         "tags": [
           "invitations"
@@ -1051,7 +1036,19 @@
             }
           },
           "400": {
-            "description": "Invalid invitation identifier format, response contains detailed error.",
+            "description": "Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Invitation not found.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "409": {
+            "description": "The invitation is not pending so it can not be updated.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1061,8 +1058,8 @@
     },
     "/invitation/{id}/decline": {
       "put": {
-        "summary": "Decline invitation",
-        "description": "Decline the invitation given its identifier.",
+        "summary": "Decline an invitation.",
+        "description": "Decline an invitation given its identifier.",
         "operationId": "declineInvitation",
         "tags": [
           "invitations"
@@ -1078,13 +1075,25 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the invitation list. Returns empty list if there is none.",
+            "description": "Invitation successfully declined.",
             "schema": {
               "$ref": "#/definitions/Invitation"
             }
           },
           "400": {
-            "description": "Invalid invitation identifier format, response contains detailed error.",
+            "description": "Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Invitation not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "409": {
+            "description": "The invitation is not pending so it can not be updated.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1092,10 +1101,10 @@
         }
       }
     },
-    "/requestToJoin/": {
+    "/requestToJoin": {
       "post": {
-        "summary": "Create a joining request",
-        "description": "The customer request to join a moneypool.",
+        "summary": "Create a joining request.",
+        "description": "Create a request to join a moneypool.",
         "operationId": "joiningRequest",
         "tags": [
           "joining request"
@@ -1124,7 +1133,7 @@
             }
           },
           "404": {
-            "description": "Moneypool has not been found using the id provided as request parameter. Customer has not been found using the id provided as request parameter.",
+            "description": "Moneypool not found.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1138,22 +1147,13 @@
         }
       }
     },
-    "/requestToJoin/customer/{customerId}": {
+    "/requestToJoin/customer": {
       "get": {
-        "summary": "Get customer joining requests",
-        "description": "Return a list with all the joining requests of a customer given his identifier.",
+        "summary": "Get customer joining requests.",
+        "description": "Return a list with all the joining requests of the customer.",
         "operationId": "getCustomerJoiningRequest",
         "tags": [
           "joining request"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The customer identifier."
-          }
         ],
         "responses": {
           "200": {
@@ -1164,12 +1164,6 @@
                 "$ref": "#/definitions/JoiningRequest"
               }
             }
-          },
-          "400": {
-            "description": "Invalid customer identifier format, response contains detailed error.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         }
       }
@@ -1177,7 +1171,7 @@
     "/requestToJoin/moneypool/{moneypoolId}": {
       "get": {
         "summary": "Get moneypool joining requests",
-        "description": "Return a list with all the joining requests of a moneypool given his identifier.",
+        "description": "Return a list with all the joining requests of a moneypool.",
         "operationId": "getMoneypoolJoiningRequest",
         "tags": [
           "joining request"
@@ -1212,8 +1206,8 @@
     },
     "/requestToJoin/{id}/accept": {
       "put": {
-        "summary": "Accept joining request",
-        "description": "Accept the joining request given its identifier.",
+        "summary": "Accept a joining request.",
+        "description": "Accept a joining request.",
         "operationId": "acceptJoiningRequest",
         "tags": [
           "joining request"
@@ -1224,7 +1218,7 @@
             "in": "path",
             "required": true,
             "type": "BigInteger",
-            "description": "The identifier of the joining request."
+            "description": "The joining request identifier."
           }
         ],
         "responses": {
@@ -1245,8 +1239,8 @@
     },
     "/requestToJoin/{id}/decline": {
       "put": {
-        "summary": "Decline joining request",
-        "description": "Decline the joining request given its identifier.",
+        "summary": "Decline a joining request",
+        "description": "Decline a the joining request.",
         "operationId": "declineJoiningRequest",
         "tags": [
           "joining request"
@@ -1257,7 +1251,7 @@
             "in": "path",
             "required": true,
             "type": "BigInteger",
-            "description": "The identifier of the joining request."
+            "description": "The joining request identifier."
           }
         ],
         "responses": {
@@ -1268,7 +1262,19 @@
             }
           },
           "400": {
-            "description": "Invalid joining request identifier format, response contains detailed error.",
+            "description": "Invalid joining request identifier format, response contains detailed error. The provided identifier does not belong to a joining request.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Joining request not found.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "409": {
+            "description": "The joining request is not pending, so it can not be updated.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1961,7 +1967,6 @@
       "type": "object",
       "required": [
         "moneypoolId",
-        "customerId",
         "position"
       ],
       "properties": {
@@ -1969,11 +1974,6 @@
           "description": "The id of the moneypool the customer is requesting to join.",
           "type": "BigInteger",
           "example": 123
-        },
-        "customerId": {
-          "description": "The identifier of the customer who is doing the request.",
-          "type": "BigInteger",
-          "example": 222
         },
         "position": {
           "description": "Position the customer will take in the moneypool.",
