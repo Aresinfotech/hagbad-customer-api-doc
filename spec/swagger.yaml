@@ -543,6 +543,10 @@ paths:
           description: 'Invalid parameters, response contains detailed error'
           schema:
             $ref: '#/definitions/Error'
+        '403':
+          description: Update a moneypool in which you aren’t the host.
+          schema:
+            $ref: '#/definitions/Error'        
         '404':
           description: Moneypool not found.
           schema:
