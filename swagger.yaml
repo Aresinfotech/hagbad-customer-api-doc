@@ -797,7 +797,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Invitation'
+              $ref: '#/definitions/InvitationDetails'
   '/invitation/moneypool/{moneypoolId}':
     get:
       summary: Get moneypool invitations.
@@ -817,7 +817,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Invitation'
+              $ref: '#/definitions/InvitationDetails'
         '400':
           description: 'Invalid moneypool identifier format, response contains detailed error.'
           schema:
@@ -925,7 +925,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/JoiningRequest'
+              $ref: '#/definitions/JoiningRequestDetails'
   '/requestToJoin/moneypool/{moneypoolId}':
     get:
       summary: Get moneypool joining requests
@@ -945,7 +945,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/JoiningRequest'
+              $ref: '#/definitions/JoiningRequestDetails'
         '400':
           description: 'Invalid moneypool identifier format, response contains detailed error.'
           schema:
@@ -1263,7 +1263,9 @@ definitions:
     required:
       - id
       - name
+      - hostName
       - poolCode
+      - hostId
       - amountToSave
       - currency
       - membersRequired
@@ -1271,6 +1273,8 @@ definitions:
       - type
       - status
       - purpose
+      - currentMembers
+      - rating
     properties:
       id:
         description: Moneypool id.
@@ -1279,7 +1283,11 @@ definitions:
       name:
         description: Moneypool name.
         type: String
-        example: Test moneypool
+        example: Helping Hearts
+      hostName:
+        description: Host name.
+        type: String
+        example: John Simmons
       poolCode:
         description: Moneypool code.
         type: String
@@ -1325,12 +1333,12 @@ definitions:
       - paymentCyclesTotal
       - paymentsFrequency
       - startDate
-      - nextPaymentDate
       - type
       - status
       - purpose
       - currentBalance
       - members
+      - paymentsCalendar
     properties:
       id:
         description: Moneypool id.
@@ -1397,6 +1405,25 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Member'
+      paymentsCalendar:
+        description: The members of the moneypool.
+        type: array
+        items:
+          $ref: '#/definitions/MoneypoolCalendar'
+  MoneypoolCalendar:
+    type: object
+    required:
+      - position
+      - date
+    properties:
+      position:
+        description: Position in the moneypool.
+        type: Integer
+        example: 2
+      date:
+        description: The payment date.
+        type: LocalDate
+        example: '2021-04-23'
   Amount:
     type: object
     required:
@@ -1409,7 +1436,7 @@ definitions:
         example: EUR
       value:
         description: Amount.
-        type: BigIDecimal
+        type: BigDecimal
         example: 300.56
   Movement:
     type: object
@@ -1599,6 +1626,119 @@ definitions:
         example: 123
       customerId:
         description: The customer who request to join identifier.
+        type: BigInteger
+        example: 222
+      position:
+        description: The position of the customer.
+        type: Integer
+        example: 5
+      status:
+        description: The joining request status.
+        type: String
+        example: PENDING
+      expirationDate:
+        description: The joining request expiration date.
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
+  InvitationDetails:
+    type: object
+    required:
+      - id
+      - moneypoolId
+      - moneypoolName
+      - hostName
+      - amountToSave
+      - moneypoolRating
+      - customerId
+      - position
+      - status
+      - expirationDate
+    properties:
+      id:
+        description: The invitation identifier.
+        type: BigInteger
+        example: 11
+      moneypoolId:
+        description: The moneypool identifier the customer is invited to.
+        type: BigInteger
+        example: 123
+      moneypoolName:
+        description: The moneypool name.
+        type: String
+        example: Helping Hearts
+      hostName:
+        description: The moneypool host name.
+        type: String
+        example: Pep Mancini
+      amountToSave:
+        description: The moneypool amount to save.
+        type: Integer
+        example: 4000
+      moneypoolRating:
+        description: The moneypool rating.
+        type: Double
+        example: 0.9
+      customerId:
+        description: The invited customer identifier.
+        type: BigInteger
+        example: 222
+      position:
+        description: The position of the customer.
+        type: Integer
+        example: 5
+      status:
+        description: The invitation status.
+        type: String
+        example: PENDING
+      expirationDate:
+        description: The invitation expiration date.
+        type: LocalDateTime
+        example: '2021-04-23T00:00:00+02:00'
+  JoiningRequestDetails:
+    type: object
+    required:
+      - id
+      - moneypoolId
+      - moneypoolName
+      - hostName
+      - customerName
+      - amountToSave
+      - moneypoolRating
+      - customerId
+      - position
+      - status
+      - expirationDate
+    properties:
+      id:
+        description: The invitation identifier.
+        type: BigInteger
+        example: 11
+      moneypoolId:
+        description: The moneypool identifier the customer is requesting to join.
+        type: BigInteger
+        example: 123
+      moneypoolName:
+        description: The moneypool name.
+        type: String
+        example: Helping Hearts
+      hostName:
+        description: The moneypool host name.
+        type: String
+        example: Ben Benji
+      customerName:
+        description: The name of the customer who made the request.
+        type: String
+        example: Jack Sparrow
+      amountToSave:
+        description: The moneypool amount to save.
+        type: Integer
+        example: 4000
+      moneypoolRating:
+        description: The moneypool rating.
+        type: Double
+        example: 0.9
+      customerId:
+        description: The invited customer identifier.
         type: BigInteger
         example: 222
       position:
