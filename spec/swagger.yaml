@@ -162,6 +162,8 @@ tags:
     description: This section explains how to access different the catalogs availables in the system.
   - name: configuration
     description: This section details the available operations related to the partner configuration.
+  - name: customers
+    description: Customer management operations.  
   - name: moneypools
     description: Manage moneypool operation.
   - name: invitations
@@ -336,7 +338,7 @@ paths:
           description: Country or state not found.
           schema:
             $ref: '#/definitions/Error'
-  /catalog/currency:
+  '/catalog/currency':
     get:
       tags:
         - catalogs
@@ -393,6 +395,199 @@ paths:
           description: Partner not found.
           schema:
             $ref: '#/definitions/Error'
+  '/customer':
+    post:
+      summary: Save a customer.
+      description: 
+        This endpoint service will cover create and update customer functionalities. It will depend on whether the customer identifier field is informed or not. If it isn't the service will create a new customer otherwise, it will update the provided one.    
+      operationId: saveCustomer
+      parameters:
+        - name: SaveCustomerRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SaveCustomerRequest'
+      tags:
+        - customers
+      responses:
+        '200':
+          decription: Customer successfully updated.
+          schema:
+            $ref: '#/definitions/Customer'
+        '201':
+          description: Customer successfully created.
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
+          description: 'Conflict. Email is mandatory, so it can not be deleted or updated with an empty text.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/{customerId}':
+    get:
+      summary: Get customer by id.
+      description: Get customer information given its identifier
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: BigInteger
+          description: The customer identifier.
+      tags:
+        - customers
+      responses:
+        '200':
+          decription: Returns the customer information.
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/code/{code}':
+    get:
+      summary: Get customer by code.
+      description: Get customer information given its code
+      operationId: getCustomerByCode
+      parameters:
+        - name: code
+          in: path
+          required: true
+          type: String
+          description: The customer code.
+      tags:
+        - customers
+      responses:
+        '200':
+          decription: Returns the customer information.
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/username/{username}':
+    get:
+      summary: Get customer by username.
+      description: Get customer information given its username
+      operationId: getCustomerByUsername
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: String
+          description: The customer username.
+      tags:
+        - customers
+      responses:
+        '200':
+          decription: Returns the customer information.
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'                                
+  '/customer/email/{email}':
+    get:
+      summary: Get customer by email.
+      description: Get customer information given its email
+      operationId: getCustomerByEmail
+      parameters:
+        - name: email
+          in: path
+          required: true
+          type: String
+          description: The customer email.
+      tags:
+        - customers
+      responses:
+        '200':
+          decription: Returns the customer information.
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/{customerId}/movement':
+    get:
+      summary: Get customer movements.
+      description: Return a list with the movements of the customer
+      operationId: getCustomerMovement
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The customer identifier.
+      tags:
+        - customers
+      responses:
+        '200':
+          description: Returns the movements of the given customer. Returns an empty list if the customer doesn’t have any movement.
+          schema:
+            $ref: '#/definitions/GetMovementResponse'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/{customerId}/moneypool':
+    get:
+      summary: Get customer moneypools.
+      description: Return a list with the customer moneypools, either as host or member.
+      operationId: getCustomerMoneypools
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The customer identifier.
+      tags:
+        - customers
+      responses:
+        '200':
+          description: Returns the moneypools of the given customer. Returns an empty list if the customer doesn’t have any movement.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerMoneypool'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'                            
   '/moneypool':
     post:
       summary: Save a moneypool.
@@ -1156,6 +1351,140 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/PaymentMethod'
+  SaveCustomerRequest:
+    type: object
+    required:
+      - name
+      - lastname
+      - birthDate
+      - mobileNumber
+      - email
+      - status
+      - kycStatus
+    properties:
+      customerId:
+        description: customer identifier. It is only required to update the customer information.
+        type: BigInteger
+        example: 11
+      code:
+        description: Customer code.
+        type: String
+        example: CU123
+      name:
+        description: Customer name.
+        type: String
+        example: Ben 
+      lastname:
+        description: Customer last name.
+        type: String
+        example: Simmons
+      nickname:
+        description: Customer nickname.
+        type: LocalDate
+        example: '2021-04-23'
+      birthDate:
+        description: Customer birthdate.
+        type: LocalDate
+        example: '2021-05-23'
+      mobileNumber:
+        description: Customer mobile number.
+        type: String
+        example: +34666666666
+      email:
+        description: Customer email.
+        type: String
+        example: ben.simmons@test.com
+      status:
+        description: Customer status.
+        type: String
+        example: ACTIVE
+      kycStatus:
+        description: Customer KYC status.
+        type: String
+        example: PENDING
+      profilePicture:
+        description: Profile picture url.
+        type: String
+        example: 413213213123131231231@amazon.ecs.bucket-s3
+      referralInvitationCode:
+        description: Referral invitation code of the customer who invited you.
+        type: String
+        example: FL8935V
+      address:
+        description: Customer address.
+        type: Address
+        example:
+          address1: 'Elm Street'
+          address2: 'N3, second floor'
+          city: 'LONDON'
+          state: 'LONDON'
+          country: 'GBR'
+          zipCode: '9999'
+  Customer:
+    type: object
+    properties:
+      customerId:
+        description: customer identifier. It is only required to update the customer information.
+        type: BigInteger
+        example: 11
+      code:
+        description: Customer code.
+        type: String
+        example: CU123
+      name:
+        description: Customer name.
+        type: String
+        example: Ben 
+      lastname:
+        description: Customer last name.
+        type: String
+        example: Simmons
+      nickname:
+        description: Customer nickname.
+        type: LocalDate
+        example: '2021-04-23'
+      birthDate:
+        description: Customer birthdate.
+        type: LocalDate
+        example: '2021-05-23'
+      mobileNumber:
+        description: Customer mobile number.
+        type: String
+        example: +34666666666
+      referralCode:
+        description: Customer referral code to invite new users.
+        type: String
+        example: BS8321F
+      referralInvitationCode:
+        description: Referral invitation code of the customer who invited you.
+        type: String
+        example: FL8935V    
+      email:
+        description: Customer email.
+        type: String
+        example: ben.simmons@test.com
+      status:
+        description: Customer status.
+        type: String
+        example: ACTIVE
+      kycStatus:
+        description: Customer KYC status.
+        type: String
+        example: PENDING
+      profilePicture:
+        description: Profile picture url.
+        type: String
+        example: 413213213123131231231@amazon.ecs.bucket-s3
+      address:
+        description: Customer address.
+        type: Address
+        example:
+          address1: 'Elm Street'
+          address2: 'N3, second floor'
+          city: 'LONDON'
+          state: 'LONDON'
+          country: 'GBR'
+          zipCode: '9999'
   SaveMoneypoolRequest:
     type: object
     required:
@@ -1261,6 +1590,50 @@ definitions:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
         type: String
         example: MONTHLY
+  CustomerMoneypool:
+    type: object
+    required:
+      - moneypoolId
+      - moneypoolName
+      - hostName
+      - moneypoolStatus
+      - isHost
+      - customerStatus
+      - joinedDate
+      - positions
+    properties:
+      moneypoolId:
+        description: Moneypool id.
+        type: BigInteger
+        example: 571418
+      moneypoolName:
+        description: Moneypool name.
+        type: String
+        example: Helping Hearts
+      hostName:
+        description: Host name.
+        type: String
+        example: John Simmons  
+      moneypoolStatus:
+        description: Moneypool status.
+        type: String
+        example: OPENED
+      isHost:
+        description: Specifies if the customer is the host of this moneypool.
+        type: Boolean
+        example: 1000
+      customerStatus:
+        description: The status of the customer in this moneypool.
+        type: String
+        example: ACTIVE
+      joinedDate:
+        description: The date the customer joined the moneypool.
+        type: LocalDate
+        example: '2021-04-23'
+      positions:
+        description: The customer positions in this moneypool.
+        type: array
+        example: [2,4]   
   Moneypool:
     type: object
     required:
@@ -1463,7 +1836,7 @@ definitions:
       concept:
         description: Movement concept.
         type: String
-        example: Moneypool movement
+        example: Credit in moneypool 2
       createdDate:
         description: Movement creation daate.
         type: LocalDateTime
