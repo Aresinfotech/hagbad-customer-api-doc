@@ -1640,10 +1640,6 @@ definitions:
         description: Moneypool start date.
         type: LocalDate
         example: '2021-04-23'
-      nextPaymentDate:
-        description: Moneypool next payment date.
-        type: LocalDate
-        example: '2021-05-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1881,10 +1877,6 @@ definitions:
         description: Moneypool start date.
         type: LocalDate
         example: '2021-04-23'
-      nextPaymentDate:
-        description: Moneypool next payment date.
-        type: LocalDate
-        example: '2021-05-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
