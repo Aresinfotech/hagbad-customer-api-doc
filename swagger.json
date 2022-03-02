@@ -365,7 +365,7 @@
     "/configuration": {
       "get": {
         "tags": [
-          "partner"
+          "configuration"
         ],
         "summary": "Get Partner configuration.",
         "description": "Return the partner configuration details.",
@@ -2618,12 +2618,6 @@
     },
     "Member": {
       "type": "object",
-      "required": [
-        "memberId",
-        "customerId",
-        "positions",
-        "status"
-      ],
       "properties": {
         "id": {
           "description": "Member id.",
@@ -2635,22 +2629,42 @@
           "type": "BigInteger",
           "example": 571423
         },
-        "positions": {
-          "description": "List of position",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MemberPosition"
-          }
+        "name": {
+          "description": "Customer id.",
+          "type": "BigInteger",
+          "example": 571423
+        },
+        "lastName": {
+          "description": "Customer id.",
+          "type": "BigInteger",
+          "example": 571423
         },
         "status": {
           "description": "Member status.",
           "type": "String",
           "example": "ACTIVE"
         },
+        "host": {
+          "description": "Flag which determines if the member is the host of the moneypool.",
+          "type": "Boolean",
+          "example": false
+        },
         "joinedDate": {
           "description": "Joined date.",
           "type": "LocalDateTime",
           "example": "2021-04-23T00:00:00+02:00"
+        },
+        "rating": {
+          "description": "Member rating.",
+          "type": "Double",
+          "example": 0.65
+        },
+        "positions": {
+          "description": "List of position",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MemberPosition"
+          }
         }
       }
     },
