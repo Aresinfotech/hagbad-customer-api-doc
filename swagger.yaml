@@ -1477,7 +1477,7 @@ definitions:
       nickname:
         description: Customer nickname.
         type: LocalDate
-        example: '2021-04-23'
+        example: BSimmy
       birthDate:
         description: Customer birthdate.
         type: LocalDate
@@ -1508,14 +1508,7 @@ definitions:
         example: FL8935V
       address:
         description: Customer address.
-        type: Address
-        example:
-          address1: Elm Street
-          address2: 'N3, second floor'
-          city: LONDON
-          state: LONDON
-          country: GBR
-          zipCode: '9999'
+        $ref: '#/definitions/Address'
   Customer:
     type: object
     properties:
@@ -1538,7 +1531,7 @@ definitions:
       nickname:
         description: Customer nickname.
         type: LocalDate
-        example: '2021-04-23'
+        example: BSimmy
       birthDate:
         description: Customer birthdate.
         type: LocalDate
@@ -1573,14 +1566,7 @@ definitions:
         example: 413213213123131231231@amazon.ecs.bucket-s3
       address:
         description: Customer address.
-        type: Address
-        example:
-          address1: Elm Street
-          address2: 'N3, second floor'
-          city: LONDON
-          state: LONDON
-          country: GBR
-          zipCode: '9999'
+        $ref: '#/definitions/Address'
   SearchCustomerRequest:
     type: object
     properties:
@@ -2049,6 +2035,33 @@ definitions:
         description: Member status.
         type: String
         example: ACTIVE
+  Address:
+    type: object
+    properties:
+      address1:
+        description: Address first line (street).
+        type: Integer
+        example: 1
+      address2:
+        description: 'Address second line (House number, floor...etc.).'
+        type: String
+        example: 1
+      city:
+        description: City.
+        type: String
+        example: 1
+      state:
+        description: State.
+        type: String
+        example: 1
+      country:
+        description: Country.
+        type: String
+        example: 1
+      zipCode:
+        description: Postal code.
+        type: String
+        example: 1232F
   AddMemberRequest:
     type: object
     required:
