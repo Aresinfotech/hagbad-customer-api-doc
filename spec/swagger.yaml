@@ -534,6 +534,106 @@ paths:
           description: Customer not found.
           schema:
             $ref: '#/definitions/Error'
+  '/customer/search':
+    post:
+      summary: Search customers.
+      description: |
+                    Search customers given some parameters. You will have two different ways to search customers:
+                    - SearchCustomerRequest object in the request body.
+                    - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email.
+      operationId: searchCustomers
+      tags:
+        - customers
+      parameters:
+        - name: Search request parameters.
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/SearchCustomerRequest'
+        - name: searchParam
+          in: query
+          required: false
+          type: String
+          description: search param to search by in customer nickname or email.    
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: Page number.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: Number of elements per page.
+      responses:
+        '200':
+          description: Find one or more Customers matching with the search parameters. Not find any Customer matching with the search parameters (empty array).
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SearchCustomerResponse'
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/{customerId}/status/{status}':
+    put:
+      summary: Update customer status.
+      description: Update the status of a given customer.
+      operationId: updateCustomerStatus
+      tags:
+        - customers
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The customer identifier.
+        - name: status
+          in: path
+          required: true
+          type: String
+          description: Customer status.
+      responses:
+        '200':
+          description: Customer successfully updated.
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'    
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/{customerId}/KYC/{status}':
+    put:
+      summary: Update customer KYC status.
+      description: Update the KYC status of a given customer.
+      operationId: updateCustomerKYCStatus
+      tags:
+        - customers
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          type: BigInteger
+          description: The customer identifier.
+        - name: status
+          in: path
+          required: true
+          type: String
+          description: Customer KYC status.
+      responses:
+        '200':
+          description: Customer successfully updated.
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'    
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'                          
   '/customer/{customerId}/movement':
     get:
       summary: Get customer movements.
@@ -1485,6 +1585,45 @@ definitions:
           state: 'LONDON'
           country: 'GBR'
           zipCode: '9999'
+  SearchCustomerRequest:
+    type: object
+    properties:
+      name:
+        description: Customer name.
+        type: String
+        example: 'Ben'
+      lastname:
+        description: Customer lastname.
+        type: String
+        example: 'Simmons'
+      birthDate:
+        description: Customer birthDate.
+        type: LocalDate
+        example: '2021-04-24'
+      mobileNumber:
+        description: Customer phone number.
+        type: String
+        example: +34666453433
+      email:
+        description: Customer email.
+        type: String
+        example: ben@simmons.test
+      status:
+        description: Customer status.
+        type: String
+        example: ACTIVE
+      kycStatus:
+        description: Customer KYC status.
+        type: String
+        example: ACTIVE
+  SearchCustomerResponse:
+    type: object
+    properties:
+      customers:
+        description: Customers list.
+        type: array
+        items:
+          $ref: '#/definitions/Customer'      
   SaveMoneypoolRequest:
     type: object
     required:
