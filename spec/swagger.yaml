@@ -383,7 +383,7 @@ paths:
   '/configuration':
     get:
       tags:
-        - partner
+        - configuration
       summary: Get Partner configuration.
       description: Return the partner configuration details.
       responses:
