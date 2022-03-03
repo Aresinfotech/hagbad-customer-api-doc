@@ -154,6 +154,7 @@ info:
     The HAGBAD Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: 
 
     * HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). 
+    * HTTP **403** (Forbidden): You are not allowed to access or update the requested resource. 
     * HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). 
     * HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). 
     * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
@@ -411,7 +412,7 @@ paths:
         - customers
       responses:
         '200':
-          decription: Customer successfully updated.
+          description: Customer successfully updated.
           schema:
             $ref: '#/definitions/Customer'
         '201':
@@ -445,7 +446,7 @@ paths:
         - customers
       responses:
         '200':
-          decription: Returns the customer information.
+          description: Returns the customer information.
           schema:
             $ref: '#/definitions/Customer'
         '400':
@@ -471,7 +472,7 @@ paths:
         - customers
       responses:
         '200':
-          decription: Returns the customer information.
+          description: Returns the customer information.
           schema:
             $ref: '#/definitions/Customer'
         '400':
@@ -497,7 +498,7 @@ paths:
         - customers
       responses:
         '200':
-          decription: Returns the customer information.
+          description: Returns the customer information.
           schema:
             $ref: '#/definitions/Customer'
         '400':
@@ -523,7 +524,7 @@ paths:
         - customers
       responses:
         '200':
-          decription: Returns the customer information.
+          description: Returns the customer information.
           schema:
             $ref: '#/definitions/Customer'
         '400':
@@ -704,7 +705,7 @@ paths:
         - moneypools
       responses:
         '200':
-          decription: Moneypool successfully updated.
+          description: Moneypool successfully updated.
           schema:
             $ref: '#/definitions/Moneypool'
         '201':
