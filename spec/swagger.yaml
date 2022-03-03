@@ -27,8 +27,7 @@ info:
     - Predictable resource URLs. 
     - Accepts and returns JSON in the HTTP body. 
     - Returns HTTP response codes to indicate errors. 
-    - You can use your favorite HTTP/REST library for your programming language to use Hagbad’s APIs.
-
+  
     You can use your favorite HTTP/REST library for your programming language to consume this API. 
 
     # The Hagbad System
@@ -44,7 +43,7 @@ info:
     * **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**
 
     # Authentication
-    ### Please, note that firstly, the customer´s registration is required to authenticate in the system.
+    ### Please, note that the customers should already be registered in the system, in order to get access to the system.
 
     All Hagbad APIs, including this one, use [OpenId Connect](http://openid.net) protocol to authenticate customers. Specifically the security tokens used are JWT tokens. 
 
@@ -76,7 +75,7 @@ tags:
   - name: customers registration
     description: Customer management operations.
   - name: customers management
-    description: Customer management operations.  
+    description: Customer management operations.
   - name: moneypools
     description: Manage moneypool operation.
   - name: moneypool invitations
@@ -324,7 +323,7 @@ paths:
   '/customer/registration/start':
     post:
       summary: Start a new customer registration flow.
-      description: Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next stepts. Also an otp code will be sent to the given phone number.
+      description: Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next steps. Also an OTP code will be sent to the given phone number.
       operationId: customerRegistrationStart
       parameters:
         - name: StartRegistrationRequest
@@ -1035,7 +1034,7 @@ paths:
       description: Invites a customer to join the moneypool.
       operationId: createInvitation
       tags:
-        - invitations
+        - moneypool invitations
       parameters:
         - name: Invite request parameters.
           in: body
@@ -1065,7 +1064,7 @@ paths:
       description: Return a list with all the invitations of the customer.
       operationId: getCustomerInvitations
       tags:
-        - invitations
+        - moneypool invitations
       responses:
         '200':
           description: Returns the invitation list. Returns empty list if there is none.
@@ -1079,7 +1078,7 @@ paths:
       description: Return a list with all the invitations of a moneypool.
       operationId: getMoneypoolInvitations
       tags:
-        - invitations
+        - moneypool invitations
       parameters:
         - name: moneypoolId
           in: path
@@ -1103,7 +1102,7 @@ paths:
       description: Accept an invitation.
       operationId: acceptInvitation
       tags:
-        - invitations
+        - moneypool invitations
       parameters:
         - name: id
           in: path
@@ -1133,7 +1132,7 @@ paths:
       description: Decline an invitation given its identifier.
       operationId: declineInvitation
       tags:
-        - invitations
+        - moneypool invitations
       parameters:
         - name: id
           in: path
@@ -1163,7 +1162,7 @@ paths:
       description: Create a request to join a moneypool.
       operationId: joiningRequest
       tags:
-        - joining request
+        - moneypool joining request
       parameters:
         - name: Joining request parameters.
           in: body
@@ -1193,7 +1192,7 @@ paths:
       description: Return a list with all the joining requests of the customer.
       operationId: getCustomerJoiningRequest
       tags:
-        - joining request
+        - moneypool joining request
       responses:  
         '200':
           description: 'Returns the joining requests list. Returns empty list if there is none.'
@@ -1207,7 +1206,7 @@ paths:
       description: Return a list with all the joining requests of a moneypool.
       operationId: getMoneypoolJoiningRequest
       tags:
-        - joining request
+        - moneypool joining request
       parameters:
         - name: moneypoolId
           in: path
@@ -1231,7 +1230,7 @@ paths:
       description: Accept a joining request.
       operationId: acceptJoiningRequest
       tags:
-        - joining request
+        - moneypool joining request
       parameters:
         - name: id
           in: path
@@ -1253,7 +1252,7 @@ paths:
       description: Decline a the joining request.
       operationId: declineJoiningRequest
       tags:
-        - joining request
+        - moneypool joining request
       parameters:
         - name: id
           in: path
@@ -1280,7 +1279,7 @@ paths:
   '/event/{id}/ack':
     post:
       tags:
-        - Notifications
+        - notifications
       summary: Acknowledge an existent event
       operationId: ackNotification
       description: |
@@ -1299,13 +1298,13 @@ paths:
   /event:
     get:
       tags:
-        - Notifications
+        - notifications
       summary: Gets all non acknowledged notifications
       operationId: getNotifications
       description: |
         Returns all events that are not yet acknowledged. 
 
-        The `event_info` type is variable depending on the `event_type` raised, so the consumer should allow for dynamic types on this attributes. 
+        The `payload` type is variable depending on the `eventtype` raised, so the consumer should allow for dynamic types on this attributes. 
 
         ### Available Events
 
@@ -1338,12 +1337,11 @@ definitions:
       - idCountry
       - name
       - iso2
-      - iso3
     properties:
-      idCountry:
+      id:
         description: Numeric iso of the country.
         type: BigInteger
-        example: 840
+        example: USA
       name:
         description: Name of the country
         type: String
@@ -1352,10 +1350,6 @@ definitions:
         description: Alphanumeric iso code (2-letters) of the country.
         type: String
         example: US
-      iso3:
-        description: Alphanumeric iso code (3-letters) of the country.
-        type: String
-        example: USA
   City:
     type: object
     required:
@@ -1403,16 +1397,11 @@ definitions:
     type: object
     required:
       - id
-      - iso
       - name
     properties:
       id:
         description: Numeric iso of the currency.
         type: BigInteger
-        example: 840
-      iso:
-        description: Alphanumeric iso code (3-letters) of the currency.
-        type: String
         example: USD
       name:
         description: Currency name
@@ -2319,6 +2308,7 @@ definitions:
       payload:
         type: object
   StartRegistrationRequest:
+    type: object
     properties:
       phoneNumber:
         type: string
@@ -2333,12 +2323,14 @@ definitions:
         description: A referral code provided by other hagbad's customer
         example: SANQ123
   StartRegistrationResponse:
+    type: object
     properties:
       registrationKey:
         type: string
-        description: The registration id generated. It will be used in next stepts
+        description: The registration id generated. It will be used in next steps
         example: 3664893e-e13a-4237-b95c-c489a9400da2
   VerifyRegistrationRequest:
+    type: object
     properties:
       registrationKey:
         type: string
@@ -2346,9 +2338,10 @@ definitions:
         example: 3664893e-e13a-4237-b95c-c489a9400da2
       verificationCode:
         type: string
-        description: The otp sent to the provided phone number
+        description: The OTP sent to the provided phone number
         example: 123456
   VerifyRegistrationResponse:
+    type: object
     properties:
       foundCustomer:
         description: If the customer already exist in the remmitance system, its information is going returned here.
@@ -2371,6 +2364,7 @@ definitions:
             type: date
             example: '1986-01-01'
   CompleteRegistrationRequest:
+    type: object
     properties:
       registrationKey:
         type: string
