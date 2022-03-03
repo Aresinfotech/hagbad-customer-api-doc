@@ -31,6 +31,7 @@ info:
     # Goal 
 
     The goal of this technical documentation is providing to Front-End developers (Mobile, Web, …) the specifications to connect to Hagbad System Platform though the APIs exposed in its gateway.
+
     This means that the API is intended to by used directly by the Front End, so all the operations assume that a customer is logged in the system, and will provide information based on that assumption.
 
 
