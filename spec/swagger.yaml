@@ -1,177 +1,101 @@
 swagger: '2.0'
 schemes:
   - https
+host: hagbad.greysystems.eu
 info:
-  version: 1.0.0
+  version: 1.0.0-beta
   title: Hagbad Online REST API
   contact:
-    email: 'developers@greysystems.eu'         
-    url: 'http://www.greysystems.eu/#contact'
+    email: developers@greysystems.eu        
+    url: http://www.greysystems.eu/#contact
   license:
-    name: All Rights reserved GreySystems 2021
+    name: All Rights reserved GreySystems 2022
     url: 'http://www.greysystems.eu'
   termsOfService: 'https://www.greysystems.eu'
   x-logo:
     url: 'http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png'
     background: '#FFFFFF'
   description: |
+    This page contains the documentation on how to use the Hagbad API.
+
+    **API is in beta version, breaking changes may be introduced before the final release candidate is released**
+
     # Introduction
 
-    The Hagbad REST API is a RESTFul API built on HTTP. It provides the following features:
+    The Hagbad  API is built on top of HTTP:
+    - RESTFul
     - Predictable resource URLs. 
     - Accepts and returns JSON in the HTTP body. 
     - Returns HTTP response codes to indicate errors. 
     - You can use your favorite HTTP/REST library for your programming language to use Hagbad’s APIs.
 
-    # Who we are? 
+    You can use your favorite HTTP/REST library for your programming language to consume this API. 
 
-    Grey Systems is a well established European IT Consulting company that specialises in working with financial institutions.
-    During the last years, we have developed "Hagbad Platform", a next level technology platform to provide online multichannel MoneyPool services to Payment Institutions, MSB, Banks, etc.
+    # The Hagbad System
+    The Hagbad  is an integrated set of APIs to create and manage moneypools created by customers for other customers.
+    There are the differentes modules exposed by this API: 
 
-    # Goal 
-
-    The goal of this technical documentation is providing to Front-End developers (Mobile, Web, …) the specifications to connect to Hagbad System Platform though the APIs exposed in its gateway.
-    
-    This means that the API is intended to by used directly by the Front End, so all the operations assume that a customer is logged in the system, and will provide information based on that assumption.
-
+    * **Configuration**: Manage the partner configuration. For now on, the configuration is created by the Hagbad team.
+    * **Catalogs**: This module is used to get the catalog information like countries, cities, states, currencies, etc 
+    * **Customers**: Register and manage the system customer. 
+    * **Moneypools**: Manage the lifecycle of a moneypool (creation, start, etc).
+    * **Invitation**: This module gives the ability to invite and accept moneypools' invitations.
+    * **Joining Request**: This module gives the ability to request moneypools' participations.
+    * **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**
 
     # Authentication
+    ### Please, note that firstly, the customer´s registration is required to authenticate in the system.
 
+    All Hagbad APIs, including this one, use [OpenId Connect](http://openid.net) protocol to authenticate customers. Specifically the security tokens used are JWT tokens. 
 
-    ## The identity endpoint
-    Several resources exposed by this gateway are secured, and you will need a [json web token](https://jwt.io/) to reach the secured methods.
+    To issue new tokens, you have to use the Hagbad OpenId compliant server located at https://hagbad.greysystems.eu/auth (for more info please check [GreySystems Identity Server Doc](https://grey-systems.github.io/gs-identity-doc/))
 
-    The main way to get this jwt should be the Oauth2 flow method called `Authorization Code`. The Oauth2 flow has become the web security standard in the internet services.
-    You can get more information about Oauth2 framework here:
-    https://datatracker.ietf.org/doc/html/rfc6749
+    * **User Token**: Gets an  `access_token` issued on behalf of an end-user. To get an user access_token you have to implement the [Authorization Code Flow](https://www.keycloak.org/docs/3.3/server_admin/topics/sso-protocols/oidc.html). 
 
-    You can use our Hagbad identity manager that follows the oauth2 standard. All the requests made against `/auth` endpoint will be automatically redirected to the Hagbad identity manager. This identity manager knows every configured partner in the Hagbad system and is capable of authenticating and registering users using the partner system's own configuration.
+    **How I use the tokens?**
+     As stated in the introduction, both tokens types are JWT tokens, and you should set that token in the HTTP `Authorization` Header of the API call in this way: 
 
-    The related project that builds and configures the Hagbad identity manager is: https://gitlab.com/grey-systems/hagbad/hagbad-identity. (Please, note that you will need an authorized user to see this repository)
-
-    Now, let's see the allowed methods exposed under the `/auth` path:
-
-    ### Well known endpoint
-    The well known endpoint provides you all the Oauth2 configuration that you ought to know to build the oauth flow in your application.
-    This endpoint returns, among other information, where the authorization or token endpoint is published. Also describe the allowed scopes and the public key made by the identity manager.
-
-    Let's see an example request using the develop environment gateway.
-
-    `GET http://localhost:8080/auth/realms/aqil/.well-known/openid-configuration`
-
-    ### Obtaining the Authorization Code
-    Once you know how to configure the oauth flow, you can get the authorization code to start the user authentication.
-
-    As we can see in the official documentation described above: 
-
-    >The authorization code is obtained by using an authorization server
-    as an intermediary between the client and resource owner.  Instead of
-    requesting authorization directly from the resource owner, the client
-    directs the resource owner to an authorization server (via its
-    user-agent as defined in [RFC2616]), which in turn directs the
-    resource owner back to the client with the authorization code.
-
-    You will need an internet browser to start the get Authorization Code flow. The browser is required because the identity manager
-    will redirect the authorization request to the proper partner (currently, one test partner built using oauth0 application). The 
-    partner will request you the user and password and validate them. If the authorization is success, the identity
-    manager will return to you (where the redirect_uri indicates) the authorization code that you will use
-    to request the `access_token` via the token endpoint.
-
-    Let's see an example (remember, this request will be launched inside the browser):
-
-    ```json
-    http://localhost:8080/auth/realms/aqil/protocol/openid-connect/auth?redirect_uri=http://localhost:8081&client_id=aqil-api-client&response_type=code&scope=openid
     ```
-    Now, you should see the oauth2 auth form:
-
-    ![oauth form](.images/authorizations/oauth2-auth-form.png)
-
-    Login with an existent user and you will be redirected to the registration page if the user does not already exist in the system:
-    ![partner registration page](.images/authorizations/aqil-registration-page.png)
-
-    Type the required fields and click in the register button. Please, keep in mind that the authorization code will be returned to `http://localhost:8081` so, you will need to capture the response using the browser developer tools:
-
-    ![authorization code intercepted](.images/authorizations/authorization-code-intercepted.png)
-
-    Now, you can use the provided authorization code to get the `access_token`. You will send a POST request to the token endpoint:
-
-    ```bash
-    curl --request POST \
-      --url http://localhost:8080/auth/realms/aqil/protocol/openid-connect/token \
-      --header 'Content-Type: application/x-www-form-urlencoded' \
-      --data grant_type=authorization_code \
-      --data code=f3e31822-73d0-484c-91d4-7839ab72c75f.379adde7-0448-4764-ae99-cf0852755e5e.5fdbcc2d-44a0-45d0-9ac7-1c423f622f0f \
-      --data client_id=aqil-api-client \
-      --data client_secret=e33009fc-17a6-4549-8bd6-b1a82792444b \
-      --data redirect_uri=http://localhost:8081
+    Authorization: Bearer {the_token}
     ```
-
-    Obtaining this response:
-
-    ![access token](.images/authorizations/access_token.png)
-
-    **Getting service access_token via HTTP graphical client**
-
-    If you are using HTTP clients like Insomnia, you can integrate this authorization code as part as the request authentication. Getting the `access_token` in a pretty easy way. Just add the `Authorization Code` option in the authorization tab and rock and roll:
-
-    ![Insomnia authorization](.images/authorizations/insomnia-authorization.png)
-
-    ## Refreshing the access token
-    The access tokens given by the identity manager have expiration time. If you `access token` is expired, you will refresh it using the token endpoint provides by the identity manager.
-
-    In a similar way that you get the `access token` in the last step described in the previous point, you can refresh the token making a POST request to the token endpoint:
-
-    ```bash
-    curl --request POST \
-      --url http://localhost:8080/auth/realms/aqil/protocol/openid-connect/token \
-      --header 'Content-Type: application/x-www-form-urlencoded' \
-      --data grant_type=refresh_token \
-      --data refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkZTNjYWU2NC0wMGQ3LTQ4NTEtYWQ2ZS1lMmQ3ZTZjN2ZhMmUifQ.eyJleHAiOjE2MzM5NjgyNjcsImlhdCI6MTYzMzk2NjQ2NywianRpIjoiY2U4OGQzNzAtNDkzYS00ZDJjLWE2MmItNjE3YjM5MDgwZTkyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2FxaWwiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvYXFpbCIsInN1YiI6IjRmMGU1M2FkLTY0ZjMtNGQ0ZS04MWQ2LWE0Yzk4NmZmNmMzZCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJhcWlsLWFwaS1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiMzc5YWRkZTctMDQ0OC00NzY0LWFlOTktY2YwODUyNzU1ZTVlIiwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6IjM3OWFkZGU3LTA0NDgtNDc2NC1hZTk5LWNmMDg1Mjc1NWU1ZSJ9._EnQzlqqHSZNQYx5Va_ifcsN1LCL_DKMkmVluIgAxao \
-      --data client_id=aqil-api-client \
-      --data client_secret=e33009fc-17a6-4549-8bd6-b1a82792444b
-    ```
-
-    Please, note that in this POST request, the `grant_type` is `refresh_token` instead of `authorization_code`. 
-
-    The refresh response is the same that you receive when get the `access_token` in the previous step. Using this mechanism, you can refresh the `access_token as time as you need.
-
-    ## Getting the user info
-    The identity manager provides the oauth2 endpoint `/userinfo`. You can use this endpoint to get the very basic user information saved in the identity manager. This method is not recommended getting the user info due to it contains only the public information about the user, ignoring more specific fields that maybe you need.
-
-    To get the user info, simply use `GET http://localhost:8080/auth/realms/aqil/protocol/openid-connect/userinfo` giving the bearer token in the `Authorization` header. 
-
-    Here is the response for the user registered above:
-
-    ![user info](.images/authorizations/user-info.png)
-
-    ## Logout the current user session
-    Each time you get an `access_token`, you are creating a new session in the identity manager. If you want to logout the current session of the user, you just use the `/logout` endpoint provides by the identity manager.
-
-    Use: `GET http://localhost:8080/auth/realms/aqil/protocol/openid-connect/logout` with the bearer token in the `Authorization` header to logout the related
-
 
     # Common HTTP Error Responses
 
-    The HAGBAD Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: 
+    The Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: 
 
     * HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). 
     * HTTP **403** (Forbidden): You are not allowed to access or update the requested resource. 
     * HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). 
     * HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). 
-    * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team. 
+    * HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team.
 tags:
-  - name: catalogs
-    description: This section explains how to access different the catalogs availables in the system.
   - name: configuration
     description: This section details the available operations related to the partner configuration.
-  - name: customers
+  - name: catalogs
+    description: This section explains how to access different the catalogs availables in the system.
+  - name: customers registration
+    description: Customer management operations.
+  - name: customers management
     description: Customer management operations.  
   - name: moneypools
     description: Manage moneypool operation.
-  - name: invitations
+  - name: moneypool invitations
     description: Manage moneypool invitations.
-  - name: joining request
+  - name: moneypool joining request
     description: Manage moneypool joining requests.
+  - name: notifications
+    description: | 
+      **THIS ENDPOINT IS NOT AVAILABLE YET**
+
+      Notification management operations. 
+securityDefinitions:
+  JWT:
+    description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
+    type: apiKey
+    name: 'Authorization: Bearer access_token'
+    in: header
+security:
+  - JWT: []
 paths:
   '/catalog/country':
     get:
@@ -397,41 +321,6 @@ paths:
           description: Partner not found.
           schema:
             $ref: '#/definitions/Error'
-  '/customer':
-    post:
-      summary: Save a customer.
-      description: 
-        This endpoint service will cover create and update customer functionalities. It will depend on whether the customer identifier field is informed or not. If it isn't the service will create a new customer otherwise, it will update the provided one.    
-      operationId: saveCustomer
-      parameters:
-        - name: SaveCustomerRequest
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/SaveCustomerRequest'
-      tags:
-        - customers
-      responses:
-        '200':
-          description: Customer successfully updated.
-          schema:
-            $ref: '#/definitions/Customer'
-        '201':
-          description: Customer successfully created.
-          schema:
-            $ref: '#/definitions/Customer'
-        '400':
-          description: Invalid Request. message attribute of response contains detailed information about the issue.
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: Customer not found.
-          schema:
-            $ref: '#/definitions/Error'
-        '409':
-          description: 'Conflict. Email is mandatory, so it can not be deleted or updated with an empty text.'
-          schema:
-            $ref: '#/definitions/Error'
   '/customer/{customerId}':
     get:
       summary: Get customer by id.
@@ -444,7 +333,7 @@ paths:
           type: BigInteger
           description: The customer identifier.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the customer information.
@@ -470,7 +359,7 @@ paths:
           type: String
           description: The customer code.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the customer information.
@@ -496,7 +385,7 @@ paths:
           type: String
           description: The customer username.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the customer information.
@@ -522,7 +411,7 @@ paths:
           type: String
           description: The customer email.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the customer information.
@@ -545,7 +434,7 @@ paths:
                     - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email.
       operationId: searchCustomers
       tags:
-        - customers
+        - customers management
       parameters:
         - name: Search request parameters.
           in: body
@@ -584,7 +473,7 @@ paths:
       description: Update the status of a given customer.
       operationId: updateCustomerStatus
       tags:
-        - customers
+        - customers management
       parameters:
         - name: customerId
           in: path
@@ -613,7 +502,7 @@ paths:
       description: Update the KYC status of a given customer.
       operationId: updateCustomerKYCStatus
       tags:
-        - customers
+        - customers management
       parameters:
         - name: customerId
           in: path
@@ -648,7 +537,7 @@ paths:
           type: BigInteger
           description: The customer identifier.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the movements of the given customer. Returns an empty list if the customer doesn’t have any movement.
@@ -674,7 +563,7 @@ paths:
           type: BigInteger
           description: The customer identifier.
       tags:
-        - customers
+        - customers management
       responses:
         '200':
           description: Returns the moneypools of the given customer. Returns an empty list if the customer doesn’t have any movement.
@@ -1301,7 +1190,51 @@ paths:
         '409':
           description: 'The joining request is not pending, so it can not be updated.'
           schema:
-            $ref: '#/definitions/Error'       
+            $ref: '#/definitions/Error'
+  '/event/{id}/ack':
+    post:
+      tags:
+        - Notifications
+      summary: Acknowledge an existent event
+      operationId: ackNotification
+      description: |
+        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method. 
+      parameters:
+        - name: id
+          in: path
+          description: The id of the event to be acked
+          type: string
+          required: true
+      responses:
+        '204':
+          description: 'Success, event is acknowledged'
+        '404':
+          description: 'Not Found, the event identified by id does not exists'
+  /event:
+    get:
+      tags:
+        - Notifications
+      summary: Gets all non acknowledged notifications
+      operationId: getNotifications
+      description: |
+        Returns all events that are not yet acknowledged. 
+
+        The `event_info` type is variable depending on the `event_type` raised, so the consumer should allow for dynamic types on this attributes. 
+
+        ### Available Events
+
+        * For now on, no one event type is available.
+
+        **Note that when an event is acknowledged, it will no longer be available for consume through this method**
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Success, all non acknowledged notifications are retuned'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NotificationEvent'
 definitions:
   Error:
     type: object
@@ -2286,11 +2219,16 @@ definitions:
         description: The joining request expiration date.
         type: LocalDateTime
         example: '2021-04-23T00:00:00+02:00'
-securityDefinitions:
-  JWT:
-    description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
-    type: apiKey
-    name: 'Authorization: Bearer access_token'
-    in: header
-security:
-  - JWT: []
+  NotificationEvent:
+    properties:
+      id:
+        type: string
+        example: 3664893e-e13a-4937-b93c-c489a9400daa
+      eventType:
+        type: string
+        example: An event type
+      dateEvent:
+        type: string
+        example: '2018-01-10T02:07:26Z'
+      payload:
+        type: object
