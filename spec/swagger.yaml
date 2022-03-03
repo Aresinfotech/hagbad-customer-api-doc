@@ -321,6 +321,92 @@ paths:
           description: Partner not found.
           schema:
             $ref: '#/definitions/Error'
+  '/customer/registration/start':
+    post:
+      summary: Start a new customer registration flow.
+      description: Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next stepts. Also an otp code will be sent to the given phone number.
+      operationId: customerRegistrationStart
+      parameters:
+        - name: StartRegistrationRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StartRegistrationRequest'
+      tags:
+        - customers registration
+      responses:
+        '200':
+          description: Returns the generated registration key.
+          schema:
+            $ref: '#/definitions/StartRegistrationResponse'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error' 
+        '409':
+          description: Conflict. The given phone number already exists in the system.
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/registration/verify':
+    post:
+      summary: Verify the started customer's registration
+      description: | 
+        When the registration starts, an OTP code is sent to the given phone number. Use this resource to verify the phone number. 
+
+        If the customer already exist in the remmitance system, the found customer's information is returned in the response.
+      operationId: customerRegistrationVerify
+      parameters:
+        - name: VerifyRegistrationRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/VerifyRegistrationRequest'
+      tags:
+        - customers registration
+      responses:
+        '200':
+          description: Returns the customer info (if found in the remmitance system).
+          schema:
+            $ref: '#/definitions/VerifyRegistrationResponse'
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error' 
+        '409':
+          description: Registration key not valid
+          schema:
+            $ref: '#/definitions/Error'
+        '410':
+          description: Verification code (OTP) expired
+          schema:
+            $ref: '#/definitions/Error'
+  '/customer/registration/complete':
+    post:
+      summary: Finish the customer's registration
+      description: | 
+        Finish the started registration flow. 
+
+        If the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)
+      operationId: customerRegistrationVerify
+      parameters:
+        - name: CompleteRegistrationRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CompleteRegistrationRequest'
+      tags:
+        - customers registration
+      responses:
+        '200':
+          description: The registration has finished successfully
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error' 
+        '409':
+          description: Registration key not validated or the email already exist in the system
+          schema:
+            $ref: '#/definitions/Error'
   '/customer/{customerId}':
     get:
       summary: Get customer by id.
@@ -2232,3 +2318,80 @@ definitions:
         example: '2018-01-10T02:07:26Z'
       payload:
         type: object
+  StartRegistrationRequest:
+    properties:
+      phoneNumber:
+        type: string
+        description: The customer's phone number
+        example: '+34643124321'
+      birthdate:
+        type: date
+        description: The customer's date of birth.
+        example: '1986-01-01'
+      referralCode:
+        type: string
+        description: A referral code provided by other hagbad's customer
+        example: SANQ123
+  StartRegistrationResponse:
+    properties:
+      registrationKey:
+        type: string
+        description: The registration id generated. It will be used in next stepts
+        example: 3664893e-e13a-4237-b95c-c489a9400da2
+  VerifyRegistrationRequest:
+    properties:
+      registrationKey:
+        type: string
+        description: The registration id generated in the first step.
+        example: 3664893e-e13a-4237-b95c-c489a9400da2
+      verificationCode:
+        type: string
+        description: The otp sent to the provided phone number
+        example: 123456
+  VerifyRegistrationResponse:
+    properties:
+      foundCustomer:
+        description: If the customer already exist in the remmitance system, its information is going returned here.
+        type: object
+        properties:
+          code:
+            type: string
+            description: The customer's code provided by the remmitance system
+            example: C01 
+          firstName:
+            type: string
+            example: Aureliano
+          lastName:
+            type: string
+            example: Buendia
+          email:
+            type: string
+            example: lorem@ipsum.com
+          birthdate:
+            type: date
+            example: '1986-01-01'
+  CompleteRegistrationRequest:
+    properties:
+      registrationKey:
+        type: string
+        description: The registration id generated in the first step.
+        example: 3664893e-e13a-4237-b95c-c489a9400da2
+      password:
+        type: string
+        description: The customer's selected password
+      code:
+        type: string
+        description: The customer's code provided by the remmitance system
+        example: C01
+      firstName:
+        type: string
+        example: Aureliano
+      lastName:
+        type: string
+        example: Buendia
+      email:
+        type: string
+        example: lorem@ipsum.com
+      birthdate:
+        type: date
+        example: '1986-01-01'
