@@ -2612,6 +2612,11 @@
           "type": "BigDecimal",
           "example": "500"
         },
+        "moneypoolView": {
+          "description": "The moneypool view based on the logged user that request the information. Possible values are HOST, MEMBER or CUSTOMER",
+          "type": "String",
+          "example": "HOST"
+        },
         "members": {
           "description": "The members of the moneypool.",
           "type": "array",
