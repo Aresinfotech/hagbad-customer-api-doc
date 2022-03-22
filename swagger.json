@@ -4,6 +4,7 @@
     "https"
   ],
   "host": "hagbad.greysystems.eu",
+  "basePath": "/api/v1",
   "info": {
     "version": "1.0.0-beta",
     "title": "Hagbad Online REST API",
@@ -569,45 +570,6 @@
         }
       }
     },
-    "/customer/code/{code}": {
-      "get": {
-        "summary": "Get customer by code.",
-        "description": "Get customer information given its code",
-        "operationId": "getCustomerByCode",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "String",
-            "description": "The customer code."
-          }
-        ],
-        "tags": [
-          "customers management"
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns the customer information.",
-            "schema": {
-              "$ref": "#/definitions/Customer"
-            }
-          },
-          "400": {
-            "description": "Invalid Request. message attribute of response contains detailed information about the issue.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Customer not found.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/customer/username/{username}": {
       "get": {
         "summary": "Get customer by username.",
@@ -620,45 +582,6 @@
             "required": true,
             "type": "String",
             "description": "The customer username."
-          }
-        ],
-        "tags": [
-          "customers management"
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns the customer information.",
-            "schema": {
-              "$ref": "#/definitions/Customer"
-            }
-          },
-          "400": {
-            "description": "Invalid Request. message attribute of response contains detailed information about the issue.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Customer not found.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/customer/email/{email}": {
-      "get": {
-        "summary": "Get customer by email.",
-        "description": "Get customer information given its email",
-        "operationId": "getCustomerByEmail",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "path",
-            "required": true,
-            "type": "String",
-            "description": "The customer email."
           }
         ],
         "tags": [
@@ -737,92 +660,6 @@
           },
           "400": {
             "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/customer/{customerId}/status/{status}": {
-      "put": {
-        "summary": "Update customer status.",
-        "description": "Update the status of a given customer.",
-        "operationId": "updateCustomerStatus",
-        "tags": [
-          "customers management"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The customer identifier."
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "required": true,
-            "type": "String",
-            "description": "Customer status."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Customer successfully updated."
-          },
-          "400": {
-            "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Customer not found.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/customer/{customerId}/KYC/{status}": {
-      "put": {
-        "summary": "Update customer KYC status.",
-        "description": "Update the KYC status of a given customer.",
-        "operationId": "updateCustomerKYCStatus",
-        "tags": [
-          "customers management"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The customer identifier."
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "required": true,
-            "type": "String",
-            "description": "Customer KYC status."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Customer successfully updated."
-          },
-          "400": {
-            "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Customer not found.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -933,13 +770,13 @@
           "200": {
             "description": "Moneypool successfully updated.",
             "schema": {
-              "$ref": "#/definitions/Moneypool"
+              "$ref": "#/definitions/MoneypoolDetail"
             }
           },
           "201": {
             "description": "Moneypool successfully created.",
             "schema": {
-              "$ref": "#/definitions/Moneypool"
+              "$ref": "#/definitions/MoneypoolDetail"
             }
           },
           "400": {
@@ -962,45 +799,6 @@
           },
           "409": {
             "description": "Conflict. Duplicated moneypool code. Moneypool status does not allow changes.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/moneypool/{id}": {
-      "get": {
-        "summary": "Get moneypool by id.",
-        "description": "Get basic moneypool information.",
-        "operationId": "getMoneypool",
-        "tags": [
-          "moneypools"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The id of the moneypool"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns the basic information of the Moneypool.",
-            "schema": {
-              "$ref": "#/definitions/Moneypool"
-            }
-          },
-          "400": {
-            "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Moneypool not found.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
