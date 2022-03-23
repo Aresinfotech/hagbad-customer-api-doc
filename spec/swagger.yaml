@@ -527,17 +527,12 @@ paths:
           description: Customer not found.
           schema:
             $ref: '#/definitions/Error'
-  '/customer/{customerId}/moneypool':
+  '/customer/moneypool':
     get:
       summary: Get customer moneypools.
       description: Return a list with the customer moneypools, either as host or member.
       operationId: getCustomerMoneypools
       parameters:
-        - name: customerId
-          in: path
-          required: true
-          type: BigInteger
-          description: The customer identifier.
       tags:
         - customers management
       responses:
