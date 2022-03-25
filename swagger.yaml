@@ -388,6 +388,11 @@ paths:
         If the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)
       operationId: customerRegistrationVerify
       parameters:
+        - name: X-Hagbad-Customer_DeviceId
+          in: header
+          required: false
+          type: String
+          description: The device Id. This field is optional. You can use this header to auto-register the customer's device
         - name: CompleteRegistrationRequest
           in: body
           required: true

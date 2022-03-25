@@ -501,6 +501,13 @@
         "operationId": "customerRegistrationVerify",
         "parameters": [
           {
+            "name": "X-Hagbad-Customer_DeviceId",
+            "in": "header",
+            "required": false,
+            "type": "String",
+            "description": "The device Id. This field is optional. You can use this header to auto-register the customer's device"
+          },
+          {
             "name": "CompleteRegistrationRequest",
             "in": "body",
             "required": true,
