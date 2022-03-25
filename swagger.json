@@ -501,7 +501,7 @@
         "operationId": "customerRegistrationVerify",
         "parameters": [
           {
-            "name": "X-Hagbad-Customer_DeviceId",
+            "name": "X-Hagbad-Customer-Device-SSID",
             "in": "header",
             "required": false,
             "type": "String",
