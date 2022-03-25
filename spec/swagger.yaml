@@ -389,7 +389,7 @@ paths:
         If the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)
       operationId: customerRegistrationVerify
       parameters:
-        - name: X-Hagbad-Customer_DeviceId
+        - name: X-Hagbad-Customer-Device-SSID
           in: header
           required: false
           type: String
