@@ -557,7 +557,14 @@ paths:
   /moneypool:
     post:
       summary: Save a moneypool.
-      description: 'This endpoint service will cover create and update moneypool functionalities. It will depend on whether the moneypool identifier field is informed or not. If it isn''t the service will create a new moneypool otherwise, it will update the provided one.'
+      description: |
+        This endpoint service will cover create and update moneypool functionalities depending on whether the moneypool identifier field is informed or not. If not, the service will create a new moneypool otherwise, it will update the provided one.
+
+        * amountToSave: If the partner does not allow decimal numbers in its configuration, the amountToSave field must fulfill the following formula. Other case, this formula will not be necessary. 
+        ```
+        Remainder of: amountToSave/(numberOfMembers - 1) = 0
+        ```
+        It means that the division of the amountToSave between (numberOfMembers - 1) must be exact. 
       operationId: saveMoneypool
       parameters:
         - name: SaveMoneypoolRequest
