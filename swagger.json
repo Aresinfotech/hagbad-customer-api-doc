@@ -674,7 +674,7 @@
         }
       }
     },
-    "/customer/{customerId}/movement": {
+    "/customer/movement": {
       "get": {
         "summary": "Get customer movements.",
         "description": "Return a list with the movements of the customer",
