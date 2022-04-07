@@ -1793,12 +1793,12 @@
         "type": {
           "description": "The payment method type.",
           "type": "String",
-          "example": "TYPE"
+          "example": "CASH"
         },
         "description": {
           "description": "The payment method description.",
           "type": "String",
-          "example": "DESC"
+          "example": "Cash payment"
         }
       }
     },
@@ -1811,6 +1811,8 @@
         "upperLimit",
         "minMembers",
         "maxMembers",
+        "decimalAllowed",
+        "numberOfDecimals",
         "paymentMethods"
       ],
       "properties": {
@@ -1843,6 +1845,16 @@
           "description": "The maximum number of members a community can have for this partner.",
           "type": "String",
           "example": 15
+        },
+        "decimalAllowed": {
+          "description": "Indicate whether decimal numbers are allowed in the system or not.",
+          "type": "Boolean",
+          "example": true
+        },
+        "numberOfDecimals": {
+          "description": "The number of decimal allowed in case they are.",
+          "type": "Integer",
+          "example": 2
         },
         "paymentMethods": {
           "description": "The different payment methods configured for this partner.",
