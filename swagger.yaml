@@ -87,7 +87,7 @@ tags:
     description: |
       **THIS ENDPOINT IS NOT AVAILABLE YET**
 
-      Notification management operations. 
+      Notification management operations.
 securityDefinitions:
   JWT:
     description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
@@ -564,7 +564,7 @@ paths:
         ```
         Remainder of: amountToSave/(numberOfMembers - 1) = 0
         ```
-        It means that the division of the amountToSave between (numberOfMembers - 1) must be exact. 
+        It means that the division of the amountToSave between (numberOfMembers - 1) must be exact.
       operationId: saveMoneypool
       parameters:
         - name: SaveMoneypoolRequest
@@ -628,7 +628,7 @@ paths:
   /moneypool/search:
     post:
       summary: Search moneypools.
-      description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa.'
+      description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDateFrom</strong> and <strong>startDateTo</strong> fields and vice versa. </br> By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools.'
       operationId: searchMoneypools
       tags:
         - moneypools
@@ -1152,7 +1152,7 @@ paths:
       summary: Acknowledge an existent event
       operationId: ackNotification
       description: |
-        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method. 
+        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method.
       parameters:
         - name: id
           in: path
@@ -1688,6 +1688,10 @@ definitions:
         description: Moneypool currency.
         type: String
         example: USD
+      currentMembers:
+        description: Number of Members at this moment in the moneypool.
+        type: Integer
+        example: 6
       membersRequired:
         description: Number of Members required.
         type: Integer
@@ -1704,6 +1708,10 @@ definitions:
         description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
         type: String
         example: OPENED
+      rating:
+        description: 'The rating of the moneypool, calculated from the rate of its members.'
+        type: Double
+        example: 0.77
       purpose:
         description: Purpose of the moneypool.
         type: String
