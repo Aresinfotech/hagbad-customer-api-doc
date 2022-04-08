@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 schemes:
   - https
 host: hagbad.greysystems.eu
@@ -7,15 +7,15 @@ info:
   version: 1.0.0-beta
   title: Hagbad Online REST API
   contact:
-    email: developers@greysystems.eu        
+    email: developers@greysystems.eu
     url: http://www.greysystems.eu/#contact
   license:
     name: All Rights reserved GreySystems 2022
-    url: 'http://www.greysystems.eu'
-  termsOfService: 'https://www.greysystems.eu'
+    url: "http://www.greysystems.eu"
+  termsOfService: "https://www.greysystems.eu"
   x-logo:
-    url: 'http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png'
-    background: '#FFFFFF'
+    url: "http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png"
+    background: "#FFFFFF"
   description: |
     This page contains the documentation on how to use the Hagbad API.
 
@@ -28,7 +28,7 @@ info:
     - Predictable resource URLs. 
     - Accepts and returns JSON in the HTTP body. 
     - Returns HTTP response codes to indicate errors. 
-  
+
     You can use your favorite HTTP/REST library for your programming language to consume this API. 
 
     # The Hagbad System
@@ -84,37 +84,37 @@ tags:
   - name: moneypool joining request
     description: Manage moneypool joining requests.
   - name: notifications
-    description: | 
+    description: |
       **THIS ENDPOINT IS NOT AVAILABLE YET**
 
-      Notification management operations. 
+      Notification management operations.
 securityDefinitions:
   JWT:
-    description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
+    description: "You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server"
     type: apiKey
-    name: 'Authorization: Bearer access_token'
+    name: "Authorization: Bearer access_token"
     in: header
 security:
   - JWT: []
 paths:
-  '/catalog/country':
+  "/catalog/country":
     get:
       tags:
         - catalogs
       summary: Get countries.
       description: Returns the entire list of countries.
       responses:
-        '200':
+        "200":
           description: Returns the entire list of countries.
           schema:
             type: array
             items:
-              $ref: '#/definitions/Country'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+              $ref: "#/definitions/Country"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/country/{iso3}':
+            $ref: "#/definitions/Error"
+  "/catalog/country/{iso3}":
     get:
       tags:
         - catalogs
@@ -127,24 +127,24 @@ paths:
           type: String
           description: ISO-Alpha3 Code.
       responses:
-        '200':
+        "200":
           description: Returns the country details.
           schema:
-            $ref: '#/definitions/Country'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/Country"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Country not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/country/{iso3}/city':
+            $ref: "#/definitions/Error"
+  "/catalog/country/{iso3}/city":
     get:
       tags:
         - catalogs
       summary: Search cities by country and name.
-      description: 'Returns a list of cities, filtering them by country and by the name passed by parameters. The name must contain at least three characters.'
+      description: "Returns a list of cities, filtering them by country and by the name passed by parameters. The name must contain at least three characters."
       parameters:
         - name: iso3
           in: path
@@ -155,23 +155,23 @@ paths:
           in: query
           required: true
           type: String
-          description: 'City name, minimum length three characters.'
+          description: "City name, minimum length three characters."
       responses:
-        '200':
+        "200":
           description: Returns a list with the cities which match the filter.
           schema:
             type: array
             items:
-              $ref: '#/definitions/City'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+              $ref: "#/definitions/City"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Country or cities not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/country/{iso3}/city/{cityId}':
+            $ref: "#/definitions/Error"
+  "/catalog/country/{iso3}/city/{cityId}":
     get:
       tags:
         - catalogs
@@ -182,32 +182,32 @@ paths:
           in: path
           required: true
           type: String
-          description:  ISO-Alpha3 Code.
+          description: ISO-Alpha3 Code.
         - name: cityId
           in: path
           required: true
           type: BigInteger
           description: City identifier.
       responses:
-        '200':
+        "200":
           description: Returns the city given its identifier.
           schema:
-            $ref: '#/definitions/City'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/City"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Country or city not found.
           schema:
-            $ref: '#/definitions/Error'
-            
-  '/catalog/country/{iso3}/state':
+            $ref: "#/definitions/Error"
+
+  "/catalog/country/{iso3}/state":
     get:
       tags:
         - catalogs
       summary: Search states by country and name.
-      description: 'Returns a list of states, filtering them by country and by the name passed by parameters. The name is not mandatory, but if is informed it must contain at least three characters.'
+      description: "Returns a list of states, filtering them by country and by the name passed by parameters. The name is not mandatory, but if is informed it must contain at least three characters."
       parameters:
         - name: iso3
           in: path
@@ -218,23 +218,23 @@ paths:
           in: query
           required: false
           type: String
-          description: 'State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country.'
+          description: "State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country."
       responses:
-        '200':
+        "200":
           description: Returns a list with the states.
           schema:
             type: array
             items:
-              $ref: '#/definitions/State'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+              $ref: "#/definitions/State"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Country or states not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/country/{iso3}/state/{stateId}':
+            $ref: "#/definitions/Error"
+  "/catalog/country/{iso3}/state/{stateId}":
     get:
       tags:
         - catalogs
@@ -252,36 +252,36 @@ paths:
           type: BigInteger
           description: State identifier
       responses:
-        '200':
+        "200":
           description: Returns the state given its identifier.
           schema:
-            $ref: '#/definitions/State'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/State"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Country or state not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/currency':
+            $ref: "#/definitions/Error"
+  "/catalog/currency":
     get:
       tags:
         - catalogs
       summary: Get currencies.
       description: Returns the entire list of currencies.
       responses:
-        '200':
+        "200":
           description: Returns the entire list of currencies.
           schema:
             type: array
             items:
-              $ref: '#/definitions/Currency'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+              $ref: "#/definitions/Currency"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-  '/catalog/currency/{iso}':
+            $ref: "#/definitions/Error"
+  "/catalog/currency/{iso}":
     get:
       tags:
         - catalogs
@@ -294,34 +294,34 @@ paths:
           type: String
           description: ISO Code.
       responses:
-        '200':
+        "200":
           description: Returns the currency details.
           schema:
-            $ref: '#/definitions/Currency'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/Currency"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Currency not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/configuration':
+            $ref: "#/definitions/Error"
+  "/configuration":
     get:
       tags:
         - configuration
       summary: Get Partner configuration.
       description: Return the partner configuration details.
       responses:
-        '200':
-          description: 'Return current partner configuration.'
+        "200":
+          description: "Return current partner configuration."
           schema:
-            $ref: '#/definitions/PartnerConfiguration'
-        '404':
+            $ref: "#/definitions/PartnerConfiguration"
+        "404":
           description: Partner not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/registration/start':
+            $ref: "#/definitions/Error"
+  "/customer/registration/start":
     post:
       summary: Start a new customer registration flow.
       description: Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next steps. Also an OTP code will be sent to the given phone number.
@@ -331,26 +331,26 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/StartRegistrationRequest'
+            $ref: "#/definitions/StartRegistrationRequest"
       tags:
         - customers registration
       responses:
-        '200':
+        "200":
           description: Returns the generated registration key.
           schema:
-            $ref: '#/definitions/StartRegistrationResponse'
-        '400':
+            $ref: "#/definitions/StartRegistrationResponse"
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error' 
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: Conflict. The given phone number already exists in the system.
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/registration/verify':
+            $ref: "#/definitions/Error"
+  "/customer/registration/verify":
     post:
       summary: Verify the started customer's registration
-      description: | 
+      description: |
         When the registration starts, an OTP code is sent to the given phone number. Use this resource to verify the phone number. 
 
         If the customer already exist in the remmitance system, the found customer's information is returned in the response.
@@ -360,30 +360,30 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/VerifyRegistrationRequest'
+            $ref: "#/definitions/VerifyRegistrationRequest"
       tags:
         - customers registration
       responses:
-        '200':
+        "200":
           description: Returns the customer info (if found in the remmitance system).
           schema:
-            $ref: '#/definitions/VerifyRegistrationResponse'
-        '400':
+            $ref: "#/definitions/VerifyRegistrationResponse"
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error' 
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: Registration key not valid
           schema:
-            $ref: '#/definitions/Error'
-        '410':
+            $ref: "#/definitions/Error"
+        "410":
           description: Verification code (OTP) expired
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/registration/complete':
+            $ref: "#/definitions/Error"
+  "/customer/registration/complete":
     post:
       summary: Finish the customer's registration
-      description: | 
+      description: |
         Finish the started registration flow. 
 
         If the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)
@@ -398,21 +398,21 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CompleteRegistrationRequest'
+            $ref: "#/definitions/CompleteRegistrationRequest"
       tags:
         - customers registration
       responses:
-        '200':
+        "200":
           description: The registration has finished successfully
-        '400':
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error' 
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: Registration key not validated or the email already exist in the system
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/{customerId}':
+            $ref: "#/definitions/Error"
+  "/customer/{customerId}":
     get:
       summary: Get customer by id.
       description: Get customer information given its identifier
@@ -426,19 +426,19 @@ paths:
       tags:
         - customers management
       responses:
-        '200':
+        "200":
           description: Returns the customer information.
           schema:
-            $ref: '#/definitions/Customer'
-        '400':
+            $ref: "#/definitions/Customer"
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Customer not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/username/{username}':
+            $ref: "#/definitions/Error"
+  "/customer/username/{username}":
     get:
       summary: Get customer by username.
       description: Get customer information given its username
@@ -452,25 +452,25 @@ paths:
       tags:
         - customers management
       responses:
-        '200':
+        "200":
           description: Returns the customer information.
           schema:
-            $ref: '#/definitions/Customer'
-        '400':
+            $ref: "#/definitions/Customer"
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Customer not found.
           schema:
-            $ref: '#/definitions/Error'                                
-  '/customer/search':
+            $ref: "#/definitions/Error"
+  "/customer/search":
     post:
       summary: Search customers.
       description: |
-                    Search customers given some parameters. You will have two different ways to search customers:
-                    - SearchCustomerRequest object in the request body.
-                    - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email.
+        Search customers given some parameters. You will have two different ways to search customers:
+        - SearchCustomerRequest object in the request body.
+        - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email.
       operationId: searchCustomers
       tags:
         - customers management
@@ -479,12 +479,12 @@ paths:
           in: body
           required: false
           schema:
-            $ref: '#/definitions/SearchCustomerRequest'
+            $ref: "#/definitions/SearchCustomerRequest"
         - name: searchParam
           in: query
           required: false
           type: String
-          description: search param to search by in customer nickname or email.    
+          description: search param to search by in customer nickname or email.
         - name: page
           in: query
           required: false
@@ -496,17 +496,17 @@ paths:
           type: Integer
           description: Number of elements per page.
       responses:
-        '200':
+        "200":
           description: Find one or more Customers matching with the search parameters. Not find any Customer matching with the search parameters (empty array).
           schema:
             type: array
             items:
-              $ref: '#/definitions/SearchCustomerResponse'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+              $ref: "#/definitions/SearchCustomerResponse"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'                      
-  '/customer/movement':
+            $ref: "#/definitions/Error"
+  "/customer/movement":
     get:
       summary: Get customer movements.
       description: Return a list with the movements of the customer
@@ -520,19 +520,19 @@ paths:
       tags:
         - customers management
       responses:
-        '200':
+        "200":
           description: Returns the movements of the given customer. Returns an empty list if the customer doesn’t have any movement.
           schema:
-            $ref: '#/definitions/GetMovementResponse'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+            $ref: "#/definitions/GetMovementResponse"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Customer not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/customer/moneypool':
+            $ref: "#/definitions/Error"
+  "/customer/moneypool":
     get:
       summary: Get customer moneypools.
       description: Return a list with the customer moneypools, either as host or member.
@@ -541,21 +541,21 @@ paths:
       tags:
         - customers management
       responses:
-        '200':
+        "200":
           description: Returns the moneypools of the given customer. Returns an empty list if the customer doesn’t have any movement.
           schema:
             type: array
             items:
-              $ref: '#/definitions/CustomerMoneypool'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+              $ref: "#/definitions/CustomerMoneypool"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Customer not found.
           schema:
-            $ref: '#/definitions/Error'                            
-  '/moneypool':
+            $ref: "#/definitions/Error"
+  "/moneypool":
     post:
       summary: Save a moneypool.
       description: |
@@ -565,47 +565,46 @@ paths:
         ```
         Remainder of: amountToSave/(numberOfMembers - 1) = 0
         ```
-        It means that the division of the amountToSave between (numberOfMembers - 1) must be exact. 
-        
-        
+        It means that the division of the amountToSave between (numberOfMembers - 1) must be exact.
+
       operationId: saveMoneypool
       parameters:
         - name: SaveMoneypoolRequest
           in: body
           required: true
           schema:
-            $ref: '#/definitions/SaveMoneypoolRequest'
+            $ref: "#/definitions/SaveMoneypoolRequest"
       tags:
         - moneypools
       responses:
-        '200':
+        "200":
           description: Moneypool successfully updated.
           schema:
-            $ref: '#/definitions/MoneypoolDetail'
-        '201':
+            $ref: "#/definitions/MoneypoolDetail"
+        "201":
           description: Moneypool successfully created.
           schema:
-            $ref: '#/definitions/MoneypoolDetail'
-        '400':
+            $ref: "#/definitions/MoneypoolDetail"
+        "400":
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
-            $ref: '#/definitions/Error'
-        '403':
+            $ref: "#/definitions/Error"
+        "403":
           description: Update a moneypool in which you aren’t the host.
           schema:
-            $ref: '#/definitions/Error'    
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error'
-        '409':
-          description: 'Conflict. Duplicated moneypool code. Moneypool status does not allow changes.'
+            $ref: "#/definitions/Error"
+        "409":
+          description: "Conflict. Duplicated moneypool code. Moneypool status does not allow changes."
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/detail':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/detail":
     get:
       summary: Get moneypool details by id.
-      description:  Get the moneypool complete information.
+      description: Get the moneypool complete information.
       operationId: getMoneypoolDetail
       tags:
         - moneypools
@@ -616,22 +615,24 @@ paths:
           type: BigInteger
           description: The id of the moneypool
       responses:
-        '200':
+        "200":
           description: Returns the complete information of the Moneypool.
           schema:
-            $ref: '#/definitions/MoneypoolDetail'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+            $ref: "#/definitions/MoneypoolDetail"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error'          
-  '/moneypool/search':
+            $ref: "#/definitions/Error"
+  "/moneypool/search":
     post:
       summary: Search moneypools.
-      description: 'Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDate</strong> fields and vice versa.'
+      description:
+        "Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDateFrom</strong> and <strong>startDateTo</strong> fields and vice versa.
+        </br> By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools."
       operationId: searchMoneypools
       tags:
         - moneypools
@@ -640,7 +641,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/SearchMoneypoolRequest'
+            $ref: "#/definitions/SearchMoneypoolRequest"
         - name: page
           in: query
           required: false
@@ -652,17 +653,17 @@ paths:
           type: Integer
           description: Number of elements per page.
       responses:
-        '200':
+        "200":
           description: Find one or more Moneypools matching with the search parameters. Not find any Moneypools matching with the search parameters (empty array).
           schema:
             type: array
             items:
-              $ref: '#/definitions/Moneypool'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+              $ref: "#/definitions/Moneypool"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/status/{status}':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/status/{status}":
     put:
       summary: Update moneypool status.
       description: Update the status of a given moneypool.
@@ -681,21 +682,21 @@ paths:
           type: String
           description: Moneypool status.
       responses:
-        '200':
+        "200":
           description: Moneypool successfully updated.
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '403':
+            $ref: "#/definitions/Error"
+        "403":
           description: Update a moneypool in which you aren’t the host.
           schema:
-            $ref: '#/definitions/Error'        
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/movement/':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/movement/":
     get:
       summary: Get moneypool movements.
       description: |
@@ -720,22 +721,22 @@ paths:
           type: Integer
           description: Number of elements per page.
       responses:
-        '200':
+        "200":
           description: Returns the movements of the given moneypool. Returns an empty list if the moneypool doesn’t have any movement.
           schema:
-            $ref: '#/definitions/GetMovementResponse'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+            $ref: "#/definitions/GetMovementResponse"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/available-positions':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/available-positions":
     get:
       summary: Get moneypool available positions.
-      description:  Get the moneypool available positions.
+      description: Get the moneypool available positions.
       operationId: getMoneypoolAvailablePosition
       tags:
         - moneypools
@@ -746,20 +747,20 @@ paths:
           type: BigInteger
           description: The id of the moneypool
       responses:
-        '200':
+        "200":
           description: Returns the a list with moneypool's available positions.
           schema:
             type: array
-            example: '[1,2,7]'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+            example: "[1,2,7]"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error'                    
-  '/moneypool/{id}/member':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/member":
     get:
       summary: Get moneypool members.
       description: |
@@ -774,21 +775,21 @@ paths:
           type: BigInteger
           description: The id of the moneypool
       responses:
-        '200':
+        "200":
           description: Returns the members of the given moneypool. Returns an empty list if the moneypool doesn’t have any member.
           schema:
             type: array
             items:
-              $ref: '#/definitions/Member'
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+              $ref: "#/definitions/Member"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found.
           schema:
-            $ref: '#/definitions/Error' 
-  '/moneypool/{id}/member/{memberId}':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/member/{memberId}":
     put:
       summary: Expel member from moneypool.
       description: |
@@ -808,18 +809,18 @@ paths:
           type: BigInteger
           description: The id of the member we want to be expelled from the moneypool.
       responses:
-        '200':
+        "200":
           description: Member successfully expelled from the moneypool.
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found. Member not found.
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/member/{memberId}/position-from/{positionFrom}/position-to/{positionTo}':
-    put:
+            $ref: "#/definitions/Error"
+  ? "/moneypool/{id}/member/{memberId}/position-from/{positionFrom}/position-to/{positionTo}"
+  : put:
       summary: Update member position.
       description: |
         Update a member's position into the moneypool.
@@ -848,21 +849,21 @@ paths:
           type: Integer
           description: The position that the member will occupy.
       responses:
-        '200':
+        "200":
           description: Position successfully updated.
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found. Member not found.
           schema:
-            $ref: '#/definitions/Error'
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: Moneypool can not be edited in the current state..
           schema:
-            $ref: '#/definitions/Error'
-  '/moneypool/{id}/member/{memberId}/position/{position}':
+            $ref: "#/definitions/Error"
+  "/moneypool/{id}/member/{memberId}/position/{position}":
     delete:
       summary: Delete member position.
       description: Delete a member's position in the moneypool.
@@ -886,22 +887,22 @@ paths:
           type: Integer
           description: The position which will be deleted.
       responses:
-        '200':
+        "200":
           description: Member position successfully deleted from the moneypool.
-        '400':
-          description: 'Invalid parameters, response contains detailed error'
+        "400":
+          description: "Invalid parameters, response contains detailed error"
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found. Member not found.
           schema:
-            $ref: '#/definitions/Error'
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: Moneypool can not be edited in the current state.
           schema:
-            $ref: '#/definitions/Error'
-              
-  '/invitation':
+            $ref: "#/definitions/Error"
+
+  "/invitation":
     post:
       summary: Create an invitation.
       description: Invites a customer to join the moneypool.
@@ -913,25 +914,25 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/InviteRequest'
+            $ref: "#/definitions/InviteRequest"
       responses:
-        '201':
+        "201":
           description: Invitation succesfully created.
           schema:
-            $ref: '#/definitions/Invitation'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/Invitation"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
+            $ref: "#/definitions/Error"
+        "404":
           description: Moneypool not found. Customer not found.
           schema:
-            $ref: '#/definitions/Error'
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: The position is already filled.
           schema:
-            $ref: '#/definitions/Error'            
-  '/invitation/customer':
+            $ref: "#/definitions/Error"
+  "/invitation/customer":
     get:
       summary: Get customer invitations.
       description: Return a list with all the invitations of the customer.
@@ -939,13 +940,13 @@ paths:
       tags:
         - moneypool invitations
       responses:
-        '200':
+        "200":
           description: Returns the invitation list. Returns empty list if there is none.
           schema:
             type: array
             items:
-              $ref: '#/definitions/InvitationDetails'
-  '/invitation/moneypool/{moneypoolId}':
+              $ref: "#/definitions/InvitationDetails"
+  "/invitation/moneypool/{moneypoolId}":
     get:
       summary: Get moneypool invitations.
       description: Return a list with all the invitations of a moneypool.
@@ -959,17 +960,17 @@ paths:
           type: BigInteger
           description: The moneypool identifier.
       responses:
-        '200':
-          description: 'Returns the invitation list. Returns empty list if there is none.'
+        "200":
+          description: "Returns the invitation list. Returns empty list if there is none."
           schema:
             type: array
             items:
-              $ref: '#/definitions/InvitationDetails'
-        '400':
-          description: 'Invalid moneypool identifier format, response contains detailed error.'
+              $ref: "#/definitions/InvitationDetails"
+        "400":
+          description: "Invalid moneypool identifier format, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-  '/invitation/{id}/accept':
+            $ref: "#/definitions/Error"
+  "/invitation/{id}/accept":
     put:
       summary: Accept invitation.
       description: Accept an invitation.
@@ -983,23 +984,23 @@ paths:
           type: BigInteger
           description: The invitation identifier.
       responses:
-        '200':
-          description: 'Invitation successfully accepted.'
+        "200":
+          description: "Invitation successfully accepted."
           schema:
-            $ref: '#/definitions/Invitation'
-        '400':
-          description: 'Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation.'
+            $ref: "#/definitions/Invitation"
+        "400":
+          description: "Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Invitation not found.'
+            $ref: "#/definitions/Error"
+        "404":
+          description: "Invitation not found."
           schema:
-            $ref: '#/definitions/Error'    
-        '409':
-          description: 'The invitation is not pending so it can not be updated.'
+            $ref: "#/definitions/Error"
+        "409":
+          description: "The invitation is not pending so it can not be updated."
           schema:
-            $ref: '#/definitions/Error'    
-  '/invitation/{id}/decline':
+            $ref: "#/definitions/Error"
+  "/invitation/{id}/decline":
     put:
       summary: Decline an invitation.
       description: Decline an invitation given its identifier.
@@ -1013,23 +1014,23 @@ paths:
           type: BigInteger
           description: The invitation identifier.
       responses:
-        '200':
-          description: 'Invitation successfully declined.'
+        "200":
+          description: "Invitation successfully declined."
           schema:
-            $ref: '#/definitions/Invitation'
-        '400':
-          description: 'Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation.'
+            $ref: "#/definitions/Invitation"
+        "400":
+          description: "Invalid invitation identifier format, response contains detailed error. The provided id does not belong to an invitation."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Invitation not found'
+            $ref: "#/definitions/Error"
+        "404":
+          description: "Invitation not found"
           schema:
-            $ref: '#/definitions/Error'    
-        '409':
-          description: 'The invitation is not pending so it can not be updated.'
+            $ref: "#/definitions/Error"
+        "409":
+          description: "The invitation is not pending so it can not be updated."
           schema:
-            $ref: '#/definitions/Error'    
-  '/requestToJoin':
+            $ref: "#/definitions/Error"
+  "/requestToJoin":
     post:
       summary: Create a joining request.
       description: Create a request to join a moneypool.
@@ -1041,39 +1042,39 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/JoinRequest'
+            $ref: "#/definitions/JoinRequest"
       responses:
-        '201':
-          description: 'Joining Request succesfully created.'
+        "201":
+          description: "Joining Request succesfully created."
           schema:
-            $ref: '#/definitions/JoiningRequest'
-        '400':
-          description: 'Invalid parameters, response contains detailed error.'
+            $ref: "#/definitions/JoiningRequest"
+        "400":
+          description: "Invalid parameters, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Moneypool not found.'
+            $ref: "#/definitions/Error"
+        "404":
+          description: "Moneypool not found."
           schema:
-            $ref: '#/definitions/Error'
-        '409':
+            $ref: "#/definitions/Error"
+        "409":
           description: The position is already filled.
           schema:
-            $ref: '#/definitions/Error'            
-  '/requestToJoin/customer':
+            $ref: "#/definitions/Error"
+  "/requestToJoin/customer":
     get:
       summary: Get customer joining requests.
       description: Return a list with all the joining requests of the customer.
       operationId: getCustomerJoiningRequest
       tags:
         - moneypool joining request
-      responses:  
-        '200':
-          description: 'Returns the joining requests list. Returns empty list if there is none.'
+      responses:
+        "200":
+          description: "Returns the joining requests list. Returns empty list if there is none."
           schema:
             type: array
             items:
-              $ref: '#/definitions/JoiningRequestDetails'
-  '/requestToJoin/moneypool/{moneypoolId}':
+              $ref: "#/definitions/JoiningRequestDetails"
+  "/requestToJoin/moneypool/{moneypoolId}":
     get:
       summary: Get moneypool joining requests
       description: Return a list with all the joining requests of a moneypool.
@@ -1087,17 +1088,17 @@ paths:
           type: BigInteger
           description: The moneypool identifier.
       responses:
-        '200':
-          description: 'Returns the joining requests list. Returns empty list if there is none.'
+        "200":
+          description: "Returns the joining requests list. Returns empty list if there is none."
           schema:
             type: array
             items:
-              $ref: '#/definitions/JoiningRequestDetails'
-        '400':
-          description: 'Invalid moneypool identifier format, response contains detailed error.'
+              $ref: "#/definitions/JoiningRequestDetails"
+        "400":
+          description: "Invalid moneypool identifier format, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-  '/requestToJoin/{id}/accept':
+            $ref: "#/definitions/Error"
+  "/requestToJoin/{id}/accept":
     put:
       summary: Accept a joining request.
       description: Accept a joining request.
@@ -1111,15 +1112,15 @@ paths:
           type: BigInteger
           description: The joining request identifier.
       responses:
-        '200':
-          description: 'Joining request successfully accepted.'
+        "200":
+          description: "Joining request successfully accepted."
           schema:
-            $ref: '#/definitions/JoiningRequest'
-        '400':
-          description: 'Invalid joining request identifier format, response contains detailed error.'
+            $ref: "#/definitions/JoiningRequest"
+        "400":
+          description: "Invalid joining request identifier format, response contains detailed error."
           schema:
-            $ref: '#/definitions/Error'
-  '/requestToJoin/{id}/decline':
+            $ref: "#/definitions/Error"
+  "/requestToJoin/{id}/decline":
     put:
       summary: Decline a joining request
       description: Decline a the joining request.
@@ -1133,30 +1134,30 @@ paths:
           type: BigInteger
           description: The joining request identifier.
       responses:
-        '200':
-          description: 'Joining request successfully declined.'
+        "200":
+          description: "Joining request successfully declined."
           schema:
-            $ref: '#/definitions/JoiningRequest'
-        '400':
-          description: 'Invalid joining request identifier format, response contains detailed error. The provided identifier does not belong to a joining request.'
+            $ref: "#/definitions/JoiningRequest"
+        "400":
+          description: "Invalid joining request identifier format, response contains detailed error. The provided identifier does not belong to a joining request."
           schema:
-            $ref: '#/definitions/Error'            
-        '404':
-          description: 'Joining request not found.'
+            $ref: "#/definitions/Error"
+        "404":
+          description: "Joining request not found."
           schema:
-            $ref: '#/definitions/Error'                
-        '409':
-          description: 'The joining request is not pending, so it can not be updated.'
+            $ref: "#/definitions/Error"
+        "409":
+          description: "The joining request is not pending, so it can not be updated."
           schema:
-            $ref: '#/definitions/Error'
-  '/event/{id}/ack':
+            $ref: "#/definitions/Error"
+  "/event/{id}/ack":
     post:
       tags:
         - notifications
       summary: Acknowledge an existent event
       operationId: ackNotification
       description: |
-        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method. 
+        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method.
       parameters:
         - name: id
           in: path
@@ -1164,10 +1165,10 @@ paths:
           type: string
           required: true
       responses:
-        '204':
-          description: 'Success, event is acknowledged'
-        '404':
-          description: 'Not Found, the event identified by id does not exists'
+        "204":
+          description: "Success, event is acknowledged"
+        "404":
+          description: "Not Found, the event identified by id does not exists"
   /event:
     get:
       tags:
@@ -1187,12 +1188,12 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
-          description: 'Success, all non acknowledged notifications are retuned'
+        "200":
+          description: "Success, all non acknowledged notifications are retuned"
           schema:
             type: array
             items:
-              $ref: '#/definitions/NotificationEvent'
+              $ref: "#/definitions/NotificationEvent"
 definitions:
   Error:
     type: object
@@ -1239,7 +1240,7 @@ definitions:
         type: String
         example: London
       nameAscii:
-        description: 'Name of the city (using ascii characters, for english readers).'
+        description: "Name of the city (using ascii characters, for english readers)."
         type: String
         example: London
   State:
@@ -1259,7 +1260,7 @@ definitions:
         type: String
         example: England
       nameAscii:
-        description: 'Name of the state (using ascii characters, for english readers).'
+        description: "Name of the state (using ascii characters, for english readers)."
         type: String
         example: England
       code:
@@ -1338,12 +1339,12 @@ definitions:
       numberOfDecimals:
         description: The number of decimal allowed in case they are.
         type: Integer
-        example: 2    
+        example: 2
       paymentMethods:
         description: The different payment methods configured for this partner.
         type: array
         items:
-          $ref: '#/definitions/PaymentMethod'
+          $ref: "#/definitions/PaymentMethod"
   SaveCustomerRequest:
     type: object
     required:
@@ -1366,7 +1367,7 @@ definitions:
       name:
         description: Customer name.
         type: String
-        example: Ben 
+        example: Ben
       lastname:
         description: Customer last name.
         type: String
@@ -1378,7 +1379,7 @@ definitions:
       birthDate:
         description: Customer birthdate.
         type: LocalDate
-        example: '2021-05-23'
+        example: "2021-05-23"
       mobileNumber:
         description: Customer mobile number.
         type: String
@@ -1405,7 +1406,7 @@ definitions:
         example: FL8935V
       address:
         description: Customer address.
-        $ref: '#/definitions/Address'
+        $ref: "#/definitions/Address"
   Customer:
     type: object
     properties:
@@ -1420,7 +1421,7 @@ definitions:
       name:
         description: Customer name.
         type: String
-        example: Ben 
+        example: Ben
       lastname:
         description: Customer last name.
         type: String
@@ -1432,7 +1433,7 @@ definitions:
       birthDate:
         description: Customer birthdate.
         type: LocalDate
-        example: '2021-05-23'
+        example: "2021-05-23"
       mobileNumber:
         description: Customer mobile number.
         type: String
@@ -1444,7 +1445,7 @@ definitions:
       referralInvitationCode:
         description: Referral invitation code of the customer who invited you.
         type: String
-        example: FL8935V    
+        example: FL8935V
       email:
         description: Customer email.
         type: String
@@ -1463,22 +1464,22 @@ definitions:
         example: 413213213123131231231@amazon.ecs.bucket-s3
       address:
         description: Customer address.
-        $ref: '#/definitions/Address'
+        $ref: "#/definitions/Address"
   SearchCustomerRequest:
     type: object
     properties:
       name:
         description: Customer name.
         type: String
-        example: 'Ben'
+        example: "Ben"
       lastname:
         description: Customer lastname.
         type: String
-        example: 'Simmons'
+        example: "Simmons"
       birthDate:
         description: Customer birthDate.
         type: LocalDate
-        example: '2021-04-24'
+        example: "2021-04-24"
       mobileNumber:
         description: Customer phone number.
         type: String
@@ -1502,7 +1503,7 @@ definitions:
         description: Customers list.
         type: array
         items:
-          $ref: '#/definitions/Customer'      
+          $ref: "#/definitions/Customer"
   SaveMoneypoolRequest:
     type: object
     required:
@@ -1532,7 +1533,7 @@ definitions:
       startDate:
         description: Moneypool start date.
         type: LocalDate
-        example: '2021-04-23'
+        example: "2021-04-23"
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1567,15 +1568,15 @@ definitions:
       name:
         description: Moneypool name.
         type: String
-        example: '2021-04-23'
+        example: "2021-04-23"
       startDateFrom:
         description: Moneypool start date init.
         type: LocalDate
-        example: '2021-04-23'
+        example: "2021-04-23"
       startDateTo:
         description: Moneypool start date finish.
         type: LocalDate
-        example: '2021-04-24'
+        example: "2021-04-24"
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1627,7 +1628,7 @@ definitions:
       hostName:
         description: Host name.
         type: String
-        example: John Simmons  
+        example: John Simmons
       moneypoolStatus:
         description: Moneypool status.
         type: String
@@ -1643,11 +1644,11 @@ definitions:
       joinedDate:
         description: The date the customer joined the moneypool.
         type: LocalDate
-        example: '2021-04-23'
+        example: "2021-04-23"
       positions:
         description: The customer positions in this moneypool.
         type: array
-        example: [2,4]   
+        example: [2, 4]
   Moneypool:
     type: object
     required:
@@ -1677,7 +1678,7 @@ definitions:
       hostName:
         description: Host name.
         type: String
-        example: John Simmons  
+        example: John Simmons
       poolCode:
         description: Moneypool code.
         type: String
@@ -1690,6 +1691,10 @@ definitions:
         description: Moneypool currency.
         type: String
         example: USD
+      currentMembers:
+        description: Number of Members at this moment in the moneypool.
+        type: Integer
+        example: 6  
       membersRequired:
         description: Number of Members required.
         type: Integer
@@ -1697,7 +1702,7 @@ definitions:
       startDate:
         description: Moneypool start date.
         type: LocalDate
-        example: '2021-04-23'
+        example: "2021-04-23"
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1706,6 +1711,10 @@ definitions:
         description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
         type: String
         example: OPENED
+      rating:
+        description: The rating of the moneypool, calculated from the rate of its members.
+        type: Double
+        example: 0.77  
       purpose:
         description: Purpose of the moneypool.
         type: String
@@ -1769,7 +1778,7 @@ definitions:
       startDate:
         description: Moneypool start date.
         type: LocalDate
-        example: '2021-04-23'
+        example: "2021-04-23"
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
         type: String
@@ -1785,7 +1794,7 @@ definitions:
       currentBalance:
         description: Current balance.
         type: BigDecimal
-        example: '500'
+        example: "500"
       moneypoolView:
         description: The moneypool view based on the logged user that request the information. Possible values are HOST, MEMBER or CUSTOMER
         type: String
@@ -1794,12 +1803,12 @@ definitions:
         description: The members of the moneypool.
         type: array
         items:
-          $ref: '#/definitions/Member'
+          $ref: "#/definitions/Member"
       paymentsCalendar:
         description: The members of the moneypool.
         type: array
         items:
-          $ref: '#/definitions/MoneypoolCalendar'
+          $ref: "#/definitions/MoneypoolCalendar"
   MoneypoolCalendar:
     type: object
     required:
@@ -1813,7 +1822,7 @@ definitions:
       date:
         description: The payment date.
         type: LocalDate
-        example: '2021-04-23'          
+        example: "2021-04-23"
   Amount:
     type: object
     required:
@@ -1842,7 +1851,7 @@ definitions:
         type: BigInteger
         example: 571418
       amount:
-        $ref: '#/definitions/Amount'
+        $ref: "#/definitions/Amount"
       type:
         description: Movement type.
         type: String
@@ -1854,7 +1863,7 @@ definitions:
       createdDate:
         description: Movement creation daate.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'
+        example: "2021-04-23T00:00:00+02:00"
   GetMovementResponse:
     type: object
     required:
@@ -1865,11 +1874,11 @@ definitions:
         description: List of movement
         type: array
         items:
-          $ref: '#/definitions/Movement'
+          $ref: "#/definitions/Movement"
       currentBalance:
         description: Current balance.
         type: BigDecimal
-        example: '500'
+        example: "500"
   Member:
     type: object
     properties:
@@ -1885,7 +1894,7 @@ definitions:
         description: Customer id.
         type: BigInteger
         example: 571423
-      lastName:  
+      lastName:
         description: Customer id.
         type: BigInteger
         example: 571423
@@ -1896,11 +1905,11 @@ definitions:
       host:
         description: Flag which determines if the member is the host of the moneypool.
         type: Boolean
-        example: false  
+        example: false
       joinedDate:
         description: Joined date.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'
+        example: "2021-04-23T00:00:00+02:00"
       rating:
         description: Member rating.
         type: Double
@@ -1909,7 +1918,7 @@ definitions:
         description: List of position
         type: array
         items:
-          $ref: '#/definitions/MemberPosition'    
+          $ref: "#/definitions/MemberPosition"
   MemberPosition:
     type: object
     required:
@@ -1930,29 +1939,29 @@ definitions:
     type: object
     properties:
       address1:
-        description: Address first line (street). 
+        description: Address first line (street).
         type: Integer
         example: 1
-      address2: 
-        description: Address second line (House number, floor...etc.). 
+      address2:
+        description: Address second line (House number, floor...etc.).
         type: String
         example: 1
-      city: 
+      city:
         description: City.
         type: String
         example: 1
-      state: 
+      state:
         description: State.
         type: String
         example: 1
-      country: 
+      country:
         description: Country.
         type: String
         example: 1
-      zipCode: 
+      zipCode:
         description: Postal code.
         type: String
-        example: 1232F                     
+        example: 1232F
   AddMemberRequest:
     type: object
     required:
@@ -1970,7 +1979,7 @@ definitions:
   InviteRequest:
     type: object
     required:
-      - moneypoolId 
+      - moneypoolId
       - customerId
       - position
     properties:
@@ -1989,7 +1998,7 @@ definitions:
   JoinRequest:
     type: object
     required:
-      - moneypoolId 
+      - moneypoolId
       - position
     properties:
       moneypoolId:
@@ -1999,12 +2008,12 @@ definitions:
       position:
         description: Position the customer will take in the moneypool.
         type: Integer
-        example: 5    
+        example: 5
   Invitation:
     type: object
     required:
       - id
-      - moneypoolId 
+      - moneypoolId
       - customerId
       - position
       - status
@@ -2033,12 +2042,12 @@ definitions:
       expirationDate:
         description: The invitation expiration date.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'
+        example: "2021-04-23T00:00:00+02:00"
   JoiningRequest:
     type: object
     required:
       - id
-      - moneypoolId 
+      - moneypoolId
       - customerId
       - position
       - status
@@ -2067,12 +2076,12 @@ definitions:
       expirationDate:
         description: The joining request expiration date.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'    
+        example: "2021-04-23T00:00:00+02:00"
   InvitationDetails:
     type: object
     required:
       - id
-      - moneypoolId 
+      - moneypoolId
       - moneypoolName
       - hostName
       - amountToSave
@@ -2105,7 +2114,7 @@ definitions:
       moneypoolRating:
         description: The moneypool rating.
         type: Double
-        example: 0.9  
+        example: 0.9
       customerId:
         description: The invited customer identifier.
         type: BigInteger
@@ -2121,12 +2130,12 @@ definitions:
       expirationDate:
         description: The invitation expiration date.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'
+        example: "2021-04-23T00:00:00+02:00"
   JoiningRequestDetails:
     type: object
     required:
       - id
-      - moneypoolId 
+      - moneypoolId
       - moneypoolName
       - hostName
       - customerName
@@ -2156,7 +2165,7 @@ definitions:
       customerName:
         description: The name of the customer who made the request.
         type: String
-        example: Jack Sparrow  
+        example: Jack Sparrow
       amountToSave:
         description: The moneypool amount to save.
         type: Integer
@@ -2164,7 +2173,7 @@ definitions:
       moneypoolRating:
         description: The moneypool rating.
         type: Double
-        example: 0.9  
+        example: 0.9
       customerId:
         description: The invited customer identifier.
         type: BigInteger
@@ -2180,7 +2189,7 @@ definitions:
       expirationDate:
         description: The joining request expiration date.
         type: LocalDateTime
-        example: '2021-04-23T00:00:00+02:00'
+        example: "2021-04-23T00:00:00+02:00"
   NotificationEvent:
     properties:
       id:
@@ -2191,7 +2200,7 @@ definitions:
         example: An event type
       dateEvent:
         type: string
-        example: '2018-01-10T02:07:26Z'
+        example: "2018-01-10T02:07:26Z"
       payload:
         type: object
   StartRegistrationRequest:
@@ -2200,11 +2209,11 @@ definitions:
       phoneNumber:
         type: string
         description: The customer's phone number
-        example: '+34643124321'
+        example: "+34643124321"
       birthdate:
         type: date
         description: The customer's date of birth.
-        example: '1986-01-01'
+        example: "1986-01-01"
       referralCode:
         type: string
         description: A referral code provided by other hagbad's customer
@@ -2237,7 +2246,7 @@ definitions:
           code:
             type: string
             description: The customer's code provided by the remmitance system
-            example: C01 
+            example: C01
           firstName:
             type: string
             example: Aureliano
@@ -2249,7 +2258,7 @@ definitions:
             example: lorem@ipsum.com
           birthdate:
             type: date
-            example: '1986-01-01'
+            example: "1986-01-01"
   CompleteRegistrationRequest:
     type: object
     properties:
@@ -2275,4 +2284,4 @@ definitions:
         example: lorem@ipsum.com
       birthdate:
         type: date
-        example: '1986-01-01'
+        example: "1986-01-01"
