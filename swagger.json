@@ -391,7 +391,7 @@
           "configuration"
         ],
         "summary": "Get Partner configuration.",
-        "description": "Return the partner configuration details.",
+        "description": "Provides the basic configuration of the partner. \n\nThis endpoint should be called once the customer has succesfully log into the system to have all the configuration values available from the start.\n",
         "responses": {
           "200": {
             "description": "Return current partner configuration.",
@@ -1819,30 +1819,30 @@
         "name": {
           "description": "The partner name.",
           "type": "String",
-          "example": "Tester partner"
+          "example": "Test partner"
         },
         "currency": {
-          "description": "The partner currency.",
+          "description": "The partner configured currency. There will be only one currency configured for each partner.",
           "type": "String",
           "example": "USD"
         },
         "lowerLimit": {
-          "description": "The configured lower limit amount.",
+          "description": "The minimum value that the amountToSave field can take when creating a moneypool.",
           "type": "BigInteger",
           "example": 300
         },
         "upperLimit": {
-          "description": "The configured upper limit amount.",
+          "description": "The maximum value that the amountToSave field can take when creating a moneypool.",
           "type": "BigInteger",
           "example": 3000
         },
         "minMembers": {
-          "description": "The minimum number of members a community can have for this partner.",
+          "description": "The minimum number of members for whom a moneypool can be created.",
           "type": "String",
           "example": 5
         },
         "maxMembers": {
-          "description": "The maximum number of members a community can have for this partner.",
+          "description": "The maximum number of members for whom a moneypool can be created.",
           "type": "String",
           "example": 15
         },
@@ -1852,7 +1852,7 @@
           "example": true
         },
         "numberOfDecimals": {
-          "description": "The number of decimal allowed in case they are.",
+          "description": "The number of decimal allowed in case they are. If decimals are not allowed this value will be 0.",
           "type": "Integer",
           "example": 2
         },
