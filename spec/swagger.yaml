@@ -311,7 +311,10 @@ paths:
       tags:
         - configuration
       summary: Get Partner configuration.
-      description: Return the partner configuration details.
+      description: |
+        Provides the basic configuration of the partner. 
+
+        This endpoint should be called once the customer has succesfully log into the system to have all the configuration values available from the start.
       responses:
         "200":
           description: "Return current partner configuration."
@@ -1311,25 +1314,25 @@ definitions:
       name:
         description: The partner name.
         type: String
-        example: Tester partner
+        example: Test partner
       currency:
-        description: The partner currency.
+        description: The partner configured currency. There will be only one currency configured for each partner.
         type: String
         example: USD
       lowerLimit:
-        description: The configured lower limit amount.
+        description: The minimum value that the amountToSave field can take when creating a moneypool.
         type: BigInteger
         example: 300
       upperLimit:
-        description: The configured upper limit amount.
+        description: The maximum value that the amountToSave field can take when creating a moneypool.
         type: BigInteger
         example: 3000
       minMembers:
-        description: The minimum number of members a community can have for this partner.
+        description: The minimum number of members for whom a moneypool can be created.
         type: String
         example: 5
       maxMembers:
-        description: The maximum number of members a community can have for this partner.
+        description: The maximum number of members for whom a moneypool can be created.
         type: String
         example: 15
       decimalAllowed:
@@ -1337,7 +1340,7 @@ definitions:
         type: Boolean
         example: true
       numberOfDecimals:
-        description: The number of decimal allowed in case they are.
+        description: The number of decimal allowed in case they are. If decimals are not allowed this value will be 0.
         type: Integer
         example: 2
       paymentMethods:
@@ -1694,7 +1697,7 @@ definitions:
       currentMembers:
         description: Number of Members at this moment in the moneypool.
         type: Integer
-        example: 6  
+        example: 6
       membersRequired:
         description: Number of Members required.
         type: Integer
@@ -1714,7 +1717,7 @@ definitions:
       rating:
         description: The rating of the moneypool, calculated from the rate of its members.
         type: Double
-        example: 0.77  
+        example: 0.77
       purpose:
         description: Purpose of the moneypool.
         type: String
