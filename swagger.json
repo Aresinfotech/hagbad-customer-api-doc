@@ -411,7 +411,7 @@
     "/customer/registration/start": {
       "post": {
         "summary": "Start a new customer registration flow.",
-        "description": "Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next steps. Also an OTP code will be sent to the given phone number.",
+        "description": "Start a new registration flow. If the customer does not exist in the system, this method will return a registration key that you must use in the next steps. \nAlso an OTP code will be sent to the given phone number.\n\n`This resource is accessible without authorization`\n",
         "operationId": "customerRegistrationStart",
         "parameters": [
           {
@@ -451,7 +451,7 @@
     "/customer/registration/verify": {
       "post": {
         "summary": "Verify the started customer's registration",
-        "description": "When the registration starts, an OTP code is sent to the given phone number. Use this resource to verify the phone number. \n\nIf the customer already exist in the remmitance system, the found customer's information is returned in the response.\n",
+        "description": "When the registration starts, an OTP code is sent to the given phone number. Use this resource to verify the phone number. \n\nIf the customer already exist in the remmitance system, the found customer's information is returned in the response.\n\n`This resource is accessible without authorization`\n",
         "operationId": "customerRegistrationVerify",
         "parameters": [
           {
@@ -497,7 +497,7 @@
     "/customer/registration/complete": {
       "post": {
         "summary": "Finish the customer's registration",
-        "description": "Finish the started registration flow. \n\nIf the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)\n",
+        "description": "Finish the started registration flow. \n\nIf the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)\n\n`This resource is accessible without authorization`\n",
         "operationId": "customerRegistrationVerify",
         "parameters": [
           {
@@ -531,6 +531,68 @@
           },
           "409": {
             "description": "Registration key not validated or the email already exist in the system",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/customer/registration/recovery-user-password": {
+      "put": {
+        "summary": "Recovery user's password.",
+        "description": "Recovery the user's password sending a recovery mail to the given direction.\n",
+        "operationId": "recoveryUserPassword",
+        "parameters": [
+          {
+            "name": "UserPasswordRecoveryRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserPasswordRecoveryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "customers registration"
+        ],
+        "responses": {
+          "204": {
+            "description": "The recovery emails was sent properly."
+          },
+          "400": {
+            "description": "Invalid Request. message attribute of response contains detailed information about the issue.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/customer/registration/change-user-password": {
+      "put": {
+        "summary": "Change the current user's password.",
+        "description": "Change the current user's password.\n",
+        "operationId": "recoveryUserPassword",
+        "parameters": [
+          {
+            "name": "UserPasswordChangeRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserPasswordChangeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "customers registration"
+        ],
+        "responses": {
+          "204": {
+            "description": "The recovery emails was sent properly."
+          },
+          "400": {
+            "description": "Invalid Request. message attribute of response contains detailed information about the issue.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1676,10 +1738,14 @@
       ],
       "properties": {
         "code": {
-          "type": "String"
+          "type": "String",
+          "description": "The error code. This error code should define the error type returned.",
+          "example": "MP-0003"
         },
         "message": {
-          "type": "String"
+          "type": "String",
+          "description": "The error description. A message that resume the error thrown by the system.",
+          "example": "Community not found for this moneypool."
         }
       }
     },
@@ -3071,6 +3137,32 @@
         "birthdate": {
           "type": "date",
           "example": "1986-01-01"
+        }
+      }
+    },
+    "UserPasswordRecoveryRequest": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string,",
+          "description": "The user's email",
+          "example": "test@test.com"
+        }
+      }
+    },
+    "UserPasswordChangeRequest": {
+      "type": "object",
+      "required": [
+        "newPassword"
+      ],
+      "properties": {
+        "newPassword": {
+          "type": "string,",
+          "description": "The user's new password",
+          "example": "Y0ur4w3s0m3P4ssw0rd$"
         }
       }
     }
