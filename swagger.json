@@ -1041,7 +1041,7 @@
         ],
         "parameters": [
           {
-            "name": "communityId",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "BigInteger",
