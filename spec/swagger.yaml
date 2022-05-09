@@ -77,6 +77,11 @@ tags:
     description: Customer management operations.
   - name: customers management
     description: Customer management operations.
+  - name: marketplace
+    description: | 
+      Manage moneypool´s marketplace.
+
+      This section define all the resources related with the marketplace. A marketplace is the place where you can see all the Moneypools defined in the system.
   - name: moneypools
     description: Manage moneypool operation.
   - name: moneypool invitations
@@ -608,6 +613,58 @@ paths:
           description: Customer not found.
           schema:
             $ref: "#/definitions/Error"
+  "/marketplace":
+    post:
+      summary: Get the marketplace.
+      description:
+        "This method will return all *OPENED* and *PUBLIC* moneypools creted in the last month. \n
+        You can use this method to get the default marketplace's opened moneypools. If you want to afine the marketplace with the customer's option, please review the resource `/marketplace/search`"
+      operationId: searchMoneypools
+      tags:
+        - marketplace
+      responses:
+        "200":
+          description: All opened moneypools in the last month. If no moneypool is already created, you will get an empty list.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Moneypool"
+  "/marketplace/search":
+    post:
+      summary: Search moneypools in the marketplace.
+      description:
+        "Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDateFrom</strong> and <strong>startDateTo</strong> fields and vice versa.
+        </br> By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools."
+      operationId: searchMoneypools
+      tags:
+        - marketplace
+      parameters:
+        - name: search request parameters.
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SearchMoneypoolRequest"
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: Page number.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: Number of elements per page.
+      responses:
+        "200":
+          description: Find one or more Moneypools matching with the search parameters. Not find any Moneypools matching with the search parameters (empty array).
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Moneypool"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
+          schema:
+            $ref: "#/definitions/Error"
   "/moneypool":
     post:
       summary: Save a moneypool.
@@ -678,42 +735,6 @@ paths:
             $ref: "#/definitions/Error"
         "404":
           description: Moneypool not found.
-          schema:
-            $ref: "#/definitions/Error"
-  "/moneypool/search":
-    post:
-      summary: Search moneypools.
-      description:
-        "Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDateFrom</strong> and <strong>startDateTo</strong> fields and vice versa.
-        </br> By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools."
-      operationId: searchMoneypools
-      tags:
-        - moneypools
-      parameters:
-        - name: search request parameters.
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/SearchMoneypoolRequest"
-        - name: page
-          in: query
-          required: false
-          type: Integer
-          description: Page number.
-        - name: elementsPerPage
-          in: query
-          required: false
-          type: Integer
-          description: Number of elements per page.
-      responses:
-        "200":
-          description: Find one or more Moneypools matching with the search parameters. Not find any Moneypools matching with the search parameters (empty array).
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Moneypool"
-        "400":
-          description: "Invalid parameters, response contains detailed error"
           schema:
             $ref: "#/definitions/Error"
   "/moneypool/{id}/status/{status}":
