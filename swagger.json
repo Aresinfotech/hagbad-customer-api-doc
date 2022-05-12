@@ -740,20 +740,31 @@
         }
       }
     },
+    "/customer/profile": {
+      "get": {
+        "summary": "Get customer profile.",
+        "description": "Return the profile information of the logged customer.",
+        "operationId": "getCustomerProfile",
+        "parameters": null,
+        "tags": [
+          "customers management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the profile information of the logged customer.",
+            "schema": {
+              "$ref": "#/definitions/CustomerProfileInformation"
+            }
+          }
+        }
+      }
+    },
     "/customer/movement": {
       "get": {
         "summary": "Get customer movements.",
         "description": "Return a list with the movements of the customer",
         "operationId": "getCustomerMovement",
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The customer identifier."
-          }
-        ],
+        "parameters": null,
         "tags": [
           "customers management"
         ],
@@ -2108,6 +2119,50 @@
         }
       }
     },
+    "CustomerProfileInformation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Customer name.",
+          "type": "String",
+          "example": "Ben"
+        },
+        "lastname": {
+          "description": "Customer last name.",
+          "type": "String",
+          "example": "Simmons"
+        },
+        "birthDate": {
+          "description": "Customer birthdate.",
+          "type": "LocalDate",
+          "example": "2021-05-23"
+        },
+        "mobileNumber": {
+          "description": "Customer mobile number.",
+          "type": "String",
+          "example": 34666666666
+        },
+        "referralCode": {
+          "description": "Customer referral code to invite new users.",
+          "type": "String",
+          "example": "BS8321F"
+        },
+        "email": {
+          "description": "Customer email.",
+          "type": "String",
+          "example": "ben.simmons@test.com"
+        },
+        "profilePicture": {
+          "description": "Profile picture url.",
+          "type": "String",
+          "example": "413213213123131231231@amazon.ecs.bucket-s3"
+        },
+        "address": {
+          "description": "Customer address.",
+          "$ref": "#/definitions/Address"
+        }
+      }
+    },
     "SearchCustomerRequest": {
       "type": "object",
       "properties": {
@@ -2716,27 +2771,27 @@
         "address1": {
           "description": "Address first line (street).",
           "type": "Integer",
-          "example": 1
+          "example": "Elm Street, 13"
         },
         "address2": {
           "description": "Address second line (House number, floor...etc.).",
           "type": "String",
-          "example": 1
+          "example": "Second floor, door C"
         },
         "city": {
           "description": "City.",
           "type": "String",
-          "example": 1
+          "example": "Madrid"
         },
         "state": {
           "description": "State.",
           "type": "String",
-          "example": 1
+          "example": "Madrid"
         },
         "country": {
           "description": "Country.",
           "type": "String",
-          "example": 1
+          "example": "Spain"
         },
         "zipCode": {
           "description": "Postal code.",
