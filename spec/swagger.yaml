@@ -1934,15 +1934,20 @@ definitions:
     required:
       - position
       - date
+      - status
     properties:
       position:
         description: Position in the moneypool.
         type: Integer
         example: 2
       date:
-        description: The payment date.
+        description: The payment date. If the payment is already been done, this field will represent the date in which the payment was executed.
         type: LocalDate
         example: "2021-04-23"
+      status:
+        description: The status of the calendar entry for this position. It could be PAID or PENDING.
+        type: String
+        example: "PENDING"  
   Amount:
     type: object
     required:
