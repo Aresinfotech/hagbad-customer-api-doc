@@ -624,8 +624,8 @@ paths:
     post:
       summary: Get the marketplace.
       description: |-
-        This method will return all *OPENED* and *PUBLIC* moneypools creted in the last month. 
-         You can use this method to get the default marketplace's opened moneypools. If you want to afine the marketplace with the customer's option, please review the resource `/marketplace/search`
+        This method will return all *OPENED* and *PUBLIC* moneypools which start date is whithin the next 6 months. 
+         You can use this method to get the default marketplace's opened moneypools. If you want to adjust the marketplace with the customer's option, please review the resource `/marketplace/search`
       operationId: searchMoneypools
       tags:
         - marketplace
@@ -1685,11 +1685,11 @@ definitions:
         type: String
         example: '2021-04-23'
       startDateFrom:
-        description: Moneypool start date init.
+        description: The date from where Moneypool start dates begin.
         type: LocalDate
         example: '2021-04-23'
       startDateTo:
-        description: Moneypool start date finish.
+        description: The date where Moneypool start dates end.
         type: LocalDate
         example: '2021-04-24'
       type:
