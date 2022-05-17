@@ -395,7 +395,7 @@
           "configuration"
         ],
         "summary": "Get Partner configuration.",
-        "description": "Provides the basic configuration of the partner. \n\nThis endpoint should be called once the customer has succesfully log into the system to have all the configuration values available from the start.\n",
+        "description": "Provide the basic configuration of the partner. \n\nThis endpoint should be called when the application starts, in order to have all the configuration values available from the beginning.\n",
         "responses": {
           "200": {
             "description": "Return current partner configuration.",
@@ -1909,6 +1909,7 @@
       "required": [
         "name",
         "currency",
+        "country",
         "lowerLimit",
         "upperLimit",
         "minMembers",
@@ -1927,6 +1928,11 @@
           "description": "The partner configured currency. There will be only one currency configured for each partner.",
           "type": "String",
           "example": "USD"
+        },
+        "country": {
+          "description": "The partner configured country. There will be only one country configured for each partner.",
+          "type": "String",
+          "example": "ESP"
         },
         "lowerLimit": {
           "description": "The minimum value that the amountToSave field can take when creating a moneypool.",
@@ -2797,7 +2803,7 @@
         "country": {
           "description": "Country.",
           "type": "String",
-          "example": "Spain"
+          "example": "ESP"
         },
         "zipCode": {
           "description": "Postal code.",
