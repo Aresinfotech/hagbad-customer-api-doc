@@ -317,9 +317,9 @@ paths:
         - configuration
       summary: Get Partner configuration.
       description: |
-        Provides the basic configuration of the partner. 
+        Provide the basic configuration of the partner. 
 
-        This endpoint should be called once the customer has succesfully log into the system to have all the configuration values available from the start.
+        This endpoint should be called when the application starts, in order to have all the configuration values available from the beginning.
       responses:
         "200":
           description: "Return current partner configuration."
@@ -1386,6 +1386,7 @@ definitions:
     required:
       - name
       - currency
+      - country
       - lowerLimit
       - upperLimit
       - minMembers
@@ -1402,6 +1403,10 @@ definitions:
         description: The partner configured currency. There will be only one currency configured for each partner.
         type: String
         example: USD
+      country:
+        description: The partner configured country. There will be only one country configured for each partner.
+        type: String
+        example: ESP  
       lowerLimit:
         description: The minimum value that the amountToSave field can take when creating a moneypool.
         type: BigInteger
@@ -2082,7 +2087,7 @@ definitions:
       country:
         description: Country.
         type: String
-        example: Spain
+        example: ESP
       zipCode:
         description: Postal code.
         type: String
