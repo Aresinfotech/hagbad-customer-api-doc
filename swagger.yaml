@@ -1578,10 +1578,9 @@ definitions:
         description: Customer email.
         type: String
         example: ben.simmons@test.com
-      profilePicture:
-        description: Profile picture url.
-        type: String
-        example: 413213213123131231231@amazon.ecs.bucket-s3
+      avatarUrls:
+        description: The profile picture urls for different image sizes.
+        $ref: '#/definitions/AvatarUrl'
       rating:
         description: Customer rating. It may take values from 0.0 to 1.0.
         type: Double
@@ -2046,6 +2045,9 @@ definitions:
         description: Joined date.
         type: LocalDateTime
         example: '2021-04-23T00:00:00+02:00'
+      avatarUrls:
+        description: The profile picture urls for different image sizes.
+        $ref: '#/definitions/AvatarUrl'
       rating:
         description: Member rating. It may take values from 0.0 to 1.0.
         type: Double
@@ -2112,6 +2114,21 @@ definitions:
         description: Position the member will take in the moneypool.
         type: BigInteger
         example: 5
+  AvatarUrl:
+    type: object
+    properties:
+      large:
+        description: The largest image size url.
+        type: String
+        example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=48&s=48'
+      medium:
+        description: The medium image size url.
+        type: String
+        example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=24&s=24'
+      small:
+        description: The smallest image size url.
+        type: String
+        example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=16&s=16'
   InviteRequest:
     type: object
     required:
