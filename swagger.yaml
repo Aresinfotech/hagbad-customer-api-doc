@@ -1582,6 +1582,10 @@ definitions:
         description: Profile picture url.
         type: String
         example: 413213213123131231231@amazon.ecs.bucket-s3
+      rating:
+        description: Customer rating. It may take values from 0.0 to 1.0.
+        type: Double
+        example: 0.62
       address:
         description: Customer address.
         $ref: '#/definitions/Address'
@@ -1834,7 +1838,7 @@ definitions:
         type: String
         example: OPENED
       rating:
-        description: 'The rating of the moneypool, calculated from the rate of its members.'
+        description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.
         type: Double
         example: 0.77
       purpose:
@@ -1857,6 +1861,7 @@ definitions:
       - type
       - status
       - purpose
+      - rating
       - currentBalance
       - members
       - paymentsCalendar
@@ -1913,6 +1918,10 @@ definitions:
         description: Purpose of the moneypool.
         type: String
         example: BUY TV
+      rating:
+        description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.
+        type: Double
+        example: 0.77
       currentBalance:
         description: Current balance.
         type: BigDecimal
@@ -2038,7 +2047,7 @@ definitions:
         type: LocalDateTime
         example: '2021-04-23T00:00:00+02:00'
       rating:
-        description: Member rating.
+        description: Member rating. It may take values from 0.0 to 1.0.
         type: Double
         example: 0.65
       positions:
@@ -2239,7 +2248,7 @@ definitions:
         type: Integer
         example: 4000
       moneypoolRating:
-        description: The moneypool rating.
+        description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.
         type: Double
         example: 0.9
       customerId:
@@ -2298,7 +2307,7 @@ definitions:
         type: Integer
         example: 4000
       moneypoolRating:
-        description: The moneypool rating.
+        description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.
         type: Double
         example: 0.9
       customerId:
