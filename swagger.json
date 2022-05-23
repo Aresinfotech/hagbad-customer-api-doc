@@ -848,7 +848,7 @@
     "/marketplace/search": {
       "post": {
         "summary": "Search moneypools in the marketplace.",
-        "description": "Search moneypools given some parameters. </br> </br> When filling the required params, if you inform the <strong>poolCode</strong> it isn’t necessary to inform the <strong>startDateFrom</strong> and <strong>startDateTo</strong> fields and vice versa. </br> By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools.",
+        "description": "\"Search moneypools given some parameters. </br> </br> When filling the required parameters: \n  - If you inform the <strong>poolCode</strong> it isn’t necessary to inform any other param, either the <strong>startDateFrom</strong> and <strong>startDateTo</strong>.\n  - If you inform the the <strong>startDateFrom</strong> and <strong>startDateTo</strong>, it isn't necessary to inform any other param, but using any of the other filters you will narrow the results. \n  - By default (if any param is not informed except date ones), this method will return OPENED and PUBLIC moneypools.\"\n",
         "operationId": "searchMoneypools",
         "tags": [
           "marketplace"
