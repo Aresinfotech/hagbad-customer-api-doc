@@ -311,6 +311,22 @@ paths:
           description: Currency not found.
           schema:
             $ref: "#/definitions/Error"
+  "/catalog/movement/type":
+    get:
+      tags:
+        - catalogs
+      summary: Get Movement types
+      description: Returns the movement types supported by the system.
+      responses:
+        "200":
+          description: Returns the supported movement types.
+          schema:
+            type: array
+            example: ["DEBIT", "CREDIT"]
+        "400":
+          description: "Invalid parameters, response contains detailed error."
+          schema:
+            $ref: "#/definitions/Error"
   "/configuration":
     get:
       tags:
@@ -583,11 +599,57 @@ paths:
       description: Return a list with the movements of the customer
       operationId: getCustomerMovement
       parameters:
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: The requested page.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: How many elements per page.
       tags:
         - customers management
       responses:
         "200":
           description: Returns the movements of the given customer. Returns an empty list if the customer doesn’t have any movement.
+          schema:
+            $ref: "#/definitions/GetMovementResponse"
+        "400":
+          description: "Invalid parameters, response contains detailed error"
+          schema:
+            $ref: "#/definitions/Error"
+        "404":
+          description: Customer not found.
+          schema:
+            $ref: "#/definitions/Error"
+  "/customer/movement/search":
+    post:
+      summary: Search customer movements.
+      description: Return a list with the movements found by the given criteria
+      operationId: searchCustomerMovement
+      parameters:
+        - name: page
+          in: query
+          required: false
+          type: Integer
+          description: The requested page.
+        - name: elementsPerPage
+          in: query
+          required: false
+          type: Integer
+          description: How many elements per page.
+        - name: Search request parameters.
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/GetMovementRequest"
+      tags:
+        - customers management
+      responses:
+        "200":
+          description: Returns the movements found to the given search criteria. Returns an empty list if the customer doesn’t have any movement.
           schema:
             $ref: "#/definitions/GetMovementResponse"
         "400":
@@ -2000,25 +2062,59 @@ definitions:
         description: Movement concept.
         type: String
         example: Credit in moneypool 2
+      transactionId:
+        description: The transaction id related with the movement.
+        type: String
+        example: 12
       createdDate:
         description: Movement creation daate.
         type: LocalDateTime
         example: "2021-04-23T00:00:00+02:00"
+  GetMovementRequest:
+    type: object
+    properties:
+      type:
+        description: The movement type.
+        type: String
+        example: DEBIT
+      amountFrom:
+        description: Search movement with an amount bigger than this value.
+        type: BigInteger
+        example: 100
+      amountTo:
+        description: Search movement with an amount lower than this value.
+        type: BigInteger
+        example: 400
+      dateFrom:
+        description: Search movements created after this date.
+        type: LocalDateTime
+        example: "2021-04-23"
+      dateTo:
+        description: Search movements created before this date.
+        type: LocalDateTime
+        example: "2022-12-23"
   GetMovementResponse:
     type: object
     required:
       - movements
-      - currentBalance
     properties:
+      pageNumber:
+        description: The current page number.
+        type: Integer
+        example: 0
+      totalSize:
+        description: The total number of movements found.
+        type: Integer
+        example: 10
+      totalPages:
+        description: The total pages returned.
+        type: Integer
+        example: 1
       movements:
         description: List of movement
         type: array
         items:
           $ref: "#/definitions/Movement"
-      currentBalance:
-        description: Current balance.
-        type: BigDecimal
-        example: "500"
   Member:
     type: object
     properties:
