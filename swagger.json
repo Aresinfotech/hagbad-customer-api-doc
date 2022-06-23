@@ -2259,9 +2259,9 @@
           "$ref": "#/definitions/AvatarUrl"
         },
         "rating": {
-          "description": "Customer rating. It may take values from 0.0 to 1.0.",
+          "description": "Customer rating. It may take values from 0.0 to 5.0.",
           "type": "Double",
-          "example": 0.62
+          "example": 2.62
         },
         "address": {
           "description": "Customer address.",
@@ -2581,9 +2581,9 @@
           "example": "OPENED"
         },
         "rating": {
-          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.",
+          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
           "type": "Double",
-          "example": 0.77
+          "example": 3.7
         },
         "purpose": {
           "description": "Purpose of the moneypool.",
@@ -2680,9 +2680,9 @@
           "example": "BUY TV"
         },
         "rating": {
-          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.",
+          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
           "type": "Double",
-          "example": 0.77
+          "example": 2.77
         },
         "currentBalance": {
           "description": "Current balance.",
@@ -2897,9 +2897,9 @@
           "$ref": "#/definitions/AvatarUrl"
         },
         "rating": {
-          "description": "Member rating. It may take values from 0.0 to 1.0.",
+          "description": "Member rating. It may take values from 0.0 to 5.0.",
           "type": "Double",
-          "example": 0.65
+          "example": 1.65
         },
         "positions": {
           "description": "List of position",
@@ -3176,9 +3176,9 @@
           "example": 4000
         },
         "moneypoolRating": {
-          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.",
+          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
           "type": "Double",
-          "example": 0.9
+          "example": 3.9
         },
         "customerId": {
           "description": "The invited customer identifier.",
@@ -3211,7 +3211,7 @@
         "hostName",
         "customerName",
         "amountToSave",
-        "moneypoolRating",
+        "customerRating",
         "customerId",
         "position",
         "status",
@@ -3233,31 +3233,6 @@
           "type": "String",
           "example": "Helping Hearts"
         },
-        "hostName": {
-          "description": "The moneypool host name.",
-          "type": "String",
-          "example": "Ben Benji"
-        },
-        "customerName": {
-          "description": "The name of the customer who made the request.",
-          "type": "String",
-          "example": "Jack Sparrow"
-        },
-        "amountToSave": {
-          "description": "The moneypool amount to save.",
-          "type": "Integer",
-          "example": 4000
-        },
-        "moneypoolRating": {
-          "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 1.0.",
-          "type": "Double",
-          "example": 0.9
-        },
-        "customerId": {
-          "description": "The invited customer identifier.",
-          "type": "BigInteger",
-          "example": 222
-        },
         "position": {
           "description": "The position of the customer.",
           "type": "Integer",
@@ -3272,6 +3247,35 @@
           "description": "The joining request expiration date.",
           "type": "LocalDateTime",
           "example": "2021-04-23T00:00:00+02:00"
+        },
+        "hostName": {
+          "description": "The moneypool host name.",
+          "type": "String",
+          "example": "Ben Benji"
+        },
+        "amountToSave": {
+          "description": "The moneypool amount to save.",
+          "type": "Integer",
+          "example": 4000
+        },
+        "customerId": {
+          "description": "The invited customer identifier.",
+          "type": "BigInteger",
+          "example": 222
+        },
+        "customerName": {
+          "description": "The name of the customer who made the request.",
+          "type": "String",
+          "example": "Jack Sparrow"
+        },
+        "customerRating": {
+          "description": "The customer rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
+          "type": "Double",
+          "example": 1.9
+        },
+        "avatarUrls": {
+          "description": "The profile picture urls for different image sizes.",
+          "$ref": "#/definitions/AvatarUrl"
         }
       }
     },
