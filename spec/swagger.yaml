@@ -2599,6 +2599,7 @@ definitions:
     required:
       - moneypoolId
       - destinationCustomerId
+      - position
       - amount
     properties:
       moneypoolId:
@@ -2607,10 +2608,14 @@ definitions:
         example: 1123
       destinationCustomerId:
         description: The identifier of the customer who will recieve the payment.
-        type: String
-        example: Test moneypool
+        type: BigInteger
+        example: 11
+      position:
+        description: The position that the customer occupies in the moneypool.
+        type: Integer
+        example: 2  
       amount:
-        description: Amount which every Moneypool component will receive in his collect turn.
+        description: Amount of the payment operation.
         type: BigDecimal
         example: 1000
         $ref: "#/definitions/Amount"  
