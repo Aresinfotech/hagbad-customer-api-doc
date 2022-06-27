@@ -42,6 +42,8 @@ info:
     * **Invitation**: This module gives the ability to invite and accept moneypools' invitations.
     * **Joining Request**: This module gives the ability to request moneypools' participations.
     * **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**
+    * **Payments**: Make payments to moneypools members. **UNDER CONSTRUCTION**
+
 
     # Authentication
     ### Please, note that the customers should already be registered in the system, in order to get access to the system.
@@ -93,6 +95,8 @@ tags:
       **THIS ENDPOINT IS NOT AVAILABLE YET**
 
       Notification management operations.
+  - name: payments
+    description: Make payments to moneypools members.
 securityDefinitions:
   JWT:
     description: 'You can obtain a JSON Web Token (`access_token`), using our OpenID Connect Authorizations Server'
@@ -1339,6 +1343,35 @@ paths:
             type: array
             items:
               $ref: '#/definitions/NotificationEvent'
+  /payment:
+    post:
+      tags:
+        - payments
+      summary: Make a payment.
+      operationId: makePayment
+      description: Make a payment to a moneypool member
+      produces:
+        - application/json
+      parameters:
+        - name: Make a payment request parameters.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MakePaymentRequest'
+      responses:
+        '201':
+          description: Payment succesfully created.
+          schema:
+            type: string
+            example: TC1321
+        '400':
+          description: 'Invalid parameters, response contains detailed error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Forbidden. You don't have permissions to make this operation.
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -2561,3 +2594,23 @@ definitions:
         type: 'string,'
         description: The user's new password
         example: Y0ur4w3s0m3P4ssw0rd$
+  MakePaymentRequest:
+    type: object
+    required:
+      - moneypoolId
+      - destinationCustomerId
+      - amount
+    properties:
+      moneypoolId:
+        description: The moneypool identifier.
+        type: BigInteger
+        example: 1123
+      destinationCustomerId:
+        description: The identifier of the customer who will recieve the payment.
+        type: String
+        example: Test moneypool
+      amount:
+        description: Amount which every Moneypool component will receive in his collect turn.
+        type: BigDecimal
+        example: 1000
+        $ref: '#/definitions/Amount'

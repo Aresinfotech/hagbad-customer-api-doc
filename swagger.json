@@ -21,7 +21,7 @@
       "url": "http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png",
       "background": "#FFFFFF"
     },
-    "description": "This page contains the documentation on how to use the Hagbad API.\n\n**API is in beta version, breaking changes may be introduced before the final release candidate is released**\n\n# Introduction\n\nThe Hagbad  API is built on top of HTTP:\n- RESTFul\n- Predictable resource URLs. \n- Accepts and returns JSON in the HTTP body. \n- Returns HTTP response codes to indicate errors. \n\nYou can use your favorite HTTP/REST library for your programming language to consume this API. \n\n# The Hagbad System\nThe Hagbad  is an integrated set of APIs to create and manage moneypools created by customers for other customers.\nThere are the differentes modules exposed by this API: \n\n* **Configuration**: Manage the partner configuration. For now on, the configuration is created by the Hagbad team.\n* **Catalogs**: This module is used to get the catalog information like countries, cities, states, currencies, etc \n* **Customers**: Register and manage the system customer. \n* **Moneypools**: Manage the lifecycle of a moneypool (creation, start, etc).\n* **Invitation**: This module gives the ability to invite and accept moneypools' invitations.\n* **Joining Request**: This module gives the ability to request moneypools' participations.\n* **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**\n\n# Authentication\n### Please, note that the customers should already be registered in the system, in order to get access to the system.\n\nAll Hagbad APIs, including this one, use [OpenId Connect](http://openid.net) protocol to authenticate customers. Specifically the security tokens used are JWT tokens. \n\nTo issue new tokens, you have to use the Hagbad OpenId compliant server located at https://hagbad.greysystems.eu/auth (for more info please check [GreySystems Identity Server Doc](https://grey-systems.github.io/gs-identity-doc/))\n\n* **User Token**: Gets an  `access_token` issued on behalf of an end-user. To get an user access_token you have to implement the [Authorization Code Flow](https://www.keycloak.org/docs/3.3/server_admin/topics/sso-protocols/oidc.html). \n\n**How I use the tokens?**\n As stated in the introduction, both tokens types are JWT tokens, and you should set that token in the HTTP `Authorization` Header of the API call in this way: \n\n```\nAuthorization: Bearer {the_token}\n```\n\n# Common HTTP Error Responses\n\nThe Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: \n\n* HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). \n* HTTP **403** (Forbidden): You are not allowed to access or update the requested resource. \n* HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). \n* HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). \n* HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team.\n"
+    "description": "This page contains the documentation on how to use the Hagbad API.\n\n**API is in beta version, breaking changes may be introduced before the final release candidate is released**\n\n# Introduction\n\nThe Hagbad  API is built on top of HTTP:\n- RESTFul\n- Predictable resource URLs. \n- Accepts and returns JSON in the HTTP body. \n- Returns HTTP response codes to indicate errors. \n\nYou can use your favorite HTTP/REST library for your programming language to consume this API. \n\n# The Hagbad System\nThe Hagbad  is an integrated set of APIs to create and manage moneypools created by customers for other customers.\nThere are the differentes modules exposed by this API: \n\n* **Configuration**: Manage the partner configuration. For now on, the configuration is created by the Hagbad team.\n* **Catalogs**: This module is used to get the catalog information like countries, cities, states, currencies, etc \n* **Customers**: Register and manage the system customer. \n* **Moneypools**: Manage the lifecycle of a moneypool (creation, start, etc).\n* **Invitation**: This module gives the ability to invite and accept moneypools' invitations.\n* **Joining Request**: This module gives the ability to request moneypools' participations.\n* **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**\n* **Payments**: Make payments to moneypools members. **UNDER CONSTRUCTION**\n\n\n# Authentication\n### Please, note that the customers should already be registered in the system, in order to get access to the system.\n\nAll Hagbad APIs, including this one, use [OpenId Connect](http://openid.net) protocol to authenticate customers. Specifically the security tokens used are JWT tokens. \n\nTo issue new tokens, you have to use the Hagbad OpenId compliant server located at https://hagbad.greysystems.eu/auth (for more info please check [GreySystems Identity Server Doc](https://grey-systems.github.io/gs-identity-doc/))\n\n* **User Token**: Gets an  `access_token` issued on behalf of an end-user. To get an user access_token you have to implement the [Authorization Code Flow](https://www.keycloak.org/docs/3.3/server_admin/topics/sso-protocols/oidc.html). \n\n**How I use the tokens?**\n As stated in the introduction, both tokens types are JWT tokens, and you should set that token in the HTTP `Authorization` Header of the API call in this way: \n\n```\nAuthorization: Bearer {the_token}\n```\n\n# Common HTTP Error Responses\n\nThe Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: \n\n* HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). \n* HTTP **403** (Forbidden): You are not allowed to access or update the requested resource. \n* HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). \n* HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). \n* HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team.\n"
   },
   "tags": [
     {
@@ -59,6 +59,10 @@
     {
       "name": "notifications",
       "description": "**THIS ENDPOINT IS NOT AVAILABLE YET**\n\nNotification management operations.\n"
+    },
+    {
+      "name": "payments",
+      "description": "Make payments to moneypools members."
     }
   ],
   "securityDefinitions": {
@@ -1859,6 +1863,50 @@
           }
         }
       }
+    },
+    "/payment": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Make a payment.",
+        "operationId": "makePayment",
+        "description": "Make a payment to a moneypool member",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Make a payment request parameters.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MakePaymentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Payment succesfully created.",
+            "schema": {
+              "type": "string",
+              "example": "TC1321"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters, response contains detailed error.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "403": {
+            "description": "Forbidden. You don't have permissions to make this operation.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -3433,6 +3481,32 @@
           "type": "string,",
           "description": "The user's new password",
           "example": "Y0ur4w3s0m3P4ssw0rd$"
+        }
+      }
+    },
+    "MakePaymentRequest": {
+      "type": "object",
+      "required": [
+        "moneypoolId",
+        "destinationCustomerId",
+        "amount"
+      ],
+      "properties": {
+        "moneypoolId": {
+          "description": "The moneypool identifier.",
+          "type": "BigInteger",
+          "example": 1123
+        },
+        "destinationCustomerId": {
+          "description": "The identifier of the customer who will recieve the payment.",
+          "type": "String",
+          "example": "Test moneypool"
+        },
+        "amount": {
+          "description": "Amount which every Moneypool component will receive in his collect turn.",
+          "type": "BigDecimal",
+          "example": 1000,
+          "$ref": "#/definitions/Amount"
         }
       }
     }
