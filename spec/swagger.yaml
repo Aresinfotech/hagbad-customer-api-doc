@@ -42,7 +42,7 @@ info:
     * **Invitation**: This module gives the ability to invite and accept moneypools' invitations.
     * **Joining Request**: This module gives the ability to request moneypools' participations.
     * **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**
-    * **Payments**: Make payments to moneypools members. **UNDER CONSTRUCTION**
+    * **Payments**: Make payments to moneypools members.
 
 
     # Authentication
@@ -2060,6 +2060,7 @@ definitions:
         type: String
         example: "PENDING"  
   Amount:
+    description: The amount and currency of the operation.
     type: object
     required:
       - ccy
@@ -2615,7 +2616,4 @@ definitions:
         type: Integer
         example: 2  
       amount:
-        description: Amount of the payment operation.
-        type: BigDecimal
-        example: 1000
         $ref: "#/definitions/Amount"  
