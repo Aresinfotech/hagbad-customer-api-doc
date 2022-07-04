@@ -490,58 +490,6 @@ paths:
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
             $ref: "#/definitions/Error" 
-  "/customer/{customerId}":
-    get:
-      summary: Get customer by id.
-      description: Get customer information given its identifier
-      operationId: getCustomerById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: BigInteger
-          description: The customer identifier.
-      tags:
-        - customers management
-      responses:
-        "200":
-          description: Returns the customer information.
-          schema:
-            $ref: "#/definitions/Customer"
-        "400":
-          description: Invalid Request. message attribute of response contains detailed information about the issue.
-          schema:
-            $ref: "#/definitions/Error"
-        "404":
-          description: Customer not found.
-          schema:
-            $ref: "#/definitions/Error"
-  "/customer/username/{username}":
-    get:
-      summary: Get customer by username.
-      description: Get customer information given its username
-      operationId: getCustomerByUsername
-      parameters:
-        - name: username
-          in: path
-          required: true
-          type: String
-          description: The customer username.
-      tags:
-        - customers management
-      responses:
-        "200":
-          description: Returns the customer information.
-          schema:
-            $ref: "#/definitions/Customer"
-        "400":
-          description: Invalid Request. message attribute of response contains detailed information about the issue.
-          schema:
-            $ref: "#/definitions/Error"
-        "404":
-          description: Customer not found.
-          schema:
-            $ref: "#/definitions/Error"
   "/customer/search":
     post:
       summary: Search customers.
@@ -687,6 +635,27 @@ paths:
           description: Customer not found.
           schema:
             $ref: "#/definitions/Error"
+  /image/upload:
+    post:
+      tags:
+      - customers management
+      summary: Upload a new customer image
+      description: "Use this endpoint to upload a new image to the system \nKeep in\
+        \ mind that the system will resize and transform the given image in order\
+        \ to adjust to the system requirements.\n\nOnce the image is uploaded, you\
+        \ will give the image uploaded using the proper Get method"
+      operationId: uploadImage
+      parameters:
+        - name: image
+          in: formData
+          required: false
+          type: file
+          description: The customer image to upload.
+      responses:
+        "201":
+          description: The image has been process and uploaded successfully
+        "400":
+          description: Invalid image given
   "/marketplace":
     post:
       summary: Get the marketplace.
@@ -902,35 +871,6 @@ paths:
           schema:
             type: array
             example: "[1,2,7]"
-        "400":
-          description: "Invalid parameters, response contains detailed error"
-          schema:
-            $ref: "#/definitions/Error"
-        "404":
-          description: Moneypool not found.
-          schema:
-            $ref: "#/definitions/Error"
-  "/moneypool/{id}/member":
-    get:
-      summary: Get moneypool members.
-      description: |
-        Get all members of the moneypool.
-      operationId: getMemberByMoneypoolId
-      tags:
-        - moneypools
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: BigInteger
-          description: The id of the moneypool
-      responses:
-        "200":
-          description: Returns the members of the given moneypool. Returns an empty list if the moneypool doesn’t have any member.
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Member"
         "400":
           description: "Invalid parameters, response contains detailed error"
           schema:
@@ -1647,10 +1587,6 @@ definitions:
         description: Customer KYC status.
         type: String
         example: PENDING
-      profilePicture:
-        description: Profile picture url.
-        type: String
-        example: 413213213123131231231@amazon.ecs.bucket-s3
       address:
         description: Customer address.
         $ref: "#/definitions/Address"
