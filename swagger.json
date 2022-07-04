@@ -2174,6 +2174,11 @@
     "CustomerProfileInformation": {
       "type": "object",
       "properties": {
+        "customerId": {
+          "description": "The customer identifier.",
+          "type": "BigInteger",
+          "example": 11
+        },
         "name": {
           "description": "Customer name.",
           "type": "String",
