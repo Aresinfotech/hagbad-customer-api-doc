@@ -1184,49 +1184,6 @@
         }
       }
     },
-    "/moneypool/{id}/member/{memberId}": {
-      "put": {
-        "summary": "Expel member from moneypool.",
-        "description": "Expel a member from a moneypool.\n",
-        "operationId": "expelMember",
-        "tags": [
-          "moneypools"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The id of the moneypool"
-          },
-          {
-            "name": "memberId",
-            "in": "path",
-            "required": true,
-            "type": "BigInteger",
-            "description": "The id of the member we want to be expelled from the moneypool."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Member successfully expelled from the moneypool."
-          },
-          "400": {
-            "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Moneypool not found. Member not found.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/moneypool/{id}/member/{memberId}/position-from/{positionFrom}/position-to/{positionTo}": {
       "put": {
         "summary": "Update member position.",
@@ -1292,9 +1249,9 @@
     },
     "/moneypool/{id}/member/{memberId}/position/{position}": {
       "delete": {
-        "summary": "Delete member position.",
-        "description": "Delete a member's position in the moneypool.",
-        "operationId": "deleteMemberPosition",
+        "summary": "Expel member from position.",
+        "description": "Expel a member from a given position in the moneypool. \n\n### Important:\nIf the member only has one position left he will be completely expelled from the moneypool.\n",
+        "operationId": "expelMemberPosition",
         "tags": [
           "moneypools"
         ],
@@ -1304,32 +1261,26 @@
             "in": "path",
             "required": true,
             "type": "BigInteger",
-            "description": "The id of the moneypool"
+            "description": "The id of the moneypool."
           },
           {
             "name": "memberId",
             "in": "path",
             "required": true,
             "type": "BigInteger",
-            "description": "The id of the member whose position we want to delete."
+            "description": "The id of the member."
           },
           {
             "name": "position",
             "in": "path",
             "required": true,
             "type": "Integer",
-            "description": "The position which will be deleted."
+            "description": "The position from where the member will be expelled."
           }
         ],
         "responses": {
           "200": {
-            "description": "Member position successfully deleted from the moneypool."
-          },
-          "400": {
-            "description": "Invalid parameters, response contains detailed error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+            "description": "Member successfully expelled from the position or the moneypool."
           },
           "404": {
             "description": "Moneypool not found. Member not found.",
@@ -1338,7 +1289,7 @@
             }
           },
           "409": {
-            "description": "Moneypool can not be edited in the current state.",
+            "description": "The host can not be totally expelled from the moneypool.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -2824,14 +2775,19 @@
           "example": 571423
         },
         "name": {
-          "description": "Customer id.",
-          "type": "BigInteger",
-          "example": 571423
+          "description": "Customer name.",
+          "type": "String",
+          "example": "Maikel"
         },
         "lastName": {
-          "description": "Customer id.",
+          "description": "Customer lastName.",
           "type": "BigInteger",
-          "example": 571423
+          "example": "Smith"
+        },
+        "phoneNumber": {
+          "description": "Customer phone number.",
+          "type": "String",
+          "example": "+34666323211"
         },
         "status": {
           "description": "Member status.",
