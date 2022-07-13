@@ -41,7 +41,7 @@ info:
     * **Moneypools**: Manage the lifecycle of a moneypool (creation, start, etc).
     * **Invitation**: This module gives the ability to invite and accept moneypools' invitations.
     * **Joining Request**: This module gives the ability to request moneypools' participations.
-    * **Notifications**: Receives notifications in a RESTFul way with the latest events happened. **UNDER CONSTRUCTION**
+    * **Notifications**: Receives notifications in a RESTFul way with the latest events happened.
     * **Payments**: Make payments to moneypools members.
 
 
@@ -91,10 +91,7 @@ tags:
   - name: moneypool joining request
     description: Manage moneypool joining requests.
   - name: notifications
-    description: |
-      **THIS ENDPOINT IS NOT AVAILABLE YET**
-
-      Notification management operations.
+    description: Notification management operations.
   - name: payments
     description: Make payments to moneypools members.   
 securityDefinitions:
@@ -1210,33 +1207,33 @@ paths:
           description: "The joining request is not pending, so it can not be updated."
           schema:
             $ref: "#/definitions/Error"
-  "/event/{id}/ack":
+  "/notification/{id}/ack":
     post:
       tags:
         - notifications
-      summary: Acknowledge an existent event
+      summary: Acknowledge an existent notification
       operationId: ackNotification
       description: |
-        Marks an event as acknowledged, so it will not be returned anymore in the `GET /event` method.
+        Marks an notification as acknowledged, so it will not be returned anymore in the `GET /notification` method.
       parameters:
         - name: id
           in: path
-          description: The id of the event to be acked
+          description: The id of the notification to be acked
           type: string
           required: true
       responses:
         "204":
-          description: "Success, event is acknowledged"
+          description: "Success, notification is acknowledged"
         "404":
-          description: "Not Found, the event identified by id does not exists"
-  "/event":
+          description: "Not Found, the notification identified by id does not exists"
+  "/notification":
     get:
       tags:
         - notifications
-      summary: Gets all non acknowledged notifications
+      summary: Get all non acknowledged notifications
       operationId: getNotifications
       description: |
-        Returns all events that are not yet acknowledged. 
+        Returns all notifications that are not yet acknowledged. 
 
         The `payload` type is variable depending on the `eventtype` raised, so the consumer should allow for dynamic types on this attributes. 
 
