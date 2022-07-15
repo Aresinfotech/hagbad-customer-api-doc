@@ -1207,7 +1207,7 @@ paths:
           description: "The joining request is not pending, so it can not be updated."
           schema:
             $ref: "#/definitions/Error"
-  "/notification/{id}/ack":
+  "/customer/notification/{id}/ack":
     post:
       tags:
         - notifications
@@ -1226,7 +1226,7 @@ paths:
           description: "Success, notification is acknowledged"
         "404":
           description: "Not Found, the notification identified by id does not exists"
-  "/notification":
+  "/customer/notification":
     get:
       tags:
         - notifications
