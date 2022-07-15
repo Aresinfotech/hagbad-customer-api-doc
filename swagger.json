@@ -1671,7 +1671,7 @@
         }
       }
     },
-    "/notification/{id}/ack": {
+    "/customer/notification/{id}/ack": {
       "post": {
         "tags": [
           "notifications"
@@ -1698,7 +1698,7 @@
         }
       }
     },
-    "/notification": {
+    "/customer/notification": {
       "get": {
         "tags": [
           "notifications"
