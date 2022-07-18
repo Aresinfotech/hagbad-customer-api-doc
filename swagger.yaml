@@ -633,7 +633,7 @@ paths:
           description: Customer not found.
           schema:
             $ref: '#/definitions/Error'
-  /image/upload:
+  /customer/image/upload:
     post:
       tags:
         - customers management

@@ -846,7 +846,7 @@
         }
       }
     },
-    "/image/upload": {
+    "/customer/image/upload": {
       "post": {
         "tags": [
           "customers management"
