@@ -1705,7 +1705,7 @@
         ],
         "summary": "Get all non acknowledged notifications",
         "operationId": "getNotifications",
-        "description": "Returns all notifications that are not yet acknowledged. \n\nThe `payload` type is variable depending on the `eventtype` raised, so the consumer should allow for dynamic types on this attributes. \n\n### Available Events\n\n* For now on, no one event type is available.\n\n**Note that when an event is acknowledged, it will no longer be available for consume through this method**\n",
+        "description": "Returns all notifications that are not yet acknowledged. \n\nThe `notificationInfo` type is variable depending on the notification `type` raised, so the consumer should allow for dynamic types on this attributes. \n\n### Available Events\n\n* NotificationMessage. For this type --> `notificationInfo` is a dynamic **Map<String, Object>.**\n\n**Note that when an event is acknowledged, it will no longer be available for consume through this method**\n",
         "produces": [
           "application/json"
         ],
@@ -3197,15 +3197,19 @@
           "type": "string",
           "example": "3664893e-e13a-4937-b93c-c489a9400daa"
         },
-        "eventType": {
+        "owner": {
+          "type": "string",
+          "example": "hagbad://customer/2"
+        },
+        "type": {
           "type": "string",
           "example": "An event type"
         },
-        "dateEvent": {
-          "type": "string",
+        "updatedDate": {
+          "type": "date",
           "example": "2018-01-10T02:07:26Z"
         },
-        "payload": {
+        "notificationInfo": {
           "type": "object"
         }
       }
