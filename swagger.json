@@ -483,6 +483,21 @@
         }
       }
     },
+    "/customer/registration/{registrationKey}/resend-code": {
+      "put": {
+        "summary": "Resend OTP code",
+        "description": "Use this resource to resend the registration's OTP code to the phone given in the registration.\n\n`This resource is accessible without authorization`\n",
+        "operationId": "customerRegistrationResendOTPCode",
+        "tags": [
+          "customers registration"
+        ],
+        "responses": {
+          "204": {
+            "description": "A new OTP code has been sent to the registration's phone."
+          }
+        }
+      }
+    },
     "/customer/registration/verify": {
       "post": {
         "summary": "Verify the started customer's registration",
