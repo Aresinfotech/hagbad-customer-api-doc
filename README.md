@@ -1,4 +1,4 @@
-# Hagbad Online API OpenAPI Specification
+# Hagbad Customer Online API OpenAPI Specification
 
 [![Build Status](https://travis-ci.org/grey-systems/hagbad-online-api-docs.svg?branch=master)](https://travis-ci.org/grey-systems/hagbad-online-api-docs)
 
