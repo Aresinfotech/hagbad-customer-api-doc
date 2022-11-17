@@ -502,6 +502,27 @@ paths:
           description: Invalid Request. message attribute of response contains detailed information about the issue.
           schema:
             $ref: '#/definitions/Error'
+  /customer/registration/delete:
+    put:
+      summary: Delete the user's account.
+      description: |
+        Delete the user's account.
+      operationId: recoveryUserPassword
+      parameters:
+        - name: UserPasswordChangeRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DeleteUserAccount'
+      tags:
+        - customers registration
+      responses:
+        '204':
+          description: The user account has been deleted.
+        '400':
+          description: Invalid Request. message attribute of response contains detailed information about the issue.
+          schema:
+            $ref: '#/definitions/Error'
   /customer/search:
     post:
       summary: Search customers.
@@ -1304,11 +1325,11 @@ definitions:
       code:
         type: String
         description: The error code. This error code should define the error type returned.
-        example: MP-0003
+        example: HG-XXXX
       message:
         type: String
         description: The error description. A message that resume the error thrown by the system.
-        example: Community not found for this moneypool.
+        example: An error message produced in the backend.
   Country:
     type: object
     required:
@@ -2524,6 +2545,12 @@ definitions:
         type: 'string,'
         description: The user's new password
         example: Y0ur4w3s0m3P4ssw0rd$
+  DeleteUserAccount:
+    type: object
+    properties:
+      reason:
+        type: 'string,'
+        description: The reason why the user delete the account
   MakePaymentRequest:
     type: object
     required:
