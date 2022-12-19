@@ -2158,6 +2158,18 @@
     },
     "Customer": {
       "type": "object",
+      "required": [
+        "customerId",
+        "name",
+        "lastname",
+        "nickname",
+        "mobileNumber",
+        "email",
+        "referralCode",
+        "referralInvitationCode",
+        "status",
+        "kycStatus"
+      ],
       "properties": {
         "customerId": {
           "description": "customer identifier. It is only required to update the customer information.",
@@ -2229,6 +2241,14 @@
       }
     },
     "CustomerProfileInformation": {
+      "required": [
+        "customerId",
+        "name",
+        "lastname",
+        "mobileNumber",
+        "email",
+        "referralCode"
+      ],
       "type": "object",
       "properties": {
         "customerId": {
