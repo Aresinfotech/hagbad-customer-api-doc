@@ -2645,14 +2645,11 @@
       "required": [
         "id",
         "name",
-        "poolCode",
         "amountToSave",
         "currency",
         "membersRequired",
-        "startDate",
         "type",
         "status",
-        "purpose",
         "currentMembers",
         "rating"
       ],
@@ -2667,11 +2664,6 @@
           "description": "Moneypool name.",
           "type": "string",
           "example": "Helping Hearts"
-        },
-        "poolCode": {
-          "description": "Moneypool code.",
-          "type": "string",
-          "example": "MP1"
         },
         "amountToSave": {
           "description": "Amount which every Moneypool component will receive in his collect turn.",
@@ -2695,13 +2687,6 @@
           "type": "number",
           "format": "int",
           "example": 8
-        },
-        "startDate": {
-          "description": "Moneypool start date.",
-          "type": "string",
-          "format": "date",
-          "pattern": "yyyy-MM-dd",
-          "example": "2021-04-23"
         },
         "type": {
           "type": "string",
@@ -2729,11 +2714,6 @@
           "type": "number",
           "format": "double",
           "example": 3.7
-        },
-        "purpose": {
-          "description": "Purpose of the moneypool.",
-          "type": "string",
-          "example": "BUY TV"
         }
       }
     },
