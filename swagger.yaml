@@ -2844,6 +2844,10 @@ definitions:
     type: object
     properties:
       foundCustomer:
+        required:
+          - firstName
+          - lastName
+          - email
         description: 'If the customer already exist in the remmitance system, its information is going returned here.'
         type: object
         properties:
@@ -2853,9 +2857,11 @@ definitions:
             example: C01
           firstName:
             type: string
+            description: First name
             example: Aureliano
           lastName:
             type: string
+            description: Last name
             example: Buendia
           email:
             type: string
@@ -2887,9 +2893,11 @@ definitions:
         example: C01
       firstName:
         type: string
+        description: First name
         example: Aureliano
       lastName:
         type: string
+        description: Last name
         example: Buendia
       email:
         type: string
