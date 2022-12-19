@@ -2272,7 +2272,8 @@
         "lastname",
         "mobileNumber",
         "email",
-        "referralCode"
+        "referralCode",
+        "rating"
       ],
       "type": "object",
       "properties": {
@@ -3041,6 +3042,18 @@
     },
     "Member": {
       "type": "object",
+      "required": [
+        "id",
+        "customerId",
+        "name",
+        "lastName",
+        "phoneNumber",
+        "status",
+        "host",
+        "joinedDate",
+        "rating",
+        "positions"
+      ],
       "properties": {
         "id": {
           "description": "Member id.",
@@ -3070,9 +3083,14 @@
           "example": "+34666323211"
         },
         "status": {
-          "description": "Member status.",
+          "description": "The status of the customer in this moneypool:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "BLOCKED"
+          ]
         },
         "host": {
           "description": "Flag which determines if the member is the host of the moneypool.",

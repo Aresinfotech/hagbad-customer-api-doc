@@ -1703,6 +1703,7 @@ definitions:
       - mobileNumber
       - email
       - referralCode
+      - rating
     type: object
     properties:
       customerId:
@@ -2375,6 +2376,17 @@ definitions:
           $ref: '#/definitions/Movement'
   Member:
     type: object
+    required:
+      - id
+      - customerId
+      - name
+      - lastName
+      - phoneNumber
+      - status
+      - host
+      - joinedDate
+      - rating
+      - positions
     properties:
       id:
         description: Member id.
@@ -2399,9 +2411,17 @@ definitions:
         type: string
         example: '+34666323211'
       status:
-        description: Member status.
+        description: |
+          The status of the customer in this moneypool:
+           * `ACTIVE` - Active
+           * `INACTIVE` - Inactive
+           * `BLOCKED` - Bloked
         type: string
         example: ACTIVE
+        enum:
+          - ACTIVE
+          - INACTIVE
+          - BLOCKED
       host:
         description: Flag which determines if the member is the host of the moneypool.
         type: boolean
