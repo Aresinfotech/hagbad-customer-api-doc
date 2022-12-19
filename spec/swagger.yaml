@@ -2260,10 +2260,6 @@ definitions:
         pattern: "yyyy-MM-dd"
         example: "2021-04-23"
       status:
-        description: The status of the calendar entry for this position. It could be PAID or PENDING.
-        type: string
-        example: "PENDING"  
-      status:
         description: >
             The status of the calendar entry for this position:
              * `PENDING` - Pending
@@ -2742,8 +2738,7 @@ definitions:
         example: 5
       status:
         description: >
-            The joining request status.
-        type: string status:
+            The joining request status:
              * `PENDING` - Pending
              * `ACCEPTED` - Accepted
              * `DECLINED` - Declined
