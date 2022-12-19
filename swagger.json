@@ -2398,9 +2398,13 @@
           "example": "2021-04-23"
         },
         "type": {
-          "description": "Moneypool type (PUBLIC / PRIVATE).",
           "type": "string",
-          "example": "PUBLIC"
+          "description": "Moneypool type\n * `PUBLIC` - Public\n * `PRIVATE` - Private.\n",
+          "example": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ]
         },
         "amountToSave": {
           "description": "Amount which every Moneypool component will receive in his collect turn.",
@@ -2420,9 +2424,14 @@
           "example": 8
         },
         "paymentsFrequency": {
-          "description": "Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).",
           "type": "string",
-          "example": "MONTHLY"
+          "description": "Frequency of the payments:\n * `MONTHLY` - Monthly\n * `BIMONTHLY` - Bimonthly\n * `BIWEEKLY` - Biweeky\n",
+          "example": "MONTHLY",
+          "enum": [
+            "MONTHLY",
+            "BIMONTHLY",
+            "BIWEEKLY"
+          ]
         },
         "purpose": {
           "description": "Purpose of the moneypool.",
@@ -2459,9 +2468,13 @@
           "example": "2021-04-24"
         },
         "type": {
-          "description": "Moneypool type (PUBLIC / PRIVATE).",
           "type": "string",
-          "example": "PUBLIC"
+          "description": "Moneypool type\n * `PUBLIC` - Public\n * `PRIVATE` - Private.\n",
+          "example": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ]
         },
         "poolCode": {
           "description": "Moneypool code.",
@@ -2469,9 +2482,16 @@
           "example": "MP1"
         },
         "status": {
-          "description": "Status of the Moneypool.",
+          "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished\n",
           "type": "string",
-          "example": "OPENED"
+          "example": "OPENED",
+          "enum": [
+            "OPENED",
+            "CANCELLED",
+            "LOCKED",
+            "STARTED",
+            "FINISHED"
+          ]
         },
         "amountToSave": {
           "description": "Amount which every Moneypool component will receive in his collect turn.",
