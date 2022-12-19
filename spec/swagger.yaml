@@ -1705,6 +1705,7 @@ definitions:
       - mobileNumber
       - email
       - referralCode
+      - paymentMethod
       - rating
     type: object
     properties:
@@ -1749,7 +1750,11 @@ definitions:
         example: 2.62  
       address:
         description: Customer address.
-        $ref: "#/definitions/Address"      
+        $ref: "#/definitions/Address"     
+      paymentMethod:
+        description: Customer default payment method
+        type: "string"
+        example: CASH   
   SearchCustomerRequest:
     type: object
     properties:
