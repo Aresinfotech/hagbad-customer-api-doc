@@ -1135,7 +1135,14 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Moneypool status."
+            "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished.\n",
+            "enum": [
+              "OPENED",
+              "CANCELLED",
+              "LOCKED",
+              "STARTED",
+              "FINISHED"
+            ]
           }
         ],
         "responses": {

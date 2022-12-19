@@ -852,7 +852,19 @@ paths:
           in: path
           required: true
           type: string
-          description: Moneypool status.
+          description: |
+            Status of the Moneypool:
+             * `OPENED` - Opened
+             * `CANCELLED` - Cancelled
+             * `LOCKED` - Locked
+             * `STARTED` - Started
+             * `FINISHED` - Finished.
+          enum:
+            - OPENED
+            - CANCELLED
+            - LOCKED
+            - STARTED
+            - FINISHED
       responses:
         '200':
           description: Moneypool successfully updated.
