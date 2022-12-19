@@ -19,7 +19,7 @@
     },
     "termsOfService": "https://www.greysystems.eu",
     "x-logo": {
-      "url": "http://www.greysystems.eu/wp-content/uploads/2017/07/logo-Grey-menu.png",
+      "url": "https://www.hagbad.net/wp-content/themes/moneypool/images/logo.png",
       "background": "#FFFFFF"
     },
     "description": "This page contains the documentation on how to use the Hagbad API.\n\n**API is in beta version, breaking changes may be introduced before the final release candidate is released**\n\n# Introduction\n\nThe Hagbad  API is built on top of HTTP:\n- RESTFul\n- Predictable resource URLs. \n- Accepts and returns JSON in the HTTP body. \n- Returns HTTP response codes to indicate errors. \n\nYou can use your favorite HTTP/REST library for your programming language to consume this API. \n\n# The Hagbad System\nThe Hagbad  is an integrated set of APIs to create and manage moneypools created by customers for other customers.\nThere are the differentes modules exposed by this API: \n\n* **Configuration**: Manage the partner configuration. For now on, the configuration is created by the Hagbad team.\n* **Catalogs**: This module is used to get the catalog information like countries, cities, states, currencies, etc \n* **Customers**: Register and manage the system customer. \n* **Moneypools**: Manage the lifecycle of a moneypool (creation, start, etc).\n* **Invitation**: This module gives the ability to invite and accept moneypools' invitations.\n* **Joining Request**: This module gives the ability to request moneypools' participations.\n* **Notifications**: Receives notifications in a RESTFul way with the latest events happened.\n* **Payments**: Make payments to moneypools members.\n\n\n# Authentication\n### Please, note that the customers should already be registered in the system, in order to get access to the system.\n\nAll Hagbad APIs, including this one, use [OpenId Connect](http://openid.net) protocol to authenticate customers. Specifically the security tokens used are JWT tokens. \n\nTo issue new tokens, you have to use the Hagbad OpenId compliant server located at https://hagbad.greysystems.eu/auth (for more info please check [GreySystems Identity Server Doc](https://grey-systems.github.io/gs-identity-doc/))\n\n* **User Token**: Gets an  `access_token` issued on behalf of an end-user. To get an user access_token you have to implement the [Authorization Code Flow](https://www.keycloak.org/docs/3.3/server_admin/topics/sso-protocols/oidc.html). \n\n**How I use the tokens?**\n As stated in the introduction, both tokens types are JWT tokens, and you should set that token in the HTTP `Authorization` Header of the API call in this way: \n\n```\nAuthorization: Bearer {the_token}\n```\n\n# Common HTTP Error Responses\n\nThe Rest API uses the following common HTTP status codes to communicate general issues or errors to the clients: \n\n* HTTP **400** (Invalid Request): The request provided is invalid (request is not well formed, a mandatory field is not provided, etc..). \n* HTTP **403** (Forbidden): You are not allowed to access or update the requested resource. \n* HTTP **404** (Not found): The searched item could not be found (the moneypool was not found, etc..). \n* HTTP **409** (Conflict): There is a conflict when trying to execute the operation (status change not allowed, etc..). \n* HTTP **500** (Internal Server Error): Some internal component has failed to process your request. Please notify about this error to GreySystems team.\n"
@@ -920,7 +920,7 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "\"Use this endpoint to upload a new image to the system \\nKeep in\\\n \\ mind that the system will resize and transform the given image in order\\\n \\ to adjust to the system requirements.\\n\\nOnce the image is uploaded, you\\\n \\ will give the image uploaded using the proper Get method\"\n",
+        "description": "Use this endpoint to upload a new image to the system \nKeep in mind that the system will resize and transform the given image in order \nto adjust to the system requirements.\\n\\nOnce the image is uploaded, you\nwill give the image uploaded using the proper Get method\n",
         "operationId": "uploadImage",
         "parameters": [
           {
@@ -2597,9 +2597,14 @@
           "example": true
         },
         "customerStatus": {
-          "description": "The status of the customer in this moneypool.",
+          "description": "The status of the customer in this moneypool:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "BLOCKED"
+          ]
         },
         "joinedDate": {
           "description": "The date the customer joined the moneypool.",
@@ -2891,9 +2896,13 @@
           "example": "2021-04-23"
         },
         "status": {
-          "description": "The status of the calendar entry for this position. It could be PAID or PENDING.",
+          "description": "The status of the calendar entry for this position:\n * `PENDING` - Pending\n * `PAID` - Paid\n",
           "type": "string",
-          "example": "PENDING"
+          "example": "PENDING",
+          "enum": [
+            "PENDING",
+            "PAID"
+          ]
         }
       }
     },
@@ -3277,9 +3286,14 @@
           "example": 5
         },
         "status": {
-          "description": "The invitation status.",
+          "description": "The invitation status:\n * `PENDING` - Pending\n * `ACCEPTED` - Accepted\n * `DECLINED` - Declined\n",
           "type": "string",
-          "example": "PENDING"
+          "example": "PENDING",
+          "enum": [
+            "PENDING",
+            "ACCEPTED",
+            "DECLINED"
+          ]
         },
         "expirationDate": {
           "description": "The invitation expiration date.",
@@ -3326,9 +3340,14 @@
           "example": 5
         },
         "status": {
-          "description": "The joining request status.",
+          "description": "The joining request status:\n * `PENDING` - Pending\n * `ACCEPTED` - Accepted\n * `DECLINED` - Declined\n",
           "type": "string",
-          "example": "PENDING"
+          "example": "PENDING",
+          "enum": [
+            "PENDING",
+            "ACCEPTED",
+            "DECLINED"
+          ]
         },
         "expirationDate": {
           "description": "The joining request expiration date.",
@@ -3401,9 +3420,14 @@
           "example": 5
         },
         "status": {
-          "description": "The invitation status.",
+          "description": "The invitation status:\n * `PENDING` - Pending\n * `ACCEPTED` - Accepted\n * `DECLINED` - Declined\n",
           "type": "string",
-          "example": "PENDING"
+          "example": "PENDING",
+          "enum": [
+            "PENDING",
+            "ACCEPTED",
+            "DECLINED"
+          ]
         },
         "expirationDate": {
           "description": "The invitation expiration date.",
@@ -3454,9 +3478,14 @@
           "example": 5
         },
         "status": {
-          "description": "The joining request status.",
+          "description": "The joining request status:\n * `PENDING` - Pending\n * `ACCEPTED` - Accepted\n * `DECLINED` - Declined\n",
           "type": "string",
-          "example": "PENDING"
+          "example": "PENDING",
+          "enum": [
+            "PENDING",
+            "ACCEPTED",
+            "DECLINED"
+          ]
         },
         "expirationDate": {
           "description": "The joining request expiration date.",
