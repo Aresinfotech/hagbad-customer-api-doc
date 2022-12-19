@@ -1703,6 +1703,7 @@ definitions:
       - mobileNumber
       - email
       - referralCode
+      - paymentMethod
       - rating
     type: object
     properties:
@@ -1748,6 +1749,10 @@ definitions:
       address:
         description: Customer address.
         $ref: '#/definitions/Address'
+      paymentMethod:
+        description: Customer default payment method
+        type: string
+        example: CASH
   SearchCustomerRequest:
     type: object
     properties:
