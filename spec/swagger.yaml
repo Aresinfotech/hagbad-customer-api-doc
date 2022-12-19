@@ -1859,9 +1859,17 @@ definitions:
         format: "int"
         example: 8
       paymentsFrequency:
-        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
         type: string
+        description: >
+            Frequency of the payments:
+             * `MONTHLY` - Monthly
+             * `BIMONTHLY` - Bimonthly
+             * `BIWEEKLY` - Biweeky
         example: MONTHLY
+        enum:
+        - MONTHLY
+        - BIMONTHLY
+        - BIWEEKLY
   CustomerMoneypool:
     type: object
     required:
@@ -1973,17 +1981,23 @@ definitions:
         pattern: "yyyy-MM-dd"
         example: "2021-04-23"
       type:
-        description: Moneypool type (PUBLIC / PRIVATE).
         type: string
+        description: >
+            Moneypool type
+             * `PUBLIC` - Public
+             * `PRIVATE` - Private.
         example: PUBLIC
+        enum:
+        - PUBLIC
+        - PRIVATE
       status:
         description: >
             Status of the Moneypool:
-             * `OPENED` - Active
-             * `CANCELLED` - Blocked
-             * `LOCKED` - Inactive
-             * `STARTED` - Cancelled
-             * `FINISHED` - Cancelled
+             * `OPENED` - Opened
+             * `CANCELLED` - Cancelled
+             * `LOCKED` - Locked
+             * `STARTED` - Started
+             * `FINISHED` - Finished
         type: string      
         example: OPENED
         enum:
@@ -2060,9 +2074,17 @@ definitions:
         format: "int"
         example: 8
       paymentsFrequency:
-        description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
         type: string
+        description: >
+            Frequency of the payments:
+             * `MONTHLY` - Monthly
+             * `BIMONTHLY` - Bimonthly
+             * `BIWEEKLY` - Biweeky
         example: MONTHLY
+        enum:
+        - MONTHLY
+        - BIMONTHLY
+        - BIWEEKLY
       startDate:
         description: Moneypool start date.
         type: string
@@ -2070,17 +2092,23 @@ definitions:
         pattern: "yyyy-MM-dd"
         example: "2021-04-23"
       type:
-        description: Moneypool type (PUBLIC / PRIVATE).
         type: string
+        description: >
+            Moneypool type
+             * `PUBLIC` - Public
+             * `PRIVATE` - Private.
         example: PUBLIC
+        enum:
+        - PUBLIC
+        - PRIVATE
       status:
         description: >
             Status of the Moneypool:
-             * `OPENED` - Active
-             * `CANCELLED` - Blocked
-             * `LOCKED` - Inactive
-             * `STARTED` - Cancelled
-             * `FINISHED` - Cancelled
+             * `OPENED` - Opened
+             * `CANCELLED` - Cancelled
+             * `LOCKED` - Locked
+             * `STARTED` - Started
+             * `FINISHED` - Finished
         type: string      
         example: OPENED
         enum:
