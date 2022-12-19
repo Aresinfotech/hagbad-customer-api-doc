@@ -2491,9 +2491,14 @@
           "example": 8
         },
         "paymentsFrequency": {
-          "description": "Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).",
           "type": "string",
-          "example": "MONTHLY"
+          "description": "Frequency of the payments:\n * `MONTHLY` - Monthly\n * `BIMONTHLY` - Bimonthly\n * `BIWEEKLY` - Biweeky\n",
+          "example": "MONTHLY",
+          "enum": [
+            "MONTHLY",
+            "BIMONTHLY",
+            "BIWEEKLY"
+          ]
         }
       }
     },
@@ -2633,12 +2638,16 @@
           "example": "2021-04-23"
         },
         "type": {
-          "description": "Moneypool type (PUBLIC / PRIVATE).",
           "type": "string",
-          "example": "PUBLIC"
+          "description": "Moneypool type\n * `PUBLIC` - Public\n * `PRIVATE` - Private.\n",
+          "example": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ]
         },
         "status": {
-          "description": "Status of the Moneypool:\n * `OPENED` - Active\n * `CANCELLED` - Blocked\n * `LOCKED` - Inactive\n * `STARTED` - Cancelled\n * `FINISHED` - Cancelled\n",
+          "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished\n",
           "type": "string",
           "example": "OPENED",
           "enum": [
@@ -2730,9 +2739,14 @@
           "example": 8
         },
         "paymentsFrequency": {
-          "description": "Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).",
           "type": "string",
-          "example": "MONTHLY"
+          "description": "Frequency of the payments:\n * `MONTHLY` - Monthly\n * `BIMONTHLY` - Bimonthly\n * `BIWEEKLY` - Biweeky\n",
+          "example": "MONTHLY",
+          "enum": [
+            "MONTHLY",
+            "BIMONTHLY",
+            "BIWEEKLY"
+          ]
         },
         "startDate": {
           "description": "Moneypool start date.",
@@ -2742,12 +2756,16 @@
           "example": "2021-04-23"
         },
         "type": {
-          "description": "Moneypool type (PUBLIC / PRIVATE).",
           "type": "string",
-          "example": "PUBLIC"
+          "description": "Moneypool type\n * `PUBLIC` - Public\n * `PRIVATE` - Private.\n",
+          "example": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ]
         },
         "status": {
-          "description": "Status of the Moneypool:\n * `OPENED` - Active\n * `CANCELLED` - Blocked\n * `LOCKED` - Inactive\n * `STARTED` - Cancelled\n * `FINISHED` - Cancelled\n",
+          "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished\n",
           "type": "string",
           "example": "OPENED",
           "enum": [
