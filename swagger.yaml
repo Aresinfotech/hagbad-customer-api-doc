@@ -1977,9 +1977,21 @@ definitions:
         type: string
         example: PUBLIC
       status:
-        description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
+        description: |
+          Status of the Moneypool:
+           * `OPENED` - Active
+           * `CANCELLED` - Blocked
+           * `LOCKED` - Inactive
+           * `STARTED` - Cancelled
+           * `FINISHED` - Cancelled
         type: string
         example: OPENED
+        enum:
+          - OPENED
+          - CANCELLED
+          - LOCKED
+          - STARTED
+          - FINISHED
       rating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
         type: number
@@ -2062,9 +2074,21 @@ definitions:
         type: string
         example: PUBLIC
       status:
-        description: Status of the Moneypool.
+        description: |
+          Status of the Moneypool:
+           * `OPENED` - Active
+           * `CANCELLED` - Blocked
+           * `LOCKED` - Inactive
+           * `STARTED` - Cancelled
+           * `FINISHED` - Cancelled
         type: string
         example: OPENED
+        enum:
+          - OPENED
+          - CANCELLED
+          - LOCKED
+          - STARTED
+          - FINISHED
       purpose:
         description: Purpose of the moneypool.
         type: string

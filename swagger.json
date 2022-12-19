@@ -2638,9 +2638,16 @@
           "example": "PUBLIC"
         },
         "status": {
-          "description": "Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).",
+          "description": "Status of the Moneypool:\n * `OPENED` - Active\n * `CANCELLED` - Blocked\n * `LOCKED` - Inactive\n * `STARTED` - Cancelled\n * `FINISHED` - Cancelled\n",
           "type": "string",
-          "example": "OPENED"
+          "example": "OPENED",
+          "enum": [
+            "OPENED",
+            "CANCELLED",
+            "LOCKED",
+            "STARTED",
+            "FINISHED"
+          ]
         },
         "rating": {
           "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
@@ -2740,9 +2747,16 @@
           "example": "PUBLIC"
         },
         "status": {
-          "description": "Status of the Moneypool.",
+          "description": "Status of the Moneypool:\n * `OPENED` - Active\n * `CANCELLED` - Blocked\n * `LOCKED` - Inactive\n * `STARTED` - Cancelled\n * `FINISHED` - Cancelled\n",
           "type": "string",
-          "example": "OPENED"
+          "example": "OPENED",
+          "enum": [
+            "OPENED",
+            "CANCELLED",
+            "LOCKED",
+            "STARTED",
+            "FINISHED"
+          ]
         },
         "purpose": {
           "description": "Purpose of the moneypool.",
