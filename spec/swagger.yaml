@@ -689,10 +689,10 @@ paths:
       consumes:
        - multipart/form-data
       description: |  
-       "Use this endpoint to upload a new image to the system \nKeep in\
-        \ mind that the system will resize and transform the given image in order\
-        \ to adjust to the system requirements.\n\nOnce the image is uploaded, you\
-        \ will give the image uploaded using the proper Get method"
+        Use this endpoint to upload a new image to the system 
+        Keep in mind that the system will resize and transform the given image in order 
+        to adjust to the system requirements.\n\nOnce the image is uploaded, you
+        will give the image uploaded using the proper Get method
       operationId: uploadImage
       parameters:
         - name: image
@@ -1992,9 +1992,17 @@ definitions:
         type: boolean
         example: true
       customerStatus:
-        description: The status of the customer in this moneypool.
+        description: >
+            The status of the customer in this moneypool:
+             * `ACTIVE` - Active
+             * `INACTIVE` - Inactive
+             * `BLOCKED` - Bloked
         type: string
         example: ACTIVE
+        enum:
+        - ACTIVE
+        - INACTIVE
+        - BLOCKED     
       joinedDate:
         description: The date the customer joined the moneypool.
         type: string
@@ -2255,6 +2263,16 @@ definitions:
         description: The status of the calendar entry for this position. It could be PAID or PENDING.
         type: string
         example: "PENDING"  
+      status:
+        description: >
+            The status of the calendar entry for this position:
+             * `PENDING` - Pending
+             * `PAID` - Paid
+        type: string      
+        example: PENDING
+        enum:
+        - PENDING
+        - PAID        
   Amount:
     description: The amount and currency of the operation.
     type: object
@@ -2553,9 +2571,17 @@ definitions:
         format: "int"
         example: 5
       status:
-        description: The invitation status.
-        type: string
-        example: "PENDING"
+        description: >
+            The invitation status:
+             * `PENDING` - Pending
+             * `ACCEPTED` - Accepted
+             * `DECLINED` - Declined
+        type: string      
+        example: PENDING
+        enum:
+        - PENDING
+        - ACCEPTED
+        - DECLINED
       expirationDate:
         description: The invitation expiration date.
         type: string
@@ -2593,9 +2619,17 @@ definitions:
         format: "int"
         example: 5
       status:
-        description: The joining request status.
-        type: string
-        example: "PENDING"
+        description: >
+            The joining request status:
+             * `PENDING` - Pending
+             * `ACCEPTED` - Accepted
+             * `DECLINED` - Declined
+        type: string      
+        example: PENDING
+        enum:
+        - PENDING
+        - ACCEPTED
+        - DECLINED
       expirationDate:
         description: The joining request expiration date.
         type: string
@@ -2655,9 +2689,17 @@ definitions:
         format: "int"
         example: 5
       status:
-        description: The invitation status.
-        type: string
-        example: "PENDING"
+        description: >
+            The invitation status:
+             * `PENDING` - Pending
+             * `ACCEPTED` - Accepted
+             * `DECLINED` - Declined
+        type: string      
+        example: PENDING
+        enum:
+        - PENDING
+        - ACCEPTED
+        - DECLINED
       expirationDate:
         description: The invitation expiration date.
         type: string
@@ -2699,9 +2741,18 @@ definitions:
         format: "int"
         example: 5
       status:
-        description: The joining request status.
-        type: string
-        example: "PENDING"
+        description: >
+            The joining request status.
+        type: string status:
+             * `PENDING` - Pending
+             * `ACCEPTED` - Accepted
+             * `DECLINED` - Declined
+        type: string      
+        example: PENDING
+        enum:
+        - PENDING
+        - ACCEPTED
+        - DECLINED
       expirationDate:
         description: The joining request expiration date.
         type: string
