@@ -2633,15 +2633,26 @@
           "example": "2021-04-23"
         },
         "type": {
-          "description": "Moneypool type (PUBLIC / PRIVATE).",
+          "description": "Moneypool type:.\n * `PUBLIC` - Public\n * `PRIVATE` - Private\n",
           "type": "string",
-          "example": "PUBLIC"
+          "example": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ]
         },
         "status": {
-          "description": "Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).",
+          "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished\n",
           "type": "string",
-          "example": "OPENED"
+          "enum": [
+            "OPENED",
+            "CANCELLED",
+            "LOCKED",
+            "STARTED",
+            "FINISHED"
+          ]
         },
+        "example": "OPENED",
         "rating": {
           "description": "The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.",
           "type": "number",
