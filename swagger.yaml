@@ -131,7 +131,7 @@ paths:
         - name: iso2
           in: path
           required: true
-          type: String
+          type: string
           description: ISO-Alpha2 Code.
       responses:
         '200':
@@ -156,12 +156,12 @@ paths:
         - name: iso2
           in: path
           required: true
-          type: String
+          type: string
           description: ISO-ALpha2 Code.
         - name: name
           in: query
           required: true
-          type: String
+          type: string
           description: 'City name, minimum length three characters.'
       responses:
         '200':
@@ -188,12 +188,13 @@ paths:
         - name: iso2
           in: path
           required: true
-          type: String
+          type: string
           description: ISO-ALpha2 Code.
         - name: cityId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: City identifier.
       responses:
         '200':
@@ -218,12 +219,12 @@ paths:
         - name: iso2
           in: path
           required: true
-          type: String
+          type: string
           description: ISO-ALpha2 Code.
         - name: name
           in: query
           required: false
-          type: String
+          type: string
           description: 'State name, minimum length three characters. If this parameter is not informed, it will return all available states in the country.'
       responses:
         '200':
@@ -250,12 +251,13 @@ paths:
         - name: iso2
           in: path
           required: true
-          type: String
+          type: string
           description: ISO-ALpha2 Code.
         - name: stateId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: State identifier
       responses:
         '200':
@@ -297,7 +299,7 @@ paths:
         - name: iso
           in: path
           required: true
-          type: String
+          type: string
           description: ISO Code.
       responses:
         '200':
@@ -323,6 +325,8 @@ paths:
           description: Returns the supported movement types.
           schema:
             type: array
+            items:
+              type: string
             example:
               - DEBIT
               - CREDIT
@@ -385,6 +389,12 @@ paths:
         Use this resource to resend the registration's OTP code to the phone given in the registration.
 
         `This resource is accessible without authorization`
+      parameters:
+        - name: registrationKey
+          in: path
+          required: true
+          type: string
+          description: Registration key.
       operationId: customerRegistrationResendOTPCode
       tags:
         - customers registration
@@ -435,12 +445,12 @@ paths:
         If the customer already exist in the remmitance system, only the email can be modified. Otherwise, the customer must fill all the required fields but the customer code (that is provided by the remmitance system)
 
         `This resource is accessible without authorization`
-      operationId: customerRegistrationVerify
+      operationId: customerRegistrationComplete
       parameters:
         - name: X-Hagbad-Customer-Device-SSID
           in: header
           required: false
-          type: String
+          type: string
           description: The device Id. This field is optional. You can use this header to auto-register the customer's device
         - name: CompleteRegistrationRequest
           in: body
@@ -486,7 +496,7 @@ paths:
       summary: Change the current user's password.
       description: |
         Change the current user's password.
-      operationId: recoveryUserPassword
+      operationId: changeUserPassword
       parameters:
         - name: UserPasswordChangeRequest
           in: body
@@ -507,7 +517,7 @@ paths:
       summary: Delete the user's account.
       description: |
         Delete the user's account.
-      operationId: recoveryUserPassword
+      operationId: deleteUserAccount
       parameters:
         - name: UserPasswordChangeRequest
           in: body
@@ -542,17 +552,19 @@ paths:
         - name: searchParam
           in: query
           required: false
-          type: String
+          type: string
           description: search param to search by in customer nickname or email.
         - name: page
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Page number.
         - name: elementsPerPage
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Number of elements per page.
       responses:
         '200':
@@ -570,7 +582,6 @@ paths:
       summary: Get customer profile.
       description: Return the profile information of the logged customer.
       operationId: getCustomerProfile
-      parameters: null
       tags:
         - customers management
       responses:
@@ -587,12 +598,14 @@ paths:
         - name: page
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: The requested page.
         - name: elementsPerPage
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: How many elements per page.
       tags:
         - customers management
@@ -618,12 +631,14 @@ paths:
         - name: page
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: The requested page.
         - name: elementsPerPage
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: How many elements per page.
         - name: Search request parameters.
           in: body
@@ -650,7 +665,6 @@ paths:
       summary: Get customer moneypools.
       description: 'Return a list with the customer moneypools, either as host or member.'
       operationId: getCustomerMoneypools
-      parameters: null
       tags:
         - customers management
       responses:
@@ -673,11 +687,13 @@ paths:
       tags:
         - customers management
       summary: Upload a new customer image
-      description: |-
-        Use this endpoint to upload a new image to the system 
-        Keep in mind that the system will resize and transform the given image in order to adjust to the system requirements.
-
-        Once the image is uploaded, you will give the image uploaded using the proper Get method
+      consumes:
+        - multipart/form-data
+      description: |
+        "Use this endpoint to upload a new image to the system \nKeep in\
+         \ mind that the system will resize and transform the given image in order\
+         \ to adjust to the system requirements.\n\nOnce the image is uploaded, you\
+         \ will give the image uploaded using the proper Get method"
       operationId: uploadImage
       parameters:
         - name: image
@@ -696,7 +712,7 @@ paths:
       description: |-
         This method will return all *OPENED* and *PUBLIC* moneypools which start date is whithin the next 6 months. 
          You can use this method to get the default marketplace's opened moneypools. If you want to adjust the marketplace with the customer's option, please review the resource `/marketplace/search`
-      operationId: searchMoneypools
+      operationId: searchMarketplace
       tags:
         - marketplace
       responses:
@@ -726,12 +742,14 @@ paths:
         - name: page
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Page number.
         - name: elementsPerPage
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Number of elements per page.
       responses:
         '200':
@@ -800,7 +818,8 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the moneypool
       responses:
         '200':
@@ -826,12 +845,13 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: Moneypool id.
         - name: status
           in: path
           required: true
-          type: String
+          type: string
           description: Moneypool status.
       responses:
         '200':
@@ -860,17 +880,20 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the moneypool
         - name: page
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Page number.
         - name: elementsPerPage
           in: query
           required: false
-          type: Integer
+          type: number
+          format: int
           description: Number of elements per page.
       responses:
         '200':
@@ -896,13 +919,17 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the moneypool
       responses:
         '200':
           description: Returns the a list with moneypool's available positions.
           schema:
             type: array
+            items:
+              type: number
+              format: int
             example: '[1,2,7]'
         '400':
           description: 'Invalid parameters, response contains detailed error'
@@ -924,22 +951,26 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the moneypool
         - name: memberId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the member we want to switch the position.
         - name: positionFrom
           in: path
           required: true
-          type: Integer
+          type: number
+          format: int
           description: The position currently occupied by the member.
         - name: positionTo
           in: path
           required: true
-          type: Integer
+          type: number
+          format: int
           description: The position that the member will occupy.
       responses:
         '200':
@@ -971,17 +1002,20 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the moneypool.
         - name: memberId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The id of the member.
         - name: position
           in: path
           required: true
-          type: Integer
+          type: number
+          format: int
           description: The position from where the member will be expelled.
       responses:
         '200':
@@ -1049,7 +1083,8 @@ paths:
         - name: moneypoolId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The moneypool identifier.
       responses:
         '200':
@@ -1073,7 +1108,8 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The invitation identifier.
       responses:
         '200':
@@ -1103,7 +1139,8 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The invitation identifier.
       responses:
         '200':
@@ -1177,7 +1214,8 @@ paths:
         - name: moneypoolId
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The moneypool identifier.
       responses:
         '200':
@@ -1201,7 +1239,8 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The joining request identifier.
       responses:
         '200':
@@ -1223,7 +1262,8 @@ paths:
         - name: id
           in: path
           required: true
-          type: BigInteger
+          type: number
+          format: long
           description: The joining request identifier.
       responses:
         '200':
@@ -1323,11 +1363,11 @@ definitions:
       - message
     properties:
       code:
-        type: String
+        type: string
         description: The error code. This error code should define the error type returned.
         example: HG-XXXX
       message:
-        type: String
+        type: string
         description: The error description. A message that resume the error thrown by the system.
         example: An error message produced in the backend.
   Country:
@@ -1339,15 +1379,15 @@ definitions:
     properties:
       id:
         description: Alphanumeric iso code (2-letters) of the country..
-        type: BigInteger
+        type: string
         example: US
       name:
         description: Name of the country
-        type: String
+        type: string
         example: United States Of America
       isoCode3:
         description: Alphanumeric iso code (3-letters) of the country.
-        type: String
+        type: string
         example: USA
   City:
     type: object
@@ -1358,15 +1398,16 @@ definitions:
     properties:
       id:
         description: Id of the city.
-        type: BigInteger
+        type: number
+        format: long
         example: 12341234
       name:
         description: Name of the city (locale based). Will return non-ascii characters for those cities that are originally written using non-latin alphabet.
-        type: String
+        type: string
         example: London
       nameAscii:
         description: 'Name of the city (using ascii characters, for english readers).'
-        type: String
+        type: string
         example: London
   State:
     type: object
@@ -1378,19 +1419,20 @@ definitions:
     properties:
       id:
         description: Id of the state.
-        type: BigInteger
+        type: number
+        format: long
         example: 6269131
       name:
         description: Name of the state (locale based). Will return non-ascii characters for those states that are originally written using non-latin alphabet.
-        type: String
+        type: string
         example: England
       nameAscii:
         description: 'Name of the state (using ascii characters, for english readers).'
-        type: String
+        type: string
         example: England
       code:
         description: Code of the state.
-        type: String
+        type: string
         example: ENG
   Currency:
     type: object
@@ -1400,11 +1442,11 @@ definitions:
     properties:
       id:
         description: Numeric iso of the currency.
-        type: BigInteger
+        type: string
         example: USD
       name:
         description: Currency name
-        type: String
+        type: string
         example: Us Dollar
   PaymentMethod:
     type: object
@@ -1414,11 +1456,11 @@ definitions:
     properties:
       type:
         description: The payment method type.
-        type: String
+        type: string
         example: CASH
       description:
         description: The payment method description.
-        type: String
+        type: string
         example: Cash payment
   PartnerConfiguration:
     type: object
@@ -1436,39 +1478,44 @@ definitions:
     properties:
       name:
         description: The partner name.
-        type: String
+        type: string
         example: Test partner
       currency:
         description: The partner configured currency. There will be only one currency configured for each partner.
-        type: String
+        type: string
         example: USD
       country:
         description: The partner configured country. There will be only one country configured for each partner.
-        type: String
+        type: string
         example: ES
       lowerLimit:
         description: The minimum value that the amountToSave field can take when creating a moneypool.
-        type: BigInteger
+        type: number
+        format: long
         example: 300
       upperLimit:
         description: The maximum value that the amountToSave field can take when creating a moneypool.
-        type: BigInteger
+        type: number
+        format: long
         example: 3000
       minMembers:
         description: The minimum number of members for whom a moneypool can be created.
-        type: String
+        type: number
+        format: int
         example: 5
       maxMembers:
         description: The maximum number of members for whom a moneypool can be created.
-        type: String
+        type: number
+        format: int
         example: 15
       decimalAllowed:
         description: Indicate whether decimal numbers are allowed in the system or not.
-        type: Boolean
+        type: boolean
         example: true
       numberOfDecimals:
         description: The number of decimal allowed in case they are. If decimals are not allowed this value will be 0.
-        type: Integer
+        type: number
+        format: int
         example: 2
       paymentMethods:
         description: The different payment methods configured for this partner.
@@ -1488,51 +1535,54 @@ definitions:
     properties:
       customerId:
         description: customer identifier. It is only required to update the customer information.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       code:
         description: Customer code.
-        type: String
+        type: string
         example: CU123
       name:
         description: Customer name.
-        type: String
+        type: string
         example: Ben
       lastname:
         description: Customer last name.
-        type: String
+        type: string
         example: Simmons
       nickname:
         description: Customer nickname.
-        type: LocalDate
+        type: string
         example: BSimmy
       birthDate:
         description: Customer birthdate.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-05-23'
       mobileNumber:
         description: Customer mobile number.
-        type: String
+        type: string
         example: 34666666666
       email:
         description: Customer email.
-        type: String
+        type: string
         example: ben.simmons@test.com
       status:
         description: Customer status.
-        type: String
+        type: string
         example: ACTIVE
       kycStatus:
         description: Customer KYC status.
-        type: String
+        type: string
         example: PENDING
       profilePicture:
         description: Profile picture url.
-        type: String
+        type: string
         example: 413213213123131231231@amazon.ecs.bucket-s3
       referralInvitationCode:
         description: Referral invitation code of the customer who invited you.
-        type: String
+        type: string
         example: FL8935V
       address:
         description: Customer address.
@@ -1542,51 +1592,54 @@ definitions:
     properties:
       customerId:
         description: customer identifier. It is only required to update the customer information.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       code:
         description: Customer code.
-        type: String
+        type: string
         example: CU123
       name:
         description: Customer name.
-        type: String
+        type: string
         example: Ben
       lastname:
         description: Customer last name.
-        type: String
+        type: string
         example: Simmons
       nickname:
         description: Customer nickname.
-        type: LocalDate
+        type: string
         example: BSimmy
       birthDate:
         description: Customer birthdate.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-05-23'
       mobileNumber:
         description: Customer mobile number.
-        type: String
+        type: string
         example: 34666666666
       referralCode:
         description: Customer referral code to invite new users.
-        type: String
+        type: string
         example: BS8321F
       referralInvitationCode:
         description: Referral invitation code of the customer who invited you.
-        type: String
+        type: string
         example: FL8935V
       email:
         description: Customer email.
-        type: String
+        type: string
         example: ben.simmons@test.com
       status:
         description: Customer status.
-        type: String
+        type: string
         example: ACTIVE
       kycStatus:
         description: Customer KYC status.
-        type: String
+        type: string
         example: PENDING
       address:
         description: Customer address.
@@ -1596,38 +1649,42 @@ definitions:
     properties:
       customerId:
         description: The customer identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       name:
         description: Customer name.
-        type: String
+        type: string
         example: Ben
       lastname:
         description: Customer last name.
-        type: String
+        type: string
         example: Simmons
       birthDate:
         description: Customer birthdate.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-05-23'
       mobileNumber:
         description: Customer mobile number.
-        type: String
+        type: string
         example: 34666666666
       referralCode:
         description: Customer referral code to invite new users.
-        type: String
+        type: string
         example: BS8321F
       email:
         description: Customer email.
-        type: String
+        type: string
         example: ben.simmons@test.com
       avatarUrls:
         description: The profile picture urls for different image sizes.
         $ref: '#/definitions/AvatarUrl'
       rating:
         description: Customer rating. It may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 2.62
       address:
         description: Customer address.
@@ -1637,31 +1694,33 @@ definitions:
     properties:
       name:
         description: Customer name.
-        type: String
+        type: string
         example: Ben
       lastname:
         description: Customer lastname.
-        type: String
+        type: string
         example: Simmons
       birthDate:
         description: Customer birthDate.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-24'
       mobileNumber:
         description: Customer phone number.
-        type: String
+        type: string
         example: 34666453433
       email:
         description: Customer email.
-        type: String
+        type: string
         example: ben@simmons.test
       status:
         description: Customer status.
-        type: String
+        type: string
         example: ACTIVE
       kycStatus:
         description: Customer KYC status.
-        type: String
+        type: string
         example: ACTIVE
   SearchCustomerResponse:
     type: object
@@ -1687,43 +1746,48 @@ definitions:
     properties:
       id:
         description: Moneypool id. It is only required to update a moneypool.
-        type: BigInteger
+        type: number
+        format: long
         example: 1123
       name:
         description: Moneypool name.
-        type: String
+        type: string
         example: Test moneypool
       poolCode:
         description: Moneypool code.
-        type: String
+        type: string
         example: MP1
       startDate:
         description: Moneypool start date.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: String
+        type: string
         example: PUBLIC
       amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: BigDecimal
+        type: number
+        format: long
         example: 1000
       currency:
         description: Moneypool currency.
-        type: String
+        type: string
         example: USD
       membersRequired:
         description: Number of Members required.
-        type: Integer
+        type: number
+        format: int
         example: 8
       paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: String
+        type: string
         example: MONTHLY
       purpose:
         description: Purpose of the moneypool.
-        type: String
+        type: string
         example: BUY TV
   SearchMoneypoolRequest:
     type: object
@@ -1734,43 +1798,49 @@ definitions:
     properties:
       name:
         description: Moneypool name.
-        type: String
+        type: string
         example: '2021-04-23'
       startDateFrom:
         description: The date from where Moneypool start dates begin.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       startDateTo:
         description: The date where Moneypool start dates end.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-24'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: String
+        type: string
         example: PUBLIC
       poolCode:
         description: Moneypool code.
-        type: String
+        type: string
         example: MP1
       status:
         description: Status of the Moneypool.
-        type: String
+        type: string
         example: OPENED
       amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: BigDecimal
+        type: number
+        format: long
         example: 1000
       currency:
         description: Moneypool currency.
-        type: String
+        type: string
         example: USD
       membersRequired:
         description: Number of Members required.
-        type: Integer
+        type: number
+        format: int
         example: 8
       paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: String
+        type: string
         example: MONTHLY
   CustomerMoneypool:
     type: object
@@ -1786,35 +1856,41 @@ definitions:
     properties:
       moneypoolId:
         description: Moneypool id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       moneypoolName:
         description: Moneypool name.
-        type: String
+        type: string
         example: Helping Hearts
       hostName:
         description: Host name.
-        type: String
+        type: string
         example: John Simmons
       moneypoolStatus:
         description: Moneypool status.
-        type: String
+        type: string
         example: OPENED
       isHost:
         description: Specifies if the customer is the host of this moneypool.
-        type: Boolean
-        example: 1000
+        type: boolean
+        example: true
       customerStatus:
         description: The status of the customer in this moneypool.
-        type: String
+        type: string
         example: ACTIVE
       joinedDate:
         description: The date the customer joined the moneypool.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       positions:
         description: The customer positions in this moneypool.
         type: array
+        items:
+          type: number
+          format: int
         example:
           - 2
           - 4
@@ -1838,55 +1914,62 @@ definitions:
     properties:
       id:
         description: Moneypool id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       name:
         description: Moneypool name.
-        type: String
+        type: string
         example: Helping Hearts
       hostName:
         description: Host name.
-        type: String
+        type: string
         example: John Simmons
       poolCode:
         description: Moneypool code.
-        type: String
+        type: string
         example: MP1
       amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: BigDecimal
+        type: number
+        format: long
         example: 1000
       currency:
         description: Moneypool currency.
-        type: String
+        type: string
         example: USD
       currentMembers:
         description: Number of Members at this moment in the moneypool.
-        type: Integer
+        type: number
+        format: int
         example: 6
       membersRequired:
         description: Number of Members required.
-        type: Integer
+        type: number
+        format: int
         example: 8
       startDate:
         description: Moneypool start date.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: String
+        type: string
         example: PUBLIC
       status:
         description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
-        type: String
+        type: string
         example: OPENED
       rating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 3.7
       purpose:
         description: Purpose of the moneypool.
-        type: String
+        type: string
         example: BUY TV
   MoneypoolDetail:
     type: object
@@ -1911,67 +1994,76 @@ definitions:
     properties:
       id:
         description: Moneypool id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       name:
         description: Moneypool name.
-        type: String
+        type: string
         example: Test moneypool
       poolCode:
         description: Moneypool code.
-        type: String
+        type: string
         example: MP1
       amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
-        type: BigDecimal
+        type: number
+        format: long
         example: 1000
       currency:
         description: Moneypool currency.
-        type: String
+        type: string
         example: USD
       membersRequired:
         description: Number of Members required.
-        type: Integer
+        type: number
+        format: int
         example: 8
       paymentCycle:
         description: Number of payment cicle.
-        type: Integer
+        type: number
+        format: int
         example: 8
       paymentCyclesTotal:
         description: Number of payment cicle total.
-        type: Integer
+        type: number
+        format: int
         example: 8
       paymentsFrequency:
         description: Frequency of the payments (MONTHLY / BIMONTHLY / BIWEEKLY).
-        type: String
+        type: string
         example: MONTHLY
       startDate:
         description: Moneypool start date.
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       type:
         description: Moneypool type (PUBLIC / PRIVATE).
-        type: String
+        type: string
         example: PUBLIC
       status:
         description: Status of the Moneypool.
-        type: String
+        type: string
         example: OPENED
       purpose:
         description: Purpose of the moneypool.
-        type: String
+        type: string
         example: BUY TV
       rating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 2.77
       currentBalance:
         description: Current balance.
-        type: BigDecimal
+        type: number
+        format: decimal
         example: '500'
       moneypoolView:
         description: 'The moneypool view based on the logged user that request the information. Possible values are HOST, MEMBER or CUSTOMER'
-        type: String
+        type: string
         example: HOST
       members:
         description: The members of the moneypool.
@@ -1992,15 +2084,18 @@ definitions:
     properties:
       position:
         description: Position in the moneypool.
-        type: Integer
+        type: number
+        format: int
         example: 2
       date:
         description: 'The payment date. If the payment is already been done, this field will represent the date in which the payment was executed.'
-        type: LocalDate
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2021-04-23'
       status:
         description: The status of the calendar entry for this position. It could be PAID or PENDING.
-        type: String
+        type: string
         example: PENDING
   Amount:
     description: The amount and currency of the operation.
@@ -2011,11 +2106,12 @@ definitions:
     properties:
       ccy:
         description: Currency.
-        type: String
+        type: string
         example: EUR
       value:
         description: Amount.
-        type: BigDecimal
+        type: number
+        format: decimal
         example: 300.56
   Movement:
     type: object
@@ -2028,49 +2124,58 @@ definitions:
     properties:
       id:
         description: Movement id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       amount:
         $ref: '#/definitions/Amount'
       type:
         description: Movement type.
-        type: String
+        type: string
         example: CREDIT
       concept:
         description: Movement concept.
-        type: String
+        type: string
         example: Credit in moneypool 2
       transactionId:
         description: The transaction id related with the movement.
-        type: String
+        type: string
         example: 12
       createdDate:
-        description: Movement creation daate.
-        type: LocalDateTime
+        description: Movement creation date.
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
   GetMovementRequest:
     type: object
     properties:
       type:
         description: The movement type.
-        type: String
+        type: string
         example: DEBIT
       amountFrom:
         description: Search movement with an amount bigger than this value.
-        type: BigInteger
+        type: number
+        format: long
         example: 100
       amountTo:
         description: Search movement with an amount lower than this value.
-        type: BigInteger
+        type: number
+        format: long
         example: 400
       dateFrom:
         description: Search movements created after this date.
-        type: LocalDateTime
-        example: '2021-04-23'
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
+        example: '2021-04-23T00:00:00+02:00'
       dateTo:
         description: Search movements created before this date.
-        type: LocalDateTime
-        example: '2022-12-23'
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
+        example: '2021-04-25T00:00:00+02:00'
   GetMovementResponse:
     type: object
     required:
@@ -2078,15 +2183,18 @@ definitions:
     properties:
       pageNumber:
         description: The current page number.
-        type: Integer
+        type: number
+        format: int
         example: 0
       totalSize:
         description: The total number of movements found.
-        type: Integer
+        type: number
+        format: int
         example: 10
       totalPages:
         description: The total pages returned.
-        type: Integer
+        type: number
+        format: int
         example: 1
       movements:
         description: List of movement
@@ -2098,42 +2206,47 @@ definitions:
     properties:
       id:
         description: Member id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       customerId:
         description: Customer id.
-        type: BigInteger
+        type: number
+        format: long
         example: 571423
       name:
         description: Customer name.
-        type: String
+        type: string
         example: Maikel
       lastName:
         description: Customer lastName.
-        type: BigInteger
+        type: string
         example: Smith
       phoneNumber:
         description: Customer phone number.
-        type: String
+        type: string
         example: '+34666323211'
       status:
         description: Member status.
-        type: String
+        type: string
         example: ACTIVE
       host:
         description: Flag which determines if the member is the host of the moneypool.
-        type: Boolean
+        type: boolean
         example: false
       joinedDate:
         description: Joined date.
-        type: LocalDateTime
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
       avatarUrls:
         description: The profile picture urls for different image sizes.
         $ref: '#/definitions/AvatarUrl'
       rating:
         description: Member rating. It may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 1.65
       positions:
         description: List of position
@@ -2145,43 +2258,43 @@ definitions:
     required:
       - position
       - status
-      - positions
-      - status
     properties:
       position:
         description: Position.
-        type: Integer
+        type: number
+        format: int
         example: 1
       status:
         description: Member status.
-        type: String
+        type: string
         example: ACTIVE
   Address:
     type: object
     properties:
       address1:
         description: Address first line (street).
-        type: Integer
+        type: number
+        format: int
         example: 'Elm Street, 13'
       address2:
         description: 'Address second line (House number, floor...etc.).'
-        type: String
+        type: string
         example: 'Second floor, door C'
       city:
         description: City.
-        type: String
+        type: string
         example: Madrid
       state:
         description: State.
-        type: String
+        type: string
         example: Madrid
       country:
         description: Country.
-        type: String
+        type: string
         example: ES
       zipCode:
         description: Postal code.
-        type: String
+        type: string
         example: 1232F
   AddMemberRequest:
     type: object
@@ -2191,26 +2304,28 @@ definitions:
     properties:
       customerId:
         description: The identifier of the customer we want to add to the pool.
-        type: BigInteger
+        type: number
+        format: long
         example: 571418
       position:
         description: Position the member will take in the moneypool.
-        type: BigInteger
+        type: number
+        format: int
         example: 5
   AvatarUrl:
     type: object
     properties:
       large:
         description: The largest image size url.
-        type: String
+        type: string
         example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=48&s=48'
       medium:
         description: The medium image size url.
-        type: String
+        type: string
         example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=24&s=24'
       small:
         description: The smallest image size url.
-        type: String
+        type: string
         example: 'https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=16&s=16'
   InviteRequest:
     type: object
@@ -2221,15 +2336,18 @@ definitions:
     properties:
       moneypoolId:
         description: The identifier of the moneypool the customer will be invited to.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       customerId:
         description: The identifier of the customer we want to invite.
-        type: BigInteger
+        type: number
+        format: long
         example: 222
       position:
         description: Position the customer will take in the moneypool.
-        type: Integer
+        type: number
+        format: int
         example: 5
   JoinRequest:
     type: object
@@ -2239,11 +2357,13 @@ definitions:
     properties:
       moneypoolId:
         description: The id of the moneypool the customer is requesting to join.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       position:
         description: Position the customer will take in the moneypool.
-        type: Integer
+        type: number
+        format: int
         example: 5
   Invitation:
     type: object
@@ -2257,27 +2377,32 @@ definitions:
     properties:
       id:
         description: The invitation identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       moneypoolId:
         description: The moneypool identifier the customer is invited to.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       customerId:
         description: The invited customer identifier.
-        type: BigInteger
-        example: 222
+        type: number
+        format: long
       position:
         description: The position of the customer.
-        type: Integer
+        type: number
+        format: int
         example: 5
       status:
         description: The invitation status.
-        type: String
+        type: string
         example: PENDING
       expirationDate:
         description: The invitation expiration date.
-        type: LocalDateTime
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
   JoiningRequest:
     type: object
@@ -2291,27 +2416,33 @@ definitions:
     properties:
       id:
         description: The joining request identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 14
       moneypoolId:
         description: The moneypool identifier the customer is requesting to join.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       customerId:
         description: The customer who request to join identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 222
       position:
         description: The position of the customer.
-        type: Integer
+        type: number
+        format: int
         example: 5
       status:
         description: The joining request status.
-        type: String
+        type: string
         example: PENDING
       expirationDate:
         description: The joining request expiration date.
-        type: LocalDateTime
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
   InvitationDetails:
     type: object
@@ -2329,43 +2460,51 @@ definitions:
     properties:
       id:
         description: The invitation identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       moneypoolId:
         description: The moneypool identifier the customer is invited to.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       moneypoolName:
         description: The moneypool name.
-        type: String
+        type: string
         example: Helping Hearts
       hostName:
         description: The moneypool host name.
-        type: String
+        type: string
         example: Pep Mancini
       amountToSave:
         description: The moneypool amount to save.
-        type: Integer
+        type: number
+        format: long
         example: 4000
       moneypoolRating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 3.9
       customerId:
         description: The invited customer identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 222
       position:
         description: The position of the customer.
-        type: Integer
+        type: number
+        format: int
         example: 5
       status:
         description: The invitation status.
-        type: String
+        type: string
         example: PENDING
       expirationDate:
         description: The invitation expiration date.
-        type: LocalDateTime
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
   JoiningRequestDetails:
     type: object
@@ -2384,47 +2523,55 @@ definitions:
     properties:
       id:
         description: The invitation identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       moneypoolId:
         description: The moneypool identifier the customer is requesting to join.
-        type: BigInteger
+        type: number
+        format: long
         example: 123
       moneypoolName:
         description: The moneypool name.
-        type: String
+        type: string
         example: Helping Hearts
       position:
         description: The position of the customer.
-        type: Integer
+        type: number
+        format: int
         example: 5
       status:
         description: The joining request status.
-        type: String
+        type: string
         example: PENDING
       expirationDate:
         description: The joining request expiration date.
-        type: LocalDateTime
+        type: string
+        format: date
+        pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS'
         example: '2021-04-23T00:00:00+02:00'
       hostName:
         description: The moneypool host name.
-        type: String
+        type: string
         example: Ben Benji
       amountToSave:
         description: The moneypool amount to save.
-        type: Integer
+        type: number
+        format: long
         example: 4000
       customerId:
         description: The invited customer identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 222
       customerName:
         description: The name of the customer who made the request.
-        type: String
+        type: string
         example: Jack Sparrow
       customerRating:
         description: The customer rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
-        type: Double
+        type: number
+        format: double
         example: 1.9
       avatarUrls:
         description: The profile picture urls for different image sizes.
@@ -2441,7 +2588,9 @@ definitions:
         type: string
         example: An event type
       updatedDate:
-        type: date
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '2018-01-10T02:07:26Z'
       notificationInfo:
         type: object
@@ -2453,7 +2602,9 @@ definitions:
         description: The customer's phone number
         example: '+34643124321'
       birthdate:
-        type: date
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         description: The customer's date of birth.
         example: '1986-01-01'
       referralCode:
@@ -2499,7 +2650,9 @@ definitions:
             type: string
             example: lorem@ipsum.com
           birthdate:
-            type: date
+            type: string
+            format: date
+            pattern: yyyy-MM-dd
             example: '1986-01-01'
   CompleteRegistrationRequest:
     type: object
@@ -2525,7 +2678,9 @@ definitions:
         type: string
         example: lorem@ipsum.com
       birthdate:
-        type: date
+        type: string
+        format: date
+        pattern: yyyy-MM-dd
         example: '1986-01-01'
   UserPasswordRecoveryRequest:
     type: object
@@ -2533,7 +2688,7 @@ definitions:
       - email
     properties:
       email:
-        type: 'string,'
+        type: string
         description: The user's email
         example: test@test.com
   UserPasswordChangeRequest:
@@ -2542,14 +2697,14 @@ definitions:
       - newPassword
     properties:
       newPassword:
-        type: 'string,'
+        type: string
         description: The user's new password
         example: Y0ur4w3s0m3P4ssw0rd$
   DeleteUserAccount:
     type: object
     properties:
       reason:
-        type: 'string,'
+        type: string
         description: The reason why the user delete the account
   MakePaymentRequest:
     type: object
@@ -2561,15 +2716,18 @@ definitions:
     properties:
       moneypoolId:
         description: The moneypool identifier.
-        type: BigInteger
+        type: number
+        format: long
         example: 1123
       destinationCustomerId:
         description: The identifier of the customer who will recieve the payment.
-        type: BigInteger
+        type: number
+        format: long
         example: 11
       position:
         description: The position that the customer occupies in the moneypool.
-        type: Integer
+        type: number
+        format: int
         example: 2
       amount:
         $ref: '#/definitions/Amount'
