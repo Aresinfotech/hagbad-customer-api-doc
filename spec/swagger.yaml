@@ -1591,6 +1591,17 @@ definitions:
         $ref: "#/definitions/Address"
   Customer:
     type: object
+    required:
+      - customerId
+      - name
+      - lastname
+      - nickname
+      - mobileNumber
+      - email
+      - referralCode
+      - referralInvitationCode
+      - status
+      - kycStatus
     properties:
       customerId:
         description: customer identifier. It is only required to update the customer information.
@@ -1647,6 +1658,13 @@ definitions:
         description: Customer address.
         $ref: "#/definitions/Address"
   CustomerProfileInformation:
+    required:
+      - customerId
+      - name
+      - lastname
+      - mobileNumber
+      - email
+      - referralCode
     type: object
     properties:
       customerId:
