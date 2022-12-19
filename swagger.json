@@ -944,7 +944,7 @@
     "/marketplace": {
       "post": {
         "summary": "Get the marketplace.",
-        "description": "This method will return all *OPENED* and *PUBLIC* moneypools which start date is whithin the next 6 months. \n You can use this method to get the default marketplace's opened moneypools. If you want to adjust the marketplace with the customer's option, please review the resource `/marketplace/search`",
+        "description": "This method will return all *OPENED* and *PUBLIC* moneypools which start date is whithin the next 6 months.\nYou can use this method to get the default marketplace's opened moneypools. If you want to adjust the marketplace with the customer's option, please review the resource `/marketplace/search`\"\n",
         "operationId": "searchMarketplace",
         "tags": [
           "marketplace"
@@ -2183,7 +2183,8 @@
         "referralCode",
         "referralInvitationCode",
         "status",
-        "kycStatus"
+        "kycStatus",
+        "paymentMethod"
       ],
       "properties": {
         "customerId": {
@@ -2262,6 +2263,11 @@
         "address": {
           "description": "Customer address.",
           "$ref": "#/definitions/Address"
+        },
+        "paymentMethod": {
+          "description": "Customer default payment method",
+          "type": "string",
+          "example": "CASH"
         }
       }
     },
@@ -2639,9 +2645,7 @@
       "required": [
         "id",
         "name",
-        "hostName",
         "poolCode",
-        "hostId",
         "amountToSave",
         "currency",
         "membersRequired",
@@ -2663,11 +2667,6 @@
           "description": "Moneypool name.",
           "type": "string",
           "example": "Helping Hearts"
-        },
-        "hostName": {
-          "description": "Host name.",
-          "type": "string",
-          "example": "John Simmons"
         },
         "poolCode": {
           "description": "Moneypool code.",
