@@ -689,10 +689,10 @@ paths:
       consumes:
        - multipart/form-data
       description: |  
-        Use this endpoint to upload a new image to the system 
-        Keep in mind that the system will resize and transform the given image in order 
-        to adjust to the system requirements.\n\nOnce the image is uploaded, you
-        will give the image uploaded using the proper Get method
+        Use this endpoint to upload a new image to the system.
+        Keep in mind that the system will resize and transform the given image in order to adjust to the system requirements.
+        
+        Once the image is uploaded, you will give the image uploaded using the proper Get method
       operationId: uploadImage
       parameters:
         - name: image
