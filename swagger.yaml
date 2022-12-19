@@ -2865,8 +2865,10 @@ definitions:
             example: Buendia
           email:
             type: string
+            description: Email
             example: lorem@ipsum.com
           birthdate:
+            description: Birtdate
             type: string
             format: date
             pattern: yyyy-MM-dd
@@ -2901,8 +2903,10 @@ definitions:
         example: Buendia
       email:
         type: string
+        description: Email
         example: lorem@ipsum.com
       birthdate:
+        description: Birtdate
         type: string
         format: date
         pattern: yyyy-MM-dd

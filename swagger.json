@@ -3639,9 +3639,11 @@
             },
             "email": {
               "type": "string",
+              "description": "Email",
               "example": "lorem@ipsum.com"
             },
             "birthdate": {
+              "description": "Birtdate",
               "type": "string",
               "format": "date",
               "pattern": "yyyy-MM-dd",
@@ -3687,9 +3689,11 @@
         },
         "email": {
           "type": "string",
+          "description": "Email",
           "example": "lorem@ipsum.com"
         },
         "birthdate": {
+          "description": "Birtdate",
           "type": "string",
           "format": "date",
           "pattern": "yyyy-MM-dd",
