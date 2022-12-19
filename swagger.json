@@ -2418,7 +2418,7 @@
         "amountToSave",
         "currency",
         "membersRequired",
-        "paymentsFrequency",
+        "paymentFrequency",
         "purpose"
       ],
       "properties": {
@@ -2471,7 +2471,7 @@
           "format": "int",
           "example": 8
         },
-        "paymentsFrequency": {
+        "paymentFrequency": {
           "type": "string",
           "description": "Frequency of the payments:\n * `MONTHLY` - Monthly\n * `BIMONTHLY` - Bimonthly\n * `BIWEEKLY` - Biweeky\n",
           "example": "MONTHLY",
@@ -2647,10 +2647,11 @@
         "name",
         "amountToSave",
         "currency",
+        "currentMembers",
         "membersRequired",
         "type",
         "status",
-        "currentMembers",
+        "purpose",
         "rating"
       ],
       "properties": {
@@ -2723,12 +2724,15 @@
         "id",
         "name",
         "poolCode",
+        "hostId",
+        "hostName",
         "amountToSave",
         "currency",
+        "currentMembers",
         "membersRequired",
         "paymentCycle",
         "paymentCyclesTotal",
-        "paymentsFrequency",
+        "paymentFrequency",
         "startDate",
         "type",
         "status",
@@ -2755,6 +2759,17 @@
           "type": "string",
           "example": "MP1"
         },
+        "hostId": {
+          "description": "The moneypool host id.",
+          "type": "number",
+          "format": "long",
+          "example": 12
+        },
+        "hostName": {
+          "description": "The moneypool host name.",
+          "type": "string",
+          "example": "Pep Mancini"
+        },
         "amountToSave": {
           "description": "Amount which every Moneypool component will receive in his collect turn.",
           "type": "number",
@@ -2765,6 +2780,12 @@
           "description": "Moneypool currency.",
           "type": "string",
           "example": "USD"
+        },
+        "currentMembers": {
+          "description": "Number of Members at this moment in the moneypool.",
+          "type": "number",
+          "format": "int",
+          "example": 6
         },
         "membersRequired": {
           "description": "Number of Members required.",
@@ -2784,7 +2805,7 @@
           "format": "int",
           "example": 8
         },
-        "paymentsFrequency": {
+        "paymentFrequency": {
           "type": "string",
           "description": "Frequency of the payments:\n * `MONTHLY` - Monthly\n * `BIMONTHLY` - Bimonthly\n * `BIWEEKLY` - Biweeky\n",
           "example": "MONTHLY",

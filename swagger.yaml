@@ -1826,7 +1826,7 @@ definitions:
       - amountToSave
       - currency
       - membersRequired
-      - paymentsFrequency
+      - paymentFrequency
       - purpose
     properties:
       id:
@@ -1872,7 +1872,7 @@ definitions:
         type: number
         format: int
         example: 8
-      paymentsFrequency:
+      paymentFrequency:
         type: string
         description: |
           Frequency of the payments:
@@ -2034,10 +2034,11 @@ definitions:
       - name
       - amountToSave
       - currency
+      - currentMembers
       - membersRequired
       - type
       - status
-      - currentMembers
+      - purpose
       - rating
     properties:
       id:
@@ -2105,12 +2106,15 @@ definitions:
       - id
       - name
       - poolCode
+      - hostId
+      - hostName
       - amountToSave
       - currency
+      - currentMembers
       - membersRequired
       - paymentCycle
       - paymentCyclesTotal
-      - paymentsFrequency
+      - paymentFrequency
       - startDate
       - type
       - status
@@ -2133,6 +2137,15 @@ definitions:
         description: Moneypool code.
         type: string
         example: MP1
+      hostId:
+        description: The moneypool host id.
+        type: number
+        format: long
+        example: 12
+      hostName:
+        description: The moneypool host name.
+        type: string
+        example: Pep Mancini
       amountToSave:
         description: Amount which every Moneypool component will receive in his collect turn.
         type: number
@@ -2142,6 +2155,11 @@ definitions:
         description: Moneypool currency.
         type: string
         example: USD
+      currentMembers:
+        description: Number of Members at this moment in the moneypool.
+        type: number
+        format: int
+        example: 6
       membersRequired:
         description: Number of Members required.
         type: number
@@ -2157,7 +2175,7 @@ definitions:
         type: number
         format: int
         example: 8
-      paymentsFrequency:
+      paymentFrequency:
         type: string
         description: |
           Frequency of the payments:
