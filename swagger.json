@@ -1135,13 +1135,11 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished.\n",
+            "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n",
             "enum": [
               "OPENED",
               "CANCELLED",
-              "LOCKED",
-              "STARTED",
-              "FINISHED"
+              "LOCKED"
             ]
           }
         ],
@@ -2138,14 +2136,24 @@
           "example": "ben.simmons@test.com"
         },
         "status": {
-          "description": "Customer status.",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "BLOCKED"
+          ]
         },
         "kycStatus": {
-          "description": "Customer KYC status.",
           "type": "string",
-          "example": "PENDING"
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "example": "VALIDATED",
+          "enum": [
+            "VALIDATED",
+            "NOT_VALIDATED",
+            "BLOCKED"
+          ]
         },
         "profilePicture": {
           "description": "Profile picture url.",
@@ -2232,14 +2240,24 @@
           "example": "ben.simmons@test.com"
         },
         "status": {
-          "description": "Customer status.",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "BLOCKED"
+          ]
         },
         "kycStatus": {
-          "description": "Customer KYC status.",
           "type": "string",
-          "example": "PENDING"
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "example": "VALIDATED",
+          "enum": [
+            "VALIDATED",
+            "NOT_VALIDATED",
+            "BLOCKED"
+          ]
         },
         "address": {
           "description": "Customer address.",
@@ -2343,14 +2361,24 @@
           "example": "ben@simmons.test"
         },
         "status": {
-          "description": "Customer status.",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "BLOCKED"
+          ]
         },
         "kycStatus": {
-          "description": "Customer KYC status.",
           "type": "string",
-          "example": "ACTIVE"
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "example": "VALIDATED",
+          "enum": [
+            "VALIDATED",
+            "NOT_VALIDATED",
+            "BLOCKED"
+          ]
         }
       }
     },
