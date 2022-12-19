@@ -2596,6 +2596,8 @@ definitions:
         type: object
   StartRegistrationRequest:
     type: object
+    required:
+      - phoneNumber
     properties:
       phoneNumber:
         type: string
@@ -2613,6 +2615,8 @@ definitions:
         example: SANQ123
   StartRegistrationResponse:
     type: object
+    required:
+      - registrationKey
     properties:
       registrationKey:
         type: string
@@ -2620,6 +2624,9 @@ definitions:
         example: 3664893e-e13a-4237-b95c-c489a9400da2
   VerifyRegistrationRequest:
     type: object
+    required:
+      - registrationKey
+      - verificationCode
     properties:
       registrationKey:
         type: string
@@ -2656,6 +2663,12 @@ definitions:
             example: '1986-01-01'
   CompleteRegistrationRequest:
     type: object
+    required:
+      - registrationKey
+      - password
+      - firstName
+      - lastName
+      - email
     properties:
       registrationKey:
         type: string

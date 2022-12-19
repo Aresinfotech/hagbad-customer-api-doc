@@ -3419,6 +3419,9 @@
     },
     "StartRegistrationRequest": {
       "type": "object",
+      "required": [
+        "phoneNumber"
+      ],
       "properties": {
         "phoneNumber": {
           "type": "string",
@@ -3441,6 +3444,9 @@
     },
     "StartRegistrationResponse": {
       "type": "object",
+      "required": [
+        "registrationKey"
+      ],
       "properties": {
         "registrationKey": {
           "type": "string",
@@ -3451,6 +3457,10 @@
     },
     "VerifyRegistrationRequest": {
       "type": "object",
+      "required": [
+        "registrationKey",
+        "verificationCode"
+      ],
       "properties": {
         "registrationKey": {
           "type": "string",
@@ -3500,6 +3510,13 @@
     },
     "CompleteRegistrationRequest": {
       "type": "object",
+      "required": [
+        "registrationKey",
+        "password",
+        "firstName",
+        "lastName",
+        "email"
+      ],
       "properties": {
         "registrationKey": {
           "type": "string",
