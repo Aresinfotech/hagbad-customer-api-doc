@@ -857,14 +857,10 @@ paths:
              * `OPENED` - Opened
              * `CANCELLED` - Cancelled
              * `LOCKED` - Locked
-             * `STARTED` - Started
-             * `FINISHED` - Finished.
           enum:
             - OPENED
             - CANCELLED
             - LOCKED
-            - STARTED
-            - FINISHED
       responses:
         "200":
           description: Moneypool successfully updated.
@@ -1583,13 +1579,29 @@ definitions:
         type: string
         example: ben.simmons@test.com
       status:
-        description: Customer status.
+        description: >
+            Customer status:
+             * `ACTIVE` - Active
+             * `INACTIVE` - Inactive
+             * `BLOCKED` - Bloked
         type: string
-        example: ACTIVE
+        example: ACTIVE   
+        enum:
+        - ACTIVE
+        - INACTIVE
+        - BLOCKED     
       kycStatus:
-        description: Customer KYC status.
         type: string
-        example: PENDING
+        description: >
+            Customer KYC status:
+             * `VALIDATED` - Validated
+             * `NOT_VALIDATED` - Not validated.
+             * `BLOCKED` - Bloked.
+        example: VALIDATED
+        enum:
+        - VALIDATED
+        - NOT_VALIDATED
+        - BLOCKED
       profilePicture:
         description: Profile picture url.
         type: string
@@ -1659,13 +1671,29 @@ definitions:
         type: string
         example: ben.simmons@test.com
       status:
-        description: Customer status.
+        description: >
+            Customer status:
+             * `ACTIVE` - Active
+             * `INACTIVE` - Inactive
+             * `BLOCKED` - Bloked
         type: string
-        example: ACTIVE
+        example: ACTIVE   
+        enum:
+        - ACTIVE
+        - INACTIVE
+        - BLOCKED     
       kycStatus:
-        description: Customer KYC status.
         type: string
-        example: PENDING
+        description: >
+            Customer KYC status:
+             * `VALIDATED` - Validated
+             * `NOT_VALIDATED` - Not validated.
+             * `BLOCKED` - Bloked.
+        example: VALIDATED
+        enum:
+        - VALIDATED
+        - NOT_VALIDATED
+        - BLOCKED
       address:
         description: Customer address.
         $ref: "#/definitions/Address"
@@ -1747,13 +1775,29 @@ definitions:
         type: string
         example: ben@simmons.test
       status:
-        description: Customer status.
+        description: >
+            Customer status:
+             * `ACTIVE` - Active
+             * `INACTIVE` - Inactive
+             * `BLOCKED` - Bloked
         type: string
-        example: ACTIVE
+        example: ACTIVE   
+        enum:
+        - ACTIVE
+        - INACTIVE
+        - BLOCKED     
       kycStatus:
-        description: Customer KYC status.
         type: string
-        example: ACTIVE
+        description: >
+            Customer KYC status:
+             * `VALIDATED` - Validated
+             * `NOT_VALIDATED` - Not validated.
+             * `BLOCKED` - Bloked.
+        example: VALIDATED
+        enum:
+        - VALIDATED
+        - NOT_VALIDATED
+        - BLOCKED
   SearchCustomerResponse:
     type: object
     properties:
