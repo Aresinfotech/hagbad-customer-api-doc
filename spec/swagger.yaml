@@ -1973,13 +1973,31 @@ definitions:
         pattern: "yyyy-MM-dd"
         example: "2021-04-23"
       type:
-        description: Moneypool type (PUBLIC / PRIVATE).
+        description: >
+            Moneypool type:.
+             * `PUBLIC` - Public
+             * `PRIVATE` - Private
         type: string
-        example: PUBLIC
+        example: PUBLIC     
+        enum:
+        - PUBLIC
+        - PRIVATE
       status:
-        description: Status of the Moneypool (OPENED / CANCELLED / LOCKED / STARTED / FINISHED).
-        type: string
-        example: OPENED
+        description: >
+            Status of the Moneypool:
+             * `OPENED` - Opened
+             * `CANCELLED` - Cancelled
+             * `LOCKED` - Locked
+             * `STARTED` - Started
+             * `FINISHED` - Finished
+        type: string      
+        enum:
+        - OPENED
+        - CANCELLED
+        - LOCKED
+        - STARTED
+        - FINISHED
+      example: OPENED
       rating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
         type: "number"
