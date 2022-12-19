@@ -1976,7 +1976,7 @@ definitions:
         description: >
             Moneypool type:.
              * `PUBLIC` - Public
-             * `PRIVATE` - Private
+             * `PRIVATE` - P
         type: string
         example: PUBLIC     
         enum:
@@ -1990,14 +1990,14 @@ definitions:
              * `LOCKED` - Locked
              * `STARTED` - Started
              * `FINISHED` - Finished
-        type: string      
+        type: string    
+        example: OPENED  
         enum:
         - OPENED
         - CANCELLED
         - LOCKED
         - STARTED
         - FINISHED
-      example: OPENED
       rating:
         description: The moneypool rating. It is obtained from the rating of its members and it may take values from 0.0 to 5.0.
         type: "number"
