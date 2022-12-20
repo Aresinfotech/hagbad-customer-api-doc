@@ -539,7 +539,7 @@ paths:
       description: |
         Search customers given some parameters. You will have two different ways to search customers:
         - SearchCustomerRequest object in the request body.
-        - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email.
+        - SearchParam value as Query param. This method will search customers with something similar to the given param in their nickname or email. If you use this option the method must be `GET`
       operationId: searchCustomers
       tags:
         - customers management
