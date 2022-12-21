@@ -723,7 +723,7 @@ paths:
           in: path
           required: true
           type: string
-          description: Payment method of the Customer:
+          description: Payment method of the Customer
       responses:
         "200":
           description: Customer successfully updated.
