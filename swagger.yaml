@@ -706,6 +706,36 @@ paths:
           description: The image has been process and uploaded successfully
         '400':
           description: Invalid image given
+  '/customer/{id}/paymentMethod/{paymentMethod}':
+    put:
+      summary: Update customer payment method.
+      description: Update the payment method of a given customer.
+      operationId: updateCustomerPaymentMethod
+      tags:
+        - customers management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: number
+          format: long
+          description: Customer id.
+        - name: paymentMethod
+          in: path
+          required: true
+          type: string
+          description: Payment method of the Customer
+      responses:
+        '200':
+          description: Customer successfully updated.
+        '400':
+          description: 'Invalid parameters, response contains detailed error'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Customer not found.
+          schema:
+            $ref: '#/definitions/Error'
   /marketplace:
     post:
       summary: Get the marketplace.
