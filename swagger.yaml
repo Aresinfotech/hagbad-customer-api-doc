@@ -2023,9 +2023,21 @@ definitions:
         type: string
         example: John Simmons
       moneypoolStatus:
-        description: Moneypool status.
+        description: |
+          Status of the Moneypool:
+           * `OPENED` - Opened
+           * `CANCELLED` - Cancelled
+           * `LOCKED` - Locked
+           * `STARTED` - Started
+           * `FINISHED` - Finished
         type: string
         example: OPENED
+        enum:
+          - OPENED
+          - CANCELLED
+          - LOCKED
+          - STARTED
+          - FINISHED
       isHost:
         description: Specifies if the customer is the host of this moneypool.
         type: boolean
@@ -2447,7 +2459,7 @@ definitions:
         example: '+34666323211'
       status:
         description: |
-          The status of the customer in this moneypool:
+          The status of the customer:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
            * `BLOCKED` - Bloked
@@ -2492,9 +2504,19 @@ definitions:
         format: int
         example: 1
       status:
-        description: Member status.
+        description: |
+          Member position status:
+           * `ACTIVE` - Active
+           * `BLOCKED` - Bloked
+           * `PENDING` - Pending
+           * `EXPELLED` - Expelled
         type: string
         example: ACTIVE
+        enum:
+          - ACTIVE
+          - BLOCKED
+          - PENDING
+          - EXPELLED
   Address:
     type: object
     properties:

@@ -2644,9 +2644,16 @@
           "example": "John Simmons"
         },
         "moneypoolStatus": {
-          "description": "Moneypool status.",
+          "description": "Status of the Moneypool:\n * `OPENED` - Opened\n * `CANCELLED` - Cancelled\n * `LOCKED` - Locked\n * `STARTED` - Started\n * `FINISHED` - Finished\n",
           "type": "string",
-          "example": "OPENED"
+          "example": "OPENED",
+          "enum": [
+            "OPENED",
+            "CANCELLED",
+            "LOCKED",
+            "STARTED",
+            "FINISHED"
+          ]
         },
         "isHost": {
           "description": "Specifies if the customer is the host of this moneypool.",
@@ -3133,7 +3140,7 @@
           "example": "+34666323211"
         },
         "status": {
-          "description": "The status of the customer in this moneypool:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "The status of the customer:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -3187,9 +3194,15 @@
           "example": 1
         },
         "status": {
-          "description": "Member status.",
+          "description": "Member position status:\n * `ACTIVE` - Active\n * `BLOCKED` - Bloked\n * `PENDING` - Pending\n * `EXPELLED` - Expelled\n",
           "type": "string",
-          "example": "ACTIVE"
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "BLOCKED",
+            "PENDING",
+            "EXPELLED"
+          ]
         }
       }
     },
