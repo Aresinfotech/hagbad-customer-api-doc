@@ -1611,7 +1611,7 @@ definitions:
           Customer status:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
         type: string
         example: ACTIVE
         enum:
@@ -1624,7 +1624,7 @@ definitions:
           Customer KYC status:
            * `VALIDATED` - Validated
            * `NOT_VALIDATED` - Not validated.
-           * `BLOCKED` - Bloked.
+           * `BLOCKED` - Blocked.
         example: VALIDATED
         enum:
           - VALIDATED
@@ -1704,7 +1704,7 @@ definitions:
           Customer status:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
         type: string
         example: ACTIVE
         enum:
@@ -1717,7 +1717,7 @@ definitions:
           Customer KYC status:
            * `VALIDATED` - Validated
            * `NOT_VALIDATED` - Not validated.
-           * `BLOCKED` - Bloked.
+           * `BLOCKED` - Blocked.
         example: VALIDATED
         enum:
           - VALIDATED
@@ -1818,7 +1818,7 @@ definitions:
           Customer status:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
         type: string
         example: ACTIVE
         enum:
@@ -1831,7 +1831,7 @@ definitions:
           Customer KYC status:
            * `VALIDATED` - Validated
            * `NOT_VALIDATED` - Not validated.
-           * `BLOCKED` - Bloked.
+           * `BLOCKED` - Blocked.
         example: VALIDATED
         enum:
           - VALIDATED
@@ -2047,7 +2047,7 @@ definitions:
           The status of the customer in this moneypool:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
         type: string
         example: ACTIVE
         enum:
@@ -2462,7 +2462,7 @@ definitions:
           The status of the customer:
            * `ACTIVE` - Active
            * `INACTIVE` - Inactive
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
         type: string
         example: ACTIVE
         enum:
@@ -2507,7 +2507,7 @@ definitions:
         description: |
           Member position status:
            * `ACTIVE` - Active
-           * `BLOCKED` - Bloked
+           * `BLOCKED` - Blocked
            * `PENDING` - Pending
            * `EXPELLED` - Expelled
         type: string

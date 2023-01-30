@@ -2180,7 +2180,7 @@
           "example": "ben.simmons@test.com"
         },
         "status": {
-          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Blocked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -2191,7 +2191,7 @@
         },
         "kycStatus": {
           "type": "string",
-          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Blocked.\n",
           "example": "VALIDATED",
           "enum": [
             "VALIDATED",
@@ -2285,7 +2285,7 @@
           "example": "ben.simmons@test.com"
         },
         "status": {
-          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Blocked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -2296,7 +2296,7 @@
         },
         "kycStatus": {
           "type": "string",
-          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Blocked.\n",
           "example": "VALIDATED",
           "enum": [
             "VALIDATED",
@@ -2418,7 +2418,7 @@
           "example": "ben@simmons.test"
         },
         "status": {
-          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "Customer status:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Blocked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -2429,7 +2429,7 @@
         },
         "kycStatus": {
           "type": "string",
-          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Bloked.\n",
+          "description": "Customer KYC status:\n * `VALIDATED` - Validated\n * `NOT_VALIDATED` - Not validated.\n * `BLOCKED` - Blocked.\n",
           "example": "VALIDATED",
           "enum": [
             "VALIDATED",
@@ -2661,7 +2661,7 @@
           "example": true
         },
         "customerStatus": {
-          "description": "The status of the customer in this moneypool:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "The status of the customer in this moneypool:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Blocked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -3140,7 +3140,7 @@
           "example": "+34666323211"
         },
         "status": {
-          "description": "The status of the customer:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Bloked\n",
+          "description": "The status of the customer:\n * `ACTIVE` - Active\n * `INACTIVE` - Inactive\n * `BLOCKED` - Blocked\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
@@ -3194,7 +3194,7 @@
           "example": 1
         },
         "status": {
-          "description": "Member position status:\n * `ACTIVE` - Active\n * `BLOCKED` - Bloked\n * `PENDING` - Pending\n * `EXPELLED` - Expelled\n",
+          "description": "Member position status:\n * `ACTIVE` - Active\n * `BLOCKED` - Blocked\n * `PENDING` - Pending\n * `EXPELLED` - Expelled\n",
           "type": "string",
           "example": "ACTIVE",
           "enum": [
