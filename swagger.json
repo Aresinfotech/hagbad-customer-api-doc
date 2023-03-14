@@ -3718,6 +3718,11 @@
               "description": "Last name",
               "example": "Buendia"
             },
+            "phoneNumber": {
+              "type": "string",
+              "description": "Customer phone number",
+              "example": "+34666323211"
+            },
             "email": {
               "type": "string",
               "description": "Email",
