@@ -2922,9 +2922,7 @@ definitions:
     properties:
       foundCustomer:
         required:
-          - firstName
-          - lastName
-          - email
+          - phoneNumber
         description: 'If the customer already exist in the remmitance system, its information is going returned here.'
         type: object
         properties:
